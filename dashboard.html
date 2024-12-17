@@ -66,11 +66,11 @@
         // Pobranie nazwy u�ytkownika z lokalnego przechowywania
         const username = localStorage.getItem('username');
 
-        // Wy�wietlenie nazwy u�ytkownika
+        // Wyswietlenie nazwy uzytkownika
         if (username) {
             document.getElementById('username').innerText = username;
         } else {
-            window.location.href = 'index.html'; // Je�li brak nazwy, wraca do logowania
+            window.location.href = 'index.html'; // Jesli brak nazwy, wraca do logowania
         }
 
         // Funkcja wylogowania
