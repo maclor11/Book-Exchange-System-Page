@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>WITAMY!</title>
     <style>
-        /* Ogólny styl dla ca³ej strony */
+        /* Ogolny styl dla calej strony */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
@@ -63,14 +63,14 @@
     </div>
 
     <script>
-        // Pobranie nazwy u¿ytkownika z lokalnego przechowywania
+        // Pobranie nazwy uï¿½ytkownika z lokalnego przechowywania
         const username = localStorage.getItem('username');
 
-        // Wyœwietlenie nazwy u¿ytkownika
+        // Wyï¿½wietlenie nazwy uï¿½ytkownika
         if (username) {
             document.getElementById('username').innerText = username;
         } else {
-            window.location.href = 'index.html'; // Jeœli brak nazwy, wraca do logowania
+            window.location.href = 'index.html'; // Jeï¿½li brak nazwy, wraca do logowania
         }
 
         // Funkcja wylogowania
