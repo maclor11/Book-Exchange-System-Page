@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WITAMY!</title>
+    <title>Wymiana Książek</title>
     <style>
-        /* Ogolny styl dla calej strony */
+        /* Styl ogólny */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
@@ -14,8 +14,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            justify-content: flex-start;
+            min-height: 100vh;
         }
 
         h1 {
@@ -23,57 +23,140 @@
             text-align: center;
         }
 
-        /* Styl dla kontenera */
+        .navbar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+        }
+
+            .navbar input[type="text"] {
+                padding: 5px;
+                width: 300px;
+                border: none;
+                border-radius: 4px;
+            }
+
+            .navbar button {
+                background-color: #333;
+                color: white;
+                border: none;
+                padding: 8px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+                .navbar button:hover {
+                    background-color: #555;
+                }
+
         .container {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            margin: 10px;
-            width: 300px;
             text-align: center;
+            width: 90%;
+            max-width: 1200px;
         }
 
         .welcome-message {
-            font-size: 1.2em;
-            margin: 10px 0;
+            font-size: 1.4em;
+            margin: 10px 0 20px;
+            color: #4CAF50;
         }
 
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-            margin-top: 10px;
+        .book-wall {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
         }
 
-            button:hover {
-                background-color: #45a049;
+        .book-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            text-align: center;
+        }
+
+            .book-card h3 {
+                margin: 0;
+                font-size: 1.2em;
+                color: #333;
             }
+
+            .book-card p {
+                margin: 10px 0;
+                font-size: 0.9em;
+                color: #666;
+            }
+
+            .book-card button {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                padding: 8px 12px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+                .book-card button:hover {
+                    background-color: #45a049;
+                }
     </style>
 </head>
 <body>
+    <!-- Nawigacja -->
+    <div class="navbar">
+        <input type="text" placeholder="Szukaj książek...">
+        <button onclick="goToAccount()">Moje Konto</button>
+    </div>
+
+    <!-- Główna zawartość -->
     <div class="container">
-        <h1>WITAMY!</h1>
-        <p class="welcome-message">Czesc, <span id="username"></span>!</p>
-        <button onclick="logout()">Wyloguj sie</button>
+        <h1>Wymiana Książek</h1>
+        <p class="welcome-message">Witaj, <span id="username"></span>!</p>
+
+        <div class="book-wall" id="bookWall">
+            <!-- Przykładowe książki -->
+            <div class="book-card">
+                <h3>Hobbit</h3>
+                <p>J.R.R. Tolkien</p>
+                <button>Więcej</button>
+            </div>
+            <div class="book-card">
+                <h3>1984</h3>
+                <p>George Orwell</p>
+                <button>Więcej</button>
+            </div>
+            <div class="book-card">
+                <h3>Harry Potter</h3>
+                <p>J.K. Rowling</p>
+                <button>Więcej</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Pobranie nazwy u�ytkownika z lokalnego przechowywania
+        // Pobranie nazwy użytkownika z lokalnego przechowywania
         const username = localStorage.getItem('username');
 
-        // Wyswietlenie nazwy uzytkownika
+        // Wyświetlenie nazwy użytkownika lub przekierowanie do logowania
         if (username) {
             document.getElementById('username').innerText = username;
         } else {
-            window.location.href = 'index.html'; // Jesli brak nazwy, wraca do logowania
+            window.location.href = 'index.html'; // Jeśli brak nazwy, wraca do logowania
         }
 
-        // Funkcja wylogowania
+        // Funkcja przejścia do konta użytkownika
+        function goToAccount() {
+            alert("Przejście do konta użytkownika (do zaimplementowania).");
+        }
+
+        // Funkcja wylogowania (jeśli potrzebna w przyszłości)
         function logout() {
             localStorage.removeItem('username');
             window.location.href = 'index.html';
