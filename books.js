@@ -111,6 +111,7 @@ async function addBookToShelf(bookId) {
 
         if (response.ok) {
             alert('Ksi¹¿ka zosta³a dodana na pó³kê!');
+            displayShelf();
         } else {
             alert('B³¹d podczas dodawania ksi¹¿ki na pó³kê.');
         }
@@ -118,8 +119,103 @@ async function addBookToShelf(bookId) {
         console.error('B³¹d:', error);
         alert('Wyst¹pi³ b³¹d podczas komunikacji z serwerem.');
     }
+
 }
 
+async function displayShelf() {
+    const username = localStorage.getItem('username');
+    if (!username) {
+        alert('Musisz byæ zalogowany, aby zobaczyæ swoj¹ pó³kê.');
+        return;
+    }
+
+    try {
+        // Pobierz userId na podstawie username
+        const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
+        if (!userResponse.ok) {
+            alert('Nie mo¿na znaleŸæ u¿ytkownika.');
+            return;
+        }
+
+        const userData = await userResponse.json();
+        const userId = userData.userId;
+
+        // Pobierz ksi¹¿ki u¿ytkownika
+        const response = await fetch(`http://localhost:3000/api/user-books/${userId}`);
+        const userBooks = await response.json();
+
+        // Pobierz kontener pó³ki
+        const shelf = document.getElementById('shelf');
+        shelf.innerHTML = ''; // Wyczyœæ pó³kê
+
+        // Wyœwietl ksi¹¿ki na pó³ce
+        userBooks.forEach(({ bookId }) => {
+            const bookDiv = document.createElement('div');
+            bookDiv.classList.add('book-on-shelf');
+            bookDiv.innerHTML = `
+                <div><strong>${bookId.title}</strong></div>
+                <div>${bookId.author}</div>
+                <button onclick="removeBookFromShelf('${bookId._id}')">Usuñ</button>
+            `;
+            shelf.appendChild(bookDiv);
+        });
+    } catch (error) {
+        console.error('B³¹d podczas ³adowania pó³ki:', error);
+        alert('Wyst¹pi³ b³¹d podczas ³adowania pó³ki.');
+    }
+}
+
+
+async function removeBookFromShelf(bookId) {
+    const username = localStorage.getItem('username');
+    if (!username) {
+        alert('Musisz byæ zalogowany, aby usun¹æ ksi¹¿kê.');
+        return;
+    }
+
+    try {
+        const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
+        const userData = await userResponse.json();
+        const userId = userData.userId;
+
+        const response = await fetch('http://localhost:3000/api/user-books', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId, bookId }),
+        });
+
+        if (response.ok) {
+            alert('Ksi¹¿ka zosta³a usuniêta z pó³ki!');
+            displayShelf(); // Odœwie¿ pó³kê
+        } else {
+            alert('B³¹d podczas usuwania ksi¹¿ki.');
+        }
+    } catch (error) {
+        console.error('B³¹d:', error);
+        alert('Wyst¹pi³ b³¹d podczas komunikacji z serwerem.');
+    }
+}
+
+function updateDateTime() {
+    const now = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const date = now.toLocaleDateString('pl-PL', options);
+    const time = now.toLocaleTimeString('pl-PL');
+
+    document.getElementById('currentDateTime').textContent = `${date}, ${time}`;
+}
+
+// Aktualizacja co sekundê
+setInterval(updateDateTime, 1000);
+
+
+window.onload = () => {
+    displayBooks();
+    displayShelf();
+    updateDateTime();
+};
 
 
 // Funkcja wylogowania (jeœli potrzebna w przysz³oœci)
@@ -127,6 +223,3 @@ function logout() {
     localStorage.removeItem('username');
     window.location.href = 'index.html';
 }
-
-// Wywo³anie funkcji displayBooks po za³adowaniu strony
-window.onload = displayBooks;

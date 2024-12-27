@@ -166,6 +166,29 @@ app.get('/api/users/:username', async (req, res) => {
 });
 
 
+// Endpoint usuwania ksi¹¿ki z pó³ki u¿ytkownika
+app.delete('/api/user-books', async (req, res) => {
+    const { userId, bookId } = req.body;
+
+    if (!userId || !bookId) {
+        return res.status(400).json({ message: 'Identyfikator u¿ytkownika i ksi¹¿ki s¹ wymagane.' });
+    }
+
+    try {
+        const result = await UserBook.findOneAndDelete({ userId, bookId });
+
+        if (!result) {
+            return res.status(404).json({ message: 'Nie znaleziono powi¹zania u¿ytkownika z ksi¹¿k¹.' });
+        }
+
+        res.status(200).json({ message: 'Ksi¹¿ka zosta³a usuniêta z pó³ki.' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'B³¹d serwera.' });
+    }
+});
+
+
 
 // Start serwera
 app.listen(PORT, () => console.log(`Serwer dzia³a na http://localhost:${PORT}`));
