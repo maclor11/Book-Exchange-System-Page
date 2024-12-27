@@ -112,7 +112,8 @@
     <!-- Nawigacja -->
     <div class="navbar">
         <input type="text" placeholder="Szukaj książek...">
-        <button onclick="goToAccount()">Moje Konto</button>
+        <button onclick="goToAccount()">Moja półka</button>
+        <button onclick="logout()">Wyloguj</button>
     </div>
 
     <!-- Główna zawartość -->
@@ -120,47 +121,19 @@
         <h1>Wymiana Książek</h1>
         <p class="welcome-message">Witaj, <span id="username"></span>!</p>
 
+        <!-- Form dodawania książki -->
+        <div id="addBookForm">
+            <h2>Dodaj nową książkę</h2>
+            <input type="text" id="bookTitle" placeholder="Tytuł książki" required>
+            <input type="text" id="bookAuthor" placeholder="Autor książki" required>
+            <button onclick="addBook()">Dodaj książkę</button>
+        </div>
+
         <div class="book-wall" id="bookWall">
-            <!-- Przykładowe książki -->
-            <div class="book-card">
-                <h3>Hobbit</h3>
-                <p>J.R.R. Tolkien</p>
-                <button>Więcej</button>
-            </div>
-            <div class="book-card">
-                <h3>1984</h3>
-                <p>George Orwell</p>
-                <button>Więcej</button>
-            </div>
-            <div class="book-card">
-                <h3>Harry Potter</h3>
-                <p>J.K. Rowling</p>
-                <button>Więcej</button>
-            </div>
+            <!-- Karty książek wypełniane dynamicznie -->
         </div>
     </div>
 
-    <script>
-        // Pobranie nazwy użytkownika z lokalnego przechowywania
-        const username = localStorage.getItem('username');
-
-        // Wyświetlenie nazwy użytkownika lub przekierowanie do logowania
-        if (username) {
-            document.getElementById('username').innerText = username;
-        } else {
-            window.location.href = 'index.html'; // Jeśli brak nazwy, wraca do logowania
-        }
-
-        // Funkcja przejścia do konta użytkownika
-        function goToAccount() {
-            alert("Przejście do konta użytkownika (do zaimplementowania).");
-        }
-
-        // Funkcja wylogowania (jeśli potrzebna w przyszłości)
-        function logout() {
-            localStorage.removeItem('username');
-            window.location.href = 'index.html';
-        }
-    </script>
+    <script src="books.js"></script>
 </body>
 </html>
