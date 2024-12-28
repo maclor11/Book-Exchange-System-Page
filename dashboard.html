@@ -55,12 +55,6 @@
                     background-color: #555;
                 }
 
-        .container {
-            padding: 20px;
-            text-align: center;
-            width: 90%;
-            max-width: 1200px;
-        }
 
         .welcome-message {
             font-size: 1.4em;
@@ -68,112 +62,6 @@
             color: #4CAF50;
         }
 
-        .book-wall {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .book-card {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 15px;
-            text-align: center;
-        }
-
-            .book-card h3 {
-                margin: 0;
-                font-size: 1.2em;
-                color: #333;
-            }
-
-            .book-card p {
-                margin: 10px 0;
-                font-size: 0.9em;
-                color: #666;
-            }
-
-            .book-card button {
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                padding: 8px 12px;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-
-                .book-card button:hover {
-                    background-color: #45a049;
-                }
-
-        /* Stylizacja kontenera półki */
-        #bookshelf {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #f7f3e9;
-            border: 2px solid #d4b483;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-            /* Nagłówek półki */
-            #bookshelf h2 {
-                text-align: center;
-                font-family: 'Georgia', serif;
-                color: #5a3e2b;
-                margin-bottom: 15px;
-            }
-
-        /* Kontener książek na półce */
-        #shelf {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        /* Stylizacja książek na półce */
-        .book-on-shelf {
-            width: 120px;
-            height: 160px;
-            background-color: #e0d7c3;
-            border: 1px solid #b8a489;
-            border-radius: 4px;
-            text-align: center;
-            font-family: 'Arial', sans-serif;
-            font-size: 14px;
-            color: #3a2a1e;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-            /* Kolory losowe dla książek */
-            .book-on-shelf:nth-child(odd) {
-                background-color: #d9b8a3;
-            }
-
-            .book-on-shelf:nth-child(even) {
-                background-color: #c8a987;
-            }
-
-            /* Przyciski na książkach */
-            .book-on-shelf button {
-                padding: 5px 10px;
-                border: none;
-                border-radius: 4px;
-                background-color: #5a3e2b;
-                color: #fff;
-                cursor: pointer;
-                font-size: 12px;
-            }
-
-                .book-on-shelf button:hover {
-                    background-color: #3e281d;
-                }
 
         .logo {
             display: flex;
@@ -205,6 +93,7 @@
 
         <div id="currentDateTime"></div>
         <button onclick="logout()">Wyloguj</button>
+        <button onclick="bookshelf()">Moja polka</button>
     </div>
 
 
@@ -212,22 +101,8 @@
     <!-- Główna zawartość -->
     <div class="container">
         <h1>Witaj, <span id="username"></span>!</p></h1>
-        <div id="bookshelf">
-            <h2>Moja półka na książki</h2>
-            <div id="shelf"></div>
-        </div>
-        <div id="addBookForm">
-            <h2>Dodaj nową książkę</h2>
-            <input type="text" id="bookTitle" placeholder="Tytuł książki" required>
-            <input type="text" id="bookAuthor" placeholder="Autor książki" required>
-            <button onclick="addBook()">Dodaj książkę</button>
-        </div>
-
-        <div class="book-wall" id="bookWall">
-            <!-- Karty książek wypełniane dynamicznie -->
-        </div>
     </div>
 
-    <script src="books.js"></script>
+    <script src="dashboard.js"></script>
 </body>
 </html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wymiana Ksi¹¿ek</title>
+    <style>
+        /* Styl ogólny */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .navbar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+        }
+
+            .navbar input[type="text"] {
+                padding: 5px;
+                width: 300px;
+                border: none;
+                border-radius: 4px;
+            }
+
+            .navbar button {
+                background-color: #333;
+                color: white;
+                border: none;
+                padding: 8px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+                .navbar button:hover {
+                    background-color: #555;
+                }
+
+        .container {
+            padding: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        .welcome-message {
+            font-size: 1.4em;
+            margin: 10px 0 20px;
+            color: #4CAF50;
+        }
+
+        .book-wall {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .book-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            text-align: center;
+        }
+
+            .book-card h3 {
+                margin: 0;
+                font-size: 1.2em;
+                color: #333;
+            }
+
+            .book-card p {
+                margin: 10px 0;
+                font-size: 0.9em;
+                color: #666;
+            }
+
+            .book-card button {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                padding: 8px 12px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+                .book-card button:hover {
+                    background-color: #45a049;
+                }
+
+        /* Stylizacja kontenera pó³ki */
+        #bookshelf {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f7f3e9;
+            border: 2px solid #d4b483;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+            /* Nag³ówek pó³ki */
+            #bookshelf h2 {
+                text-align: center;
+                font-family: 'Georgia', serif;
+                color: #5a3e2b;
+                margin-bottom: 15px;
+            }
+
+        /* Kontener ksi¹¿ek na pó³ce */
+        #shelf {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Stylizacja ksi¹¿ek na pó³ce */
+        .book-on-shelf {
+            width: 120px;
+            height: 160px;
+            background-color: #e0d7c3;
+            border: 1px solid #b8a489;
+            border-radius: 4px;
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            color: #3a2a1e;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+            /* Kolory losowe dla ksi¹¿ek */
+            .book-on-shelf:nth-child(odd) {
+                background-color: #d9b8a3;
+            }
+
+            .book-on-shelf:nth-child(even) {
+                background-color: #c8a987;
+            }
+
+            /* Przyciski na ksi¹¿kach */
+            .book-on-shelf button {
+                padding: 5px 10px;
+                border: none;
+                border-radius: 4px;
+                background-color: #5a3e2b;
+                color: #fff;
+                cursor: pointer;
+                font-size: 12px;
+            }
+
+                .book-on-shelf button:hover {
+                    background-color: #3e281d;
+                }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Odstêp miêdzy logo a nazw¹ */
+        }
+
+        .logo-image {
+            width: 40px; /* Rozmiar logo */
+            height: 40px;
+            border-radius: 50%; /* Opcjonalne: zaokr¹glenie krawêdzi */
+        }
+
+        .app-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .suggestions {
+            position: relative;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+            .suggestions div {
+                padding: 5px;
+                cursor: pointer;
+            }
+
+                .suggestions div:hover {
+                    background-color: #f0f0f0;
+                }
+    </style>
+</head>
+<body>
+    <!-- Nawigacja -->
+    <div class="navbar">
+        <div class="logo">
+            <img src="Enchanted_Book.gif" alt="Logo" class="logo-image">
+            <span class="app-name">Bookswap</span>
+        </div>
+
+        <div id="currentDateTime"></div>
+        <button onclick="logout()">Wyloguj</button>
+        <button onclick="dashboard()">Powrot</button>
+    </div>
+
+
+
+    <!-- G³ówna zawartoœæ -->
+    <div class="container">
+        <h1>Witaj, <span id="username"></span>!</p></h1>
+        <div id="bookshelf">
+            <h2>Moja pó³ka na ksi¹¿ki</h2>
+            <div id="shelf"></div>
+        </div>
+<!--        <div id="addBookForm">
+            <h2>Dodaj now¹ ksi¹¿kê</h2>
+            <input type="text" id="bookTitle" placeholder="Tytu³ ksi¹¿ki" required>
+            <input type="text" id="bookAuthor" placeholder="Autor ksi¹¿ki" required>
+            <button onclick="addBook()">Dodaj ksi¹¿kê</button>
+        </div>-->
+        <div id="addBookForm">
+            <h2>Dodaj now¹ ksi¹¿kê</h2>
+            <input type="text" id="bookTitle" placeholder="Tytu³ ksi¹¿ki" oninput="showSuggestions('title')" required>
+            <div id="titleSuggestions" class="suggestions"></div> <!-- Podpowiedzi dla tytu³u -->
+
+            <input type="text" id="bookAuthor" placeholder="Autor ksi¹¿ki" oninput="showSuggestions('author')" required>
+            <div id="authorSuggestions" class="suggestions"></div> <!-- Podpowiedzi dla autora -->
+
+            <button onclick="addBook()">Dodaj ksi¹¿kê</button>
+        </div>
+    </div>
+
+    <script src="bookshelf.js"></script>
+</body>
+</html>

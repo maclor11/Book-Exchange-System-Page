@@ -58,6 +58,11 @@ app.post('/api/user-books', async (req, res) => {
             return res.status(404).json({ message: 'Nie znaleziono u¿ytkownika lub ksi¹¿ki.' });
         }
 
+        const userBookExists = await UserBook.findOne({ userId, bookId });
+        if (userBookExists) {
+            return res.status(409).json({ message: 'Ksi¹¿ka jest ju¿ na pó³ce u¿ytkownika.' });
+        }
+
         const userBook = new UserBook({ userId, bookId });
         await userBook.save();
 
@@ -115,9 +120,14 @@ app.post('/api/books', async (req, res) => {
     }
 
     try {
+        const existingBook = await Book.findOne({ title, author });
+        if (existingBook) {
+            return res.status(200).json(existingBook);
+        }
+
         const newBook = new Book({ title, author });
         await newBook.save();
-        res.status(201).json({ message: 'Ksi¹¿ka dodana pomyœlnie!' });
+        res.status(201).json({ message: 'Ksi¹¿ka dodana pomyœlnie!', _id: newBook._id });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'B³¹d serwera.' });
@@ -128,6 +138,7 @@ app.post('/api/books', async (req, res) => {
 app.get('/api/books', async (req, res) => {
     try {
         const books = await Book.find();
+
         res.status(200).json(books);
     } catch (err) {
         console.error(err);

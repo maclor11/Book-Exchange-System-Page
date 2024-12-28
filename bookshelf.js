@@ -9,45 +9,6 @@ if (username) {
     window.location.href = 'index.html'; // Jeœli brak nazwy, wraca do logowania
 }
 
-// Funkcja przejœcia do konta u¿ytkownika
-function goToAccount() {
-    
-}
-
-// Funkcja do wyœwietlania ksi¹¿ek na stronie
-async function displayBooks() {
-    try {
-        const response = await fetch('http://localhost:3000/api/books');
-        const books = await response.json();
-
-        // Pobierz kontener do wyœwietlania ksi¹¿ek
-        const bookWall = document.getElementById('bookWall');
-        bookWall.innerHTML = ''; // Wyczyœæ poprzednie ksi¹¿ki
-
-        // Dodaj ka¿d¹ ksi¹¿kê do kontenera
-        books.forEach(book => {
-            const bookCard = document.createElement('div');
-            bookCard.classList.add('book-card');
-            bookCard.innerHTML = `
-            <h3>${book.title}</h3>
-            <p>${book.author}</p>
-            <button onclick="viewBookDetails('${book._id}')">Wiêcej</button>
-            <button onclick="addBookToShelf('${book._id}')">Dodaj na pó³kê</button>
-`;
-            bookWall.appendChild(bookCard);
-        });
-    } catch (error) {
-        console.error('B³¹d podczas ³adowania ksi¹¿ek:', error);
-        alert('Wyst¹pi³ b³¹d podczas pobierania ksi¹¿ek.');
-    }
-}
-
-// Funkcja wyœwietlania szczegó³ów ksi¹¿ki
-function viewBookDetails(bookId) {
-    alert(`Szczegó³y ksi¹¿ki o ID: ${bookId}`);
-    // W przysz³oœci dodaj logikê przejœcia do strony szczegó³ów ksi¹¿ki
-}
-
 // Dodawanie nowej ksi¹¿ki
 async function addBook() {
     const title = document.getElementById('bookTitle').value.trim();
@@ -59,37 +20,13 @@ async function addBook() {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/api/books', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ title, author })
-        });
+        const username = localStorage.getItem('username'); // Pobierz nazwê u¿ytkownika z localStorage
 
-        if (response.ok) {
-            alert('Ksi¹¿ka dodana pomyœlnie!');
-            document.getElementById('bookTitle').value = '';
-            document.getElementById('bookAuthor').value = '';
-            displayBooks(); // Odœwie¿ listê ksi¹¿ek
-        } else {
-            alert('B³¹d podczas dodawania ksi¹¿ki.');
+        if (!username) {
+            alert('Musisz byæ zalogowany, aby dodaæ ksi¹¿kê na pó³kê.');
+            return;
         }
-    } catch (error) {
-        console.error('Wyst¹pi³ b³¹d:', error);
-        alert('Wyst¹pi³ b³¹d podczas komunikacji z serwerem.');
-    }
-}
 
-async function addBookToShelf(bookId) {
-    const username = localStorage.getItem('username'); // Pobierz nazwê u¿ytkownika z localStorage
-
-    if (!username) {
-        alert('Musisz byæ zalogowany, aby dodaæ ksi¹¿kê.');
-        return;
-    }
-
-    try {
         // Pobierz userId na podstawie username
         const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
         if (!userResponse.ok) {
@@ -100,8 +37,47 @@ async function addBookToShelf(bookId) {
         const userData = await userResponse.json();
         const userId = userData.userId;
 
+        // SprawdŸ, czy ksi¹¿ka ju¿ istnieje w bazie danych
+        const existingBooksResponse = await fetch('http://localhost:3000/api/books');
+        if (!existingBooksResponse.ok) {
+            alert('B³¹d podczas sprawdzania istniej¹cych ksi¹¿ek.');
+            return;
+        }
+
+        const existingBooks = await existingBooksResponse.json();
+        const existingBook = existingBooks.find(book => book.title === title && book.author === author);
+
+        let bookId;
+
+        if (existingBook) {
+            // Jeœli ksi¹¿ka istnieje, u¿yj jej ID
+            bookId = existingBook._id;
+        } else {
+            // Jeœli ksi¹¿ka nie istnieje, dodaj j¹ do bazy danych
+            const response = await fetch('http://localhost:3000/api/books', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title, author }),
+            });
+
+            if (!response.ok) {
+                alert('B³¹d podczas dodawania ksi¹¿ki.');
+                return;
+            }
+
+            const newBook = await response.json();
+            if (!newBook || !newBook._id) {
+                alert('Serwer nie zwróci³ ID nowej ksi¹¿ki.');
+                return;
+            }
+
+            bookId = newBook._id; // Ustaw `bookId` na wartoœæ zwrócon¹ przez serwer
+        }
+
         // Dodaj ksi¹¿kê na pó³kê u¿ytkownika
-        const response = await fetch('http://localhost:3000/api/user-books', {
+        const shelfResponse = await fetch('http://localhost:3000/api/user-books', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -109,18 +85,21 @@ async function addBookToShelf(bookId) {
             body: JSON.stringify({ userId, bookId }),
         });
 
-        if (response.ok) {
-            alert('Ksi¹¿ka zosta³a dodana na pó³kê!');
-            displayShelf();
+        if (shelfResponse.ok) {
+            alert('Ksi¹¿ka zosta³a pomyœlnie dodana na pó³kê!');
+            document.getElementById('bookTitle').value = '';
+            document.getElementById('bookAuthor').value = '';
+            displayShelf(); // Odœwie¿ pó³kê
+            fetchBooks();
         } else {
             alert('B³¹d podczas dodawania ksi¹¿ki na pó³kê.');
         }
     } catch (error) {
-        console.error('B³¹d:', error);
+        console.error('Wyst¹pi³ b³¹d:', error);
         alert('Wyst¹pi³ b³¹d podczas komunikacji z serwerem.');
     }
-
 }
+
 
 async function displayShelf() {
     const username = localStorage.getItem('username');
@@ -188,7 +167,7 @@ async function removeBookFromShelf(bookId) {
 
         if (response.ok) {
             alert('Ksi¹¿ka zosta³a usuniêta z pó³ki!');
-            displayShelf(); // Odœwie¿ pó³kê
+            displayShelf(); 
         } else {
             alert('B³¹d podczas usuwania ksi¹¿ki.');
         }
@@ -212,7 +191,7 @@ setInterval(updateDateTime, 1000);
 
 
 window.onload = () => {
-    displayBooks();
+    //displayBooks();
     displayShelf();
     updateDateTime();
 };
@@ -223,3 +202,62 @@ function logout() {
     localStorage.removeItem('username');
     window.location.href = 'index.html';
 }
+
+function bookshelf() {
+    window.location.href = 'bookshelf.html';
+}
+
+function dashboard() {
+    window.location.href = 'dashboard.html';
+}
+
+let allBooks = []; // Bufor na ksi¹¿ki pobrane z serwera
+
+// Pobierz ksi¹¿ki z bazy danych przy za³adowaniu strony
+async function fetchBooks() {
+    try {
+        const response = await fetch('http://localhost:3000/api/books');
+        if (response.ok) {
+            allBooks = await response.json();
+        }
+    } catch (error) {
+        console.error('B³¹d podczas pobierania ksi¹¿ek:', error);
+    }
+}
+
+// Wyœwietl podpowiedzi na podstawie wpisywanego tekstu
+function showSuggestions(field) {
+    const input = document.getElementById(`book${capitalize(field)}`);
+    const suggestionsDiv = document.getElementById(`${field}Suggestions`);
+    const query = input.value.toLowerCase();
+
+    // Wyczyœæ istniej¹ce podpowiedzi
+    suggestionsDiv.innerHTML = '';
+
+    if (!query) return; // Brak tekstu -> brak podpowiedzi
+
+    // Filtruj ksi¹¿ki na podstawie wpisywanego tekstu
+    const suggestions = allBooks
+        .filter(book => book[field].toLowerCase().includes(query))
+        .slice(0, 5); // Maksymalnie 5 podpowiedzi
+
+    // Dodaj podpowiedzi do kontenera
+    suggestions.forEach(book => {
+        const suggestion = document.createElement('div');
+        suggestion.textContent = book[field];
+        suggestion.onclick = () => {
+            input.value = book[field]; // Ustaw wartoœæ pola na wybran¹ podpowiedŸ
+            suggestionsDiv.innerHTML = ''; // Wyczyœæ podpowiedzi
+        };
+        suggestionsDiv.appendChild(suggestion);
+    });
+}
+
+// Pomocnicza funkcja do formatowania nazw pól
+function capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+// Wywo³anie fetchBooks przy za³adowaniu strony
+document.addEventListener('DOMContentLoaded', fetchBooks);
+
