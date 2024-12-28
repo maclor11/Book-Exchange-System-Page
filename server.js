@@ -41,6 +41,17 @@ const userBookSchema = new mongoose.Schema({
 
 const UserBook = mongoose.model('UserBook', userBookSchema);
 
+// Schemat i model dla listy ¿yczeñ u¿ytkownika
+const userWishlistSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    title: { type: String, required: true },
+    author: { type: String, required: true },
+    addedDate: { type: Date, default: Date.now }, // Data dodania ksi¹¿ki do listy ¿yczeñ
+});
+
+const UserWishlist = mongoose.model('UserWishlist', userWishlistSchema);
+
+
 
 // Endpoint dodawania ksi¹¿ki na pó³kê u¿ytkownika
 app.post('/api/user-books', async (req, res) => {
@@ -198,6 +209,73 @@ app.delete('/api/user-books', async (req, res) => {
         res.status(500).json({ message: 'B³¹d serwera.' });
     }
 });
+
+app.delete('/api/user-wishlist', async (req, res) => {
+    const { userId, bookId } = req.body;
+
+    if (!userId || !bookId) {
+        return res.status(400).json({ message: 'Identyfikator u¿ytkownika i ksi¹¿ki s¹ wymagane.' });
+    }
+
+    try {
+        const result = await UserWishlist.findOneAndDelete({ userId, bookId });
+
+        if (!result) {
+            return res.status(404).json({ message: 'Nie znaleziono powi¹zania u¿ytkownika z ksi¹¿k¹.' });
+        }
+
+        res.status(200).json({ message: 'Ksi¹¿ka zosta³a usuniêta z pó³ki.' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'B³¹d serwera.' });
+    }
+});
+
+// Endpoint dodawania ksi¹¿ki do listy ¿yczeñ u¿ytkownika
+app.post('/api/user-wishlist', async (req, res) => {
+    const { userId, title, author } = req.body;
+
+    if (!userId || !title || !author) {
+        return res.status(400).json({ message: 'Identyfikator u¿ytkownika, tytu³ i autor s¹ wymagane.' });
+    }
+
+    try {
+        const userExists = await User.findById(userId);
+        if (!userExists) {
+            return res.status(404).json({ message: 'Nie znaleziono u¿ytkownika.' });
+        }
+
+        // SprawdŸ, czy ksi¹¿ka ju¿ jest na liœcie ¿yczeñ
+        const existingWishlistItem = await UserWishlist.findOne({ userId, title, author });
+        if (existingWishlistItem) {
+            return res.status(409).json({ message: 'Ksi¹¿ka jest ju¿ na liœcie ¿yczeñ.' });
+        }
+
+        const wishlistItem = new UserWishlist({ userId, title, author });
+        await wishlistItem.save();
+
+        res.status(201).json({ message: 'Ksi¹¿ka zosta³a dodana do listy ¿yczeñ!' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'B³¹d serwera.' });
+    }
+});
+
+// Endpoint pobierania ksi¹¿ek z listy ¿yczeñ u¿ytkownika
+app.get('/api/user-wishlist/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const wishlistItems = await UserWishlist.find({ userId });
+        res.status(200).json(wishlistItems);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'B³¹d serwera.' });
+    }
+});
+
+
+
 
 
 

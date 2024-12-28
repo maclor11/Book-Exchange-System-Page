@@ -1,46 +1,46 @@
-// Pobranie nazwy u¿ytkownika z lokalnego przechowywania
+// Pobranie nazwy u?ytkownika z lokalnego przechowywania
 const username = localStorage.getItem('username');
 const userId = localStorage.getItem('userId');
 
-// Wyœwietlenie nazwy u¿ytkownika lub przekierowanie do logowania
+// Wy?wietlenie nazwy u?ytkownika lub przekierowanie do logowania
 if (username) {
     document.getElementById('username').innerText = username;
 } else {
-    window.location.href = 'index.html'; // Jeœli brak nazwy, wraca do logowania
+    window.location.href = 'index.html'; // Je?li brak nazwy, wraca do logowania
 }
 
-// Dodawanie nowej ksi¹¿ki
+// Dodawanie nowej ksi??ki
 async function addBook() {
     const title = document.getElementById('bookTitle').value.trim();
     const author = document.getElementById('bookAuthor').value.trim();
 
     if (!title || !author) {
-        alert('Proszê wype³niæ oba pola!');
+        alert('Prosz? wype?ni? oba pola!');
         return;
     }
 
     try {
-        const username = localStorage.getItem('username'); // Pobierz nazwê u¿ytkownika z localStorage
+        const username = localStorage.getItem('username'); // Pobierz nazw? u?ytkownika z localStorage
 
         if (!username) {
-            alert('Musisz byæ zalogowany, aby dodaæ ksi¹¿kê na pó³kê.');
+            alert('Musisz by? zalogowany, aby doda? ksi??k? na pó?k?.');
             return;
         }
 
         // Pobierz userId na podstawie username
         const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
         if (!userResponse.ok) {
-            alert('Nie mo¿na znaleŸæ u¿ytkownika.');
+            alert('Nie mo?na znale?? u?ytkownika.');
             return;
         }
 
         const userData = await userResponse.json();
         const userId = userData.userId;
 
-        // SprawdŸ, czy ksi¹¿ka ju¿ istnieje w bazie danych
+        // Sprawd?, czy ksi??ka ju? istnieje w bazie danych
         const existingBooksResponse = await fetch('http://localhost:3000/api/books');
         if (!existingBooksResponse.ok) {
-            alert('B³¹d podczas sprawdzania istniej¹cych ksi¹¿ek.');
+            alert('B??d podczas sprawdzania istniej?cych ksi??ek.');
             return;
         }
 
@@ -50,10 +50,10 @@ async function addBook() {
         let bookId;
 
         if (existingBook) {
-            // Jeœli ksi¹¿ka istnieje, u¿yj jej ID
+            // Je?li ksi??ka istnieje, u?yj jej ID
             bookId = existingBook._id;
         } else {
-            // Jeœli ksi¹¿ka nie istnieje, dodaj j¹ do bazy danych
+            // Je?li ksi??ka nie istnieje, dodaj j? do bazy danych
             const response = await fetch('http://localhost:3000/api/books', {
                 method: 'POST',
                 headers: {
@@ -63,20 +63,20 @@ async function addBook() {
             });
 
             if (!response.ok) {
-                alert('B³¹d podczas dodawania ksi¹¿ki.');
+                alert('B??d podczas dodawania ksi??ki.');
                 return;
             }
 
             const newBook = await response.json();
             if (!newBook || !newBook._id) {
-                alert('Serwer nie zwróci³ ID nowej ksi¹¿ki.');
+                alert('Serwer nie zwróci? ID nowej ksi??ki.');
                 return;
             }
 
-            bookId = newBook._id; // Ustaw `bookId` na wartoœæ zwrócon¹ przez serwer
+            bookId = newBook._id; // Ustaw `bookId` na warto?? zwrócon? przez serwer
         }
 
-        // Dodaj ksi¹¿kê na pó³kê u¿ytkownika
+        // Dodaj ksi??k? na pó?k? u?ytkownika
         const shelfResponse = await fetch('http://localhost:3000/api/user-books', {
             method: 'POST',
             headers: {
@@ -86,17 +86,17 @@ async function addBook() {
         });
 
         if (shelfResponse.ok) {
-            alert('Ksi¹¿ka zosta³a pomyœlnie dodana na pó³kê!');
+            alert('Ksi??ka zosta?a pomy?lnie dodana na pó?k?!');
             document.getElementById('bookTitle').value = '';
             document.getElementById('bookAuthor').value = '';
-            displayShelf(); // Odœwie¿ pó³kê
+            displayShelf(); // Od?wie? pó?k?
             fetchBooks();
         } else {
-            alert('B³¹d podczas dodawania ksi¹¿ki na pó³kê.');
+            alert('B??d podczas dodawania ksi??ki na pó?k?.');
         }
     } catch (error) {
-        console.error('Wyst¹pi³ b³¹d:', error);
-        alert('Wyst¹pi³ b³¹d podczas komunikacji z serwerem.');
+        console.error('Wyst?pi? b??d:', error);
+        alert('Wyst?pi? b??d podczas komunikacji z serwerem.');
     }
 }
 
@@ -104,7 +104,7 @@ async function addBook() {
 async function displayShelf() {
     const username = localStorage.getItem('username');
     if (!username) {
-        alert('Musisz byæ zalogowany, aby zobaczyæ swoj¹ pó³kê.');
+        alert('Musisz by? zalogowany, aby zobaczy? swoj? pó?k?.');
         return;
     }
 
@@ -112,35 +112,35 @@ async function displayShelf() {
         // Pobierz userId na podstawie username
         const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
         if (!userResponse.ok) {
-            alert('Nie mo¿na znaleŸæ u¿ytkownika.');
+            alert('Nie mo?na znale?? u?ytkownika.');
             return;
         }
 
         const userData = await userResponse.json();
         const userId = userData.userId;
 
-        // Pobierz ksi¹¿ki u¿ytkownika
+        // Pobierz ksi??ki u?ytkownika
         const response = await fetch(`http://localhost:3000/api/user-books/${userId}`);
         const userBooks = await response.json();
 
-        // Pobierz kontener pó³ki
+        // Pobierz kontener pó?ki
         const shelf = document.getElementById('shelf');
-        shelf.innerHTML = ''; // Wyczyœæ pó³kê
+        shelf.innerHTML = ''; // Wyczy?? pó?k?
 
-        // Wyœwietl ksi¹¿ki na pó³ce
+        // Wy?wietl ksi??ki na pó?ce
         userBooks.forEach(({ bookId }) => {
             const bookDiv = document.createElement('div');
             bookDiv.classList.add('book-on-shelf');
             bookDiv.innerHTML = `
                 <div><strong>${bookId.title}</strong></div>
                 <div>${bookId.author}</div>
-                <button onclick="removeBookFromShelf('${bookId._id}')">Usuñ</button>
+                <button onclick="removeBookFromShelf('${bookId._id}')">Usu?</button>
             `;
             shelf.appendChild(bookDiv);
         });
     } catch (error) {
-        console.error('B³¹d podczas ³adowania pó³ki:', error);
-        alert('Wyst¹pi³ b³¹d podczas ³adowania pó³ki.');
+        console.error('B??d podczas ?adowania pó?ki:', error);
+        alert('Wyst?pi? b??d podczas ?adowania pó?ki.');
     }
 }
 
@@ -148,7 +148,7 @@ async function displayShelf() {
 async function removeBookFromShelf(bookId) {
     const username = localStorage.getItem('username');
     if (!username) {
-        alert('Musisz byæ zalogowany, aby usun¹æ ksi¹¿kê.');
+        alert('Musisz by? zalogowany, aby usun?? ksi??k?.');
         return;
     }
 
@@ -166,8 +166,40 @@ async function removeBookFromShelf(bookId) {
         });
 
         if (response.ok) {
-            alert('Ksi¹¿ka zosta³a usuniêta z pó³ki!');
-            displayShelf(); 
+            alert('Ksi??ka zosta?a usuni?ta z pó?ki!');
+            displayShelf();
+        } else {
+            alert('B??d podczas usuwania ksi??ki.');
+        }
+    } catch (error) {
+        console.error('Bladd:', error);
+        alert('Wystapil bladd podczas komunikacji z serwerem.');
+    }
+}
+
+async function removeBookFromWishlist(bookId) {
+    const username = localStorage.getItem('username');
+    if (!username) {
+        alert('Musisz byæ zalogowany, aby usun¹æ ksi¹¿kê.');
+        return;
+    }
+
+    try {
+        const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
+        const userData = await userResponse.json();
+        const userId = userData.userId;
+
+        const response = await fetch('http://localhost:3000/api/user-wishlist', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId, bookId }),
+        });
+
+        if (response.ok) {
+            alert('Ksi¹¿ka zosta³a usuniêta z listy ¿yczeñ!');
+            displayWishlist();
         } else {
             alert('B³¹d podczas usuwania ksi¹¿ki.');
         }
@@ -186,18 +218,116 @@ function updateDateTime() {
     document.getElementById('currentDateTime').textContent = `${date}, ${time}`;
 }
 
-// Aktualizacja co sekundê
+async function addBookToWishlist() {
+    const title = document.getElementById('bookTitle').value.trim();
+    const author = document.getElementById('bookAuthor').value.trim();
+
+    if (!title || !author) {
+        alert('Proszê wype³niæ oba pola!');
+        return;
+    }
+
+    try {
+        const username = localStorage.getItem('username'); // Pobierz nazwê u¿ytkownika z localStorage
+
+        if (!username) {
+            alert('Musisz byæ zalogowany, aby dodaæ ksi¹¿kê do listy ¿yczeñ.');
+            return;
+        }
+
+        // Pobierz userId na podstawie username
+        const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
+        if (!userResponse.ok) {
+            alert('Nie mo¿na znaleŸæ u¿ytkownika.');
+            return;
+        }
+
+        const userData = await userResponse.json();
+        const userId = userData.userId;
+
+        // Dodaj ksi¹¿kê do listy ¿yczeñ u¿ytkownika
+        const wishlistResponse = await fetch('http://localhost:3000/api/user-wishlist', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId, title, author }),
+        });
+
+        if (wishlistResponse.ok) {
+            alert('Ksi¹¿ka zosta³a dodana do listy ¿yczeñ!');
+            document.getElementById('wishlistBookTitle').value = '';
+            document.getElementById('wishlistBookAuthor').value = '';
+            displayWishlist(); // Odœwie¿ listê ¿yczeñ
+
+        } else {
+            alert('B³¹d podczas dodawania ksi¹¿ki do listy ¿yczeñ.');
+        }
+    } catch (error) {
+        console.error('Wyst¹pi³ b³¹d:', error);
+        alert('Wyst¹pi³ b³¹d podczas komunikacji z serwerem.');
+    }
+}
+
+async function displayWishlist() {
+    const username = localStorage.getItem('username');
+    if (!username) {
+        alert('Musisz byæ zalogowany, aby zobaczyæ swoj¹ listê ¿yczeñ.');
+        return;
+    }
+
+    try {
+        // Pobierz userId na podstawie username
+        const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
+        if (!userResponse.ok) {
+            alert('Nie mo¿na znaleŸæ u¿ytkownika.');
+            return;
+        }
+
+        const userData = await userResponse.json();
+        const userId = userData.userId;
+
+        // Pobierz ksi¹¿ki z listy ¿yczeñ u¿ytkownika
+        const wishlistResponse = await fetch(`http://localhost:3000/api/user-wishlist/${userId}`);
+        const wishlist = await wishlistResponse.json();
+
+        // Pobierz kontener listy ¿yczeñ
+        const wishlistDiv = document.getElementById('wishlist');
+        wishlistDiv.innerHTML = ''; // Wyczyœæ listê ¿yczeñ
+
+        // Wyœwietl ksi¹¿ki na liœcie ¿yczeñ
+        wishlist.forEach(({ title, author, _id }) => {
+            const bookDiv = document.createElement('div');
+            bookDiv.classList.add('book-on-wishlist');
+            bookDiv.innerHTML = `
+                <div><strong>${title}</strong></div>
+                <div>${author}</div>
+                <button onclick="removeBookFromWishlist('${_id}')">Usuñ</button>
+            `;
+            wishlistDiv.appendChild(bookDiv);
+        });
+    } catch (error) {
+        console.error('B³¹d podczas ³adowania listy ¿yczeñ:', error);
+        alert('Wyst¹pi³ b³¹d podczas ³adowania listy ¿yczeñ.');
+    }
+}
+
+
+
+
+// Aktualizacja co sekund?
 setInterval(updateDateTime, 1000);
 
 
 window.onload = () => {
     //displayBooks();
     displayShelf();
+    displayWishlist();
     updateDateTime();
 };
 
 
-// Funkcja wylogowania (jeœli potrzebna w przysz³oœci)
+// Funkcja wylogowania (je?li potrzebna w przysz?o?ci)
 function logout() {
     localStorage.removeItem('username');
     window.location.href = 'index.html';
@@ -211,9 +341,9 @@ function dashboard() {
     window.location.href = 'dashboard.html';
 }
 
-let allBooks = []; // Bufor na ksi¹¿ki pobrane z serwera
+let allBooks = []; // Bufor na ksi??ki pobrane z serwera
 
-// Pobierz ksi¹¿ki z bazy danych przy za³adowaniu strony
+// Pobierz ksi??ki z bazy danych przy za?adowaniu strony
 async function fetchBooks() {
     try {
         const response = await fetch('http://localhost:3000/api/books');
@@ -221,22 +351,22 @@ async function fetchBooks() {
             allBooks = await response.json();
         }
     } catch (error) {
-        console.error('B³¹d podczas pobierania ksi¹¿ek:', error);
+        console.error('Blad podczas pobierania ksiazek:', error);
     }
 }
 
-// Wyœwietl podpowiedzi na podstawie wpisywanego tekstu
+// Wy?wietl podpowiedzi na podstawie wpisywanego tekstu
 function showSuggestions(field) {
     const input = document.getElementById(`book${capitalize(field)}`);
     const suggestionsDiv = document.getElementById(`${field}Suggestions`);
     const query = input.value.toLowerCase();
 
-    // Wyczyœæ istniej¹ce podpowiedzi
+    // Wyczy?? istniej?ce podpowiedzi
     suggestionsDiv.innerHTML = '';
 
     if (!query) return; // Brak tekstu -> brak podpowiedzi
 
-    // Filtruj ksi¹¿ki na podstawie wpisywanego tekstu
+    // Filtruj ksi??ki na podstawie wpisywanego tekstu
     const suggestions = allBooks
         .filter(book => book[field].toLowerCase().includes(query))
         .slice(0, 5); // Maksymalnie 5 podpowiedzi
@@ -246,8 +376,8 @@ function showSuggestions(field) {
         const suggestion = document.createElement('div');
         suggestion.textContent = book[field];
         suggestion.onclick = () => {
-            input.value = book[field]; // Ustaw wartoœæ pola na wybran¹ podpowiedŸ
-            suggestionsDiv.innerHTML = ''; // Wyczyœæ podpowiedzi
+            input.value = book[field]; // Ustaw warto?? pola na wybran? podpowied?
+            suggestionsDiv.innerHTML = ''; // Wyczy?? podpowiedzi
         };
         suggestionsDiv.appendChild(suggestion);
     });
@@ -258,6 +388,7 @@ function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-// Wywo³anie fetchBooks przy za³adowaniu strony
+// Wywo?anie fetchBooks przy za?adowaniu strony
 document.addEventListener('DOMContentLoaded', fetchBooks);
+
 

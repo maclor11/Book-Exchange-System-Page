@@ -19,8 +19,9 @@
         }
 
         h1 {
-            color: #333;
+            color: #f4f4f9;
             text-align: center;
+            font-size: 0;
         }
 
         .navbar {
@@ -62,54 +63,16 @@
             max-width: 1200px;
         }
 
-        .welcome-message {
-            font-size: 1.4em;
-            margin: 10px 0 20px;
-            color: #4CAF50;
-        }
-
-        .book-wall {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        .sections {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             gap: 20px;
-        }
-
-        .book-card {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 15px;
-            text-align: center;
-        }
-
-            .book-card h3 {
-                margin: 0;
-                font-size: 1.2em;
-                color: #333;
-            }
-
-            .book-card p {
-                margin: 10px 0;
-                font-size: 0.9em;
-                color: #666;
-            }
-
-            .book-card button {
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                padding: 8px 12px;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-
-                .book-card button:hover {
-                    background-color: #45a049;
-                }
-
-        /* Stylizacja kontenera pó³ki */
-        #bookshelf {
             margin-top: 20px;
+        }
+
+        .section {
+            flex: 1;
             padding: 10px;
             background-color: #f7f3e9;
             border: 2px solid #d4b483;
@@ -117,24 +80,21 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-            /* Nag³ówek pó³ki */
-            #bookshelf h2 {
+            .section h2 {
                 text-align: center;
                 font-family: 'Georgia', serif;
                 color: #5a3e2b;
                 margin-bottom: 15px;
             }
 
-        /* Kontener ksi¹¿ek na pó³ce */
-        #shelf {
+        #shelf, #wishlist {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 10px;
         }
 
-        /* Stylizacja ksi¹¿ek na pó³ce */
-        .book-on-shelf {
+        .book {
             width: 120px;
             height: 160px;
             background-color: #e0d7c3;
@@ -151,17 +111,15 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-            /* Kolory losowe dla ksi¹¿ek */
-            .book-on-shelf:nth-child(odd) {
+            .book:nth-child(odd) {
                 background-color: #d9b8a3;
             }
 
-            .book-on-shelf:nth-child(even) {
+            .book:nth-child(even) {
                 background-color: #c8a987;
             }
 
-            /* Przyciski na ksi¹¿kach */
-            .book-on-shelf button {
+            .book button {
                 padding: 5px 10px;
                 border: none;
                 border-radius: 4px;
@@ -171,20 +129,20 @@
                 font-size: 12px;
             }
 
-                .book-on-shelf button:hover {
+                .book button:hover {
                     background-color: #3e281d;
                 }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px; /* Odstêp miêdzy logo a nazw¹ */
+            gap: 10px; /* Odst?p mi?dzy logo a nazw? */
         }
 
         .logo-image {
             width: 40px; /* Rozmiar logo */
             height: 40px;
-            border-radius: 50%; /* Opcjonalne: zaokr¹glenie krawêdzi */
+            border-radius: 50%; /* Opcjonalne: zaokr?glenie kraw?dzi */
         }
 
         .app-name {
@@ -211,10 +169,10 @@
                 .suggestions div:hover {
                     background-color: #f0f0f0;
                 }
+
     </style>
 </head>
 <body>
-    <!-- Nawigacja -->
     <div class="navbar">
         <div class="logo">
             <img src="Enchanted_Book.gif" alt="Logo" class="logo-image">
@@ -226,30 +184,34 @@
         <button onclick="dashboard()">Powrot</button>
     </div>
 
-
-
     <!-- G³ówna zawartoœæ -->
     <div class="container">
-        <h1>Witaj, <span id="username"></span>!</p></h1>
-        <div id="bookshelf">
-            <h2>Moja pó³ka na ksi¹¿ki</h2>
-            <div id="shelf"></div>
-        </div>
-<!--        <div id="addBookForm">
-            <h2>Dodaj now¹ ksi¹¿kê</h2>
-            <input type="text" id="bookTitle" placeholder="Tytu³ ksi¹¿ki" required>
-            <input type="text" id="bookAuthor" placeholder="Autor ksi¹¿ki" required>
-            <button onclick="addBook()">Dodaj ksi¹¿kê</button>
-        </div>-->
-        <div id="addBookForm">
-            <h2>Dodaj now¹ ksi¹¿kê</h2>
-            <input type="text" id="bookTitle" placeholder="Tytu³ ksi¹¿ki" oninput="showSuggestions('title')" required>
-            <div id="titleSuggestions" class="suggestions"></div> <!-- Podpowiedzi dla tytu³u -->
+        <h1>Witaj<span id="username"></span>!</p></h1>
+        <div class="sections">
+            <!-- Sekcja Pó³ki na ksi¹¿ki -->
+            <div class="section" id="bookshelf">
+                <h2>Pó³ka na ksi¹¿ki</h2>
+                <div id="shelf"></div>
+            </div>
 
-            <input type="text" id="bookAuthor" placeholder="Autor ksi¹¿ki" oninput="showSuggestions('author')" required>
+            <!-- Sekcja Lista ¿yczeñ -->
+            <div class="section" id="wishlistSection">
+                <h2>Lista ¿yczeñ</h2>
+                <div id="wishlist"></div>
+            </div>
+        </div>
+
+        <!-- Formularz dodawania ksi¹¿ek -->
+        <div id="addBookForm">
+            <h2>Dodaj now? ksi??k?</h2>
+            <input type="text" id="bookTitle" placeholder="Tytu? ksi??ki" oninput="showSuggestions('title')" required>
+            <div id="titleSuggestions" class="suggestions"></div> <!-- Podpowiedzi dla tytu?u -->
+
+            <input type="text" id="bookAuthor" placeholder="Autor ksi??ki" oninput="showSuggestions('author')" required>
             <div id="authorSuggestions" class="suggestions"></div> <!-- Podpowiedzi dla autora -->
 
-            <button onclick="addBook()">Dodaj ksi¹¿kê</button>
+            <button onclick="addBook()">Dodaj ksi??k?</button>
+            <button onclick="addBookToWishlist()">Dodaj do listy</button>
         </div>
     </div>
 
