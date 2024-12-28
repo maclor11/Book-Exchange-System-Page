@@ -44,9 +44,8 @@ const UserBook = mongoose.model('UserBook', userBookSchema);
 // Schemat i model dla listy ¿yczeñ u¿ytkownika
 const userWishlistSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    title: { type: String, required: true },
-    author: { type: String, required: true },
-    addedDate: { type: Date, default: Date.now }, // Data dodania ksi¹¿ki do listy ¿yczeñ
+    bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book', required: true },
+    ownedDate: { type: Date, default: Date.now }, // Data dodania ksi¹¿ki
 });
 
 const UserWishlist = mongoose.model('UserWishlist', userWishlistSchema);
@@ -75,6 +74,37 @@ app.post('/api/user-books', async (req, res) => {
         }
 
         const userBook = new UserBook({ userId, bookId });
+        await userBook.save();
+
+        res.status(201).json({ message: 'Ksi¹¿ka zosta³a dodana do u¿ytkownika.' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'B³¹d serwera.' });
+    }
+});
+
+// Endpoint dodawania ksi¹¿ki do listy ¿yczeñ u¿ytkownika
+app.post('/api/user-wishlist', async (req, res) => {
+    const { userId, bookId } = req.body;
+
+    if (!userId || !bookId) {
+        return res.status(400).json({ message: 'Identyfikator u¿ytkownika i ksi¹¿ki s¹ wymagane.' });
+    }
+
+    try {
+        const userExists = await User.findById(userId);
+        const bookExists = await Book.findById(bookId);
+
+        if (!userExists || !bookExists) {
+            return res.status(404).json({ message: 'Nie znaleziono u¿ytkownika lub ksi¹¿ki.' });
+        }
+
+        const userBookExists = await UserWishlist.findOne({ userId, bookId });
+        if (userBookExists) {
+            return res.status(409).json({ message: 'Ksi¹¿ka jest ju¿ na pó³ce u¿ytkownika.' });
+        }
+
+        const userBook = new UserWishlist({ userId, bookId });
         await userBook.save();
 
         res.status(201).json({ message: 'Ksi¹¿ka zosta³a dodana do u¿ytkownika.' });
@@ -188,6 +218,21 @@ app.get('/api/users/:username', async (req, res) => {
 });
 
 
+
+// Endpoint pobierania ksi¹¿ek z listy ¿yczeñ u¿ytkownika
+app.get('/api/user-wishlist/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const userBooks = await UserWishlist.find({ userId }).populate('bookId');
+        res.status(200).json(userBooks);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'B³¹d serwera.' });
+    }
+});
+
+
 // Endpoint usuwania ksi¹¿ki z pó³ki u¿ytkownika
 app.delete('/api/user-books', async (req, res) => {
     const { userId, bookId } = req.body;
@@ -231,48 +276,7 @@ app.delete('/api/user-wishlist', async (req, res) => {
     }
 });
 
-// Endpoint dodawania ksi¹¿ki do listy ¿yczeñ u¿ytkownika
-app.post('/api/user-wishlist', async (req, res) => {
-    const { userId, title, author } = req.body;
 
-    if (!userId || !title || !author) {
-        return res.status(400).json({ message: 'Identyfikator u¿ytkownika, tytu³ i autor s¹ wymagane.' });
-    }
-
-    try {
-        const userExists = await User.findById(userId);
-        if (!userExists) {
-            return res.status(404).json({ message: 'Nie znaleziono u¿ytkownika.' });
-        }
-
-        // SprawdŸ, czy ksi¹¿ka ju¿ jest na liœcie ¿yczeñ
-        const existingWishlistItem = await UserWishlist.findOne({ userId, title, author });
-        if (existingWishlistItem) {
-            return res.status(409).json({ message: 'Ksi¹¿ka jest ju¿ na liœcie ¿yczeñ.' });
-        }
-
-        const wishlistItem = new UserWishlist({ userId, title, author });
-        await wishlistItem.save();
-
-        res.status(201).json({ message: 'Ksi¹¿ka zosta³a dodana do listy ¿yczeñ!' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'B³¹d serwera.' });
-    }
-});
-
-// Endpoint pobierania ksi¹¿ek z listy ¿yczeñ u¿ytkownika
-app.get('/api/user-wishlist/:userId', async (req, res) => {
-    const { userId } = req.params;
-
-    try {
-        const wishlistItems = await UserWishlist.find({ userId });
-        res.status(200).json(wishlistItems);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'B³¹d serwera.' });
-    }
-});
 
 
 
