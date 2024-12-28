@@ -175,28 +175,43 @@
                     background-color: #3e281d;
                 }
 
-        #currentDateTime {
-            font-size: 14px;
-            color: white;
-            margin-right: 20px;
-            font-family: 'Arial', sans-serif;
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Odstęp między logo a nazwą */
         }
 
+        .logo-image {
+            width: 40px; /* Rozmiar logo */
+            height: 40px;
+            border-radius: 50%; /* Opcjonalne: zaokrąglenie krawędzi */
+        }
 
+        .app-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            font-family: 'Arial', sans-serif;
+        }
     </style>
 </head>
 <body>
     <!-- Nawigacja -->
     <div class="navbar">
-        <input type="text" placeholder="Szukaj książek...">
-        <div id="currentDateTime"></div> <!-- Miejsce na datę i godzinę -->
+        <div class="logo">
+            <img src="Enchanted_Book.gif" alt="Logo" class="logo-image">
+            <span class="app-name">Bookswap</span>
+        </div>
+
+        <div id="currentDateTime"></div>
         <button onclick="logout()">Wyloguj</button>
     </div>
 
+
+
     <!-- Główna zawartość -->
     <div class="container">
-        <h1>Wymiana Książek</h1>
-        <p class="welcome-message">Witaj, <span id="username"></span>!</p>
+        <h1>Witaj, <span id="username"></span>!</p></h1>
         <div id="bookshelf">
             <h2>Moja półka na książki</h2>
             <div id="shelf"></div>

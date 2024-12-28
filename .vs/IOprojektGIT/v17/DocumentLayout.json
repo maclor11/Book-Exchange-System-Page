@@ -3,12 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\dashboard.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:dashboard.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\books.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:books.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\server.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:server.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\dashboard.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:dashboard.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\login.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:login.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -22,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -43,39 +51,66 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "books.js",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\books.js",
+              "RelativeDocumentMoniker": "books.js",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\books.js",
+              "RelativeToolTip": "books.js",
+              "ViewState": "AQIAALEAAAAAAAAAAAAAwMIAAAAVAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-12-27T18:12:11.747Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "server.js",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\server.js",
+              "RelativeDocumentMoniker": "server.js",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\server.js",
+              "RelativeToolTip": "server.js",
+              "ViewState": "AQIAAJoAAAAAAAAAAAAwwLEAAABLAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-12-27T18:03:03.883Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "login.js",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\login.js",
+              "RelativeDocumentMoniker": "login.js",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\login.js",
+              "RelativeToolTip": "login.js",
+              "ViewState": "AQIAABQAAAAAAAAAAAAIwCcAAABFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-12-27T18:47:36.808Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "dashboard.html",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\dashboard.html",
               "RelativeDocumentMoniker": "dashboard.html",
               "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\dashboard.html",
               "RelativeToolTip": "dashboard.html",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAIkAAAAnAAAA",
+              "ViewState": "AQIAALAAAAAAAAAAAAAQwNQAAAAOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
               "WhenOpened": "2024-12-18T12:39:10.603Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "index.html",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\index.html",
               "RelativeDocumentMoniker": "index.html",
               "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\index.html",
               "RelativeToolTip": "index.html",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABUAAAAYAAAA",
+              "ViewState": "AQIAACcAAAAAAAAAAAAAAEYAAAAdAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2024-12-17T18:30:22.814Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "server.js",
-              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\server.js",
-              "RelativeDocumentMoniker": "server.js",
-              "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\server.js",
-              "RelativeToolTip": "server.js",
-              "ViewState": "AQIAAEIAAAAAAAAAAAAAAD8AAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-12-17T18:16:45.874Z",
+              "WhenOpened": "2024-12-17T18:30:22.814Z",
               "EditorCaption": ""
             }
           ]
