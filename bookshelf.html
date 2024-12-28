@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wymiana Ksi¹¿ek</title>
+    <title>Wymiana KsiÄ…Å¼ek</title>
     <style>
-        /* Styl ogólny */
+        /* Styl ogÃ³lny */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #f3e6e8, #f9f9f4);
             margin: 0;
             padding: 0;
             display: flex;
@@ -19,9 +19,10 @@
         }
 
         h1 {
-            color: #f4f4f9;
+            color: linear-gradient(135deg, #f3e6e8, #f9f9f4);
             text-align: center;
-            font-size: 0;
+            font-size: 0px;
+            margin: 20px 0;
         }
 
         .navbar {
@@ -32,8 +33,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
+            position: fixed;
             top: 0;
+            z-index: 1000;
         }
 
             .navbar input[type="text"] {
@@ -61,6 +63,9 @@
             text-align: center;
             width: 90%;
             max-width: 1200px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .sections {
@@ -69,74 +74,163 @@
             align-items: flex-start;
             gap: 20px;
             margin-top: 20px;
+            flex-wrap: wrap;
         }
 
         .section {
             flex: 1;
-            padding: 10px;
-            background-color: #f7f3e9;
+            padding: 20px;
+            background: #fff;
             border: 2px solid #d4b483;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+
+            .section:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+            }
 
             .section h2 {
                 text-align: center;
-                font-family: Arial, sans-serif;
+                font-family: 'Roboto', Arial, sans-serif;
                 color: #5a3e2b;
                 margin-bottom: 15px;
+                font-size: 22px;
             }
 
         #shelf, #wishlist {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
+            justify-content: flex-start; /* Karty zaczynajÄ… od lewej */
+            gap: 20px; /* OdstÄ™py miÄ™dzy kartami */
+            padding: 40px; /* WewnÄ™trzny margines */
+            border: 1px solid #d4b483; /* Obramowanie sekcji */
+            border-radius: 12px; /* ZaokrÄ…glenie */
+            background-color: #fff; /* TÅ‚o sekcji */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtelny cieÅ„ */
+            max-height: 400px; /* Opcjonalne ograniczenie wysokoÅ›ci */
+            overflow-y: auto; /* Pionowy przewijany pasek w przypadku duÅ¼ej liczby kart */
+        }
+
+        .book-container {
+            perspective: 1000px;
         }
 
         .book {
-            width: 120px;
+            width: 100px;
             height: 160px;
-            background-color: #e0d7c3;
-            border: 1px solid #b8a489;
-            border-radius: 4px;
-            text-align: center;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            color: #3a2a1e;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
         }
 
-            .book:nth-child(odd) {
-                background-color: #d9b8a3;
+            .book:hover {
+                transform: rotateY(180deg);
             }
 
-            .book:nth-child(even) {
-                background-color: #c8a987;
+        .book-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            font-family: 'Roboto', Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        .book-front {
+            background: linear-gradient(135deg, #e8e4d9, #f5f3eb);
+            border: 1px solid #b0a890;
+        }
+
+        .book-back {
+            background: linear-gradient(135deg, #f5f3eb, #e8e4d9);
+            border: 1px solid #b0a890;
+            transform: rotateY(180deg);
+        }
+
+        .book-front strong {
+            font-size: 18px;
+            color: #3e281d;
+        }
+
+        .book-back {
+            font-size: 14px;
+            color: #3e281d;
+            text-align: center;
+        }
+
+        #addBookForm {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+            #addBookForm h2 {
+                color: #5a3e2b;
+                margin-bottom: 15px;
             }
 
-            .book button {
-                padding: 5px 10px;
+            #addBookForm input {
+                padding: 10px;
+                margin: 10px 0;
+                width: calc(100% - 20px);
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 14px;
+            }
+
+            #addBookForm button {
+                padding: 10px 20px;
+                margin: 10px;
                 border: none;
-                border-radius: 4px;
-                background-color: #5a3e2b;
-                color: #fff;
+                border-radius: 8px;
+                background-color: #4CAF50;
+                color: white;
+                font-size: 14px;
                 cursor: pointer;
-                font-size: 12px;
+                transition: background-color 0.2s ease;
             }
 
-                .book button:hover {
-                    background-color: #3e281d;
+                #addBookForm button:hover {
+                    background-color: #3e8e41;
+                }
+
+        .suggestions {
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 1000;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            .suggestions div {
+                padding: 10px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+            }
+
+                .suggestions div:hover {
+                    background-color: #f0f0f0;
                 }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px; /* Odstep miêdzy logo a nazwa */
+            gap: 10px; /* Odstep miÃªdzy logo a nazwa */
         }
 
         .logo-image {
@@ -151,24 +245,6 @@
             color: white;
             font-family: Arial, sans-serif;
         }
-
-        .suggestions {
-            position: relative;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            max-height: 150px;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-
-            .suggestions div {
-                padding: 5px;
-                cursor: pointer;
-            }
-
-                .suggestions div:hover {
-                    background-color: #f0f0f0;
-                }
     </style>
 </head>
 <body>
@@ -180,36 +256,36 @@
 
         <div id="currentDateTime"></div>
         <button onclick="logout()">Wyloguj</button>
-        <button onclick="dashboard()">Powrót</button>
+        <button onclick="dashboard()">PowrÃ³t</button>
     </div>
 
-    <!-- G³ówna zawartoœæ -->
+    <!-- GÅ‚Ã³wna zawartoÅ›Ä‡ -->
     <div class="container">
-        <h1>Witaj<span id="username"></span>!</p></h1>
+        <h1>Witaj<span id="username"></span>!</h1>
         <div class="sections">
-            <!-- Sekcja Pó³ki na ksi¹¿ki -->
+            <!-- Sekcja PÃ³Å‚ka na ksiÄ…Å¼ki -->
             <div class="section" id="bookshelf">
-                <h2>Pó³ka na ksi¹¿ki</h2>
+                <h2>PÃ³Å‚ka na ksiÄ…Å¼ki</h2>
                 <div id="shelf"></div>
             </div>
 
-            <!-- Sekcja Lista ¿yczeñ -->
+            <!-- Sekcja Lista Å»yczeÅ„ -->
             <div class="section" id="wishlistSection">
-                <h2>Lista ¿yczeñ</h2>
+                <h2>Lista Å¼yczeÅ„</h2>
                 <div id="wishlist"></div>
             </div>
         </div>
 
-        <!-- Formularz dodawania ksi¹¿ek -->
+        <!-- Formularz dodawania ksiÄ…Å¼ek -->
         <div id="addBookForm">
-            <h2>Dodaj now¹ ksi¹¿kê</h2>
-            <input type="text" id="bookTitle" placeholder="Tytu³ ksi¹¿ki" oninput="showSuggestions('title')" required>
-            <div id="titleSuggestions" class="suggestions"></div> <!-- Podpowiedzi dla tytu³u -->
+            <h2>Dodaj nowÄ… ksiÄ…Å¼kÄ™</h2>
+            <input type="text" id="bookTitle" placeholder="TytuÅ‚ ksiÄ…Å¼ki" oninput="showSuggestions('title')" required>
+            <div id="titleSuggestions" class="suggestions"></div> <!-- Podpowiedzi dla tytuÅ‚u -->
 
-            <input type="text" id="bookAuthor" placeholder="Autor ksi¹¿ki" oninput="showSuggestions('author')" required>
+            <input type="text" id="bookAuthor" placeholder="Autor ksiÄ…Å¼ki" oninput="showSuggestions('author')" required>
             <div id="authorSuggestions" class="suggestions"></div> <!-- Podpowiedzi dla autora -->
 
-            <button onclick="addBook()">Dodaj do pó³ki</button>
+            <button onclick="addBook()">Dodaj do pÃ³Å‚ki</button>
             <button onclick="addBookToWishlist()">Dodaj do listy</button>
         </div>
     </div>

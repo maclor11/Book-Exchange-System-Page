@@ -1,3 +1,6 @@
+
+
+
 // Pobranie nazwy u¿ytkownika z lokalnego przechowywania
 const username = localStorage.getItem('username');
 const userId = localStorage.getItem('userId');
@@ -15,7 +18,8 @@ async function addBook() {
     const author = document.getElementById('bookAuthor').value.trim();
 
     if (!title || !author) {
-        alert('Proszê wype³niæ oba pola!');
+        let mess = "Proszê wype³niæ oba pola";
+        alert(mess);
         return;
     }
 
@@ -129,14 +133,28 @@ async function displayShelf() {
 
         // Wy?wietl ksi??ki na pó?ce
         userBooks.forEach(({ bookId }) => {
+            const bookContainer = document.createElement('div');
+            bookContainer.classList.add('book-container');
+
             const bookDiv = document.createElement('div');
-            bookDiv.classList.add('book-on-shelf');
-            bookDiv.innerHTML = `
-                <div><strong>${bookId.title}</strong></div>
-                <div>${bookId.author}</div>
-                <button onclick="removeBookFromShelf('${bookId._id}')">Usu?</button>
+            bookDiv.classList.add('book');
+
+            const bookFront = document.createElement('div');
+            bookFront.classList.add('book-face', 'book-front');
+            bookFront.innerHTML = `<strong>${bookId.title}</strong>`;
+
+            const bookBack = document.createElement('div');
+            bookBack.classList.add('book-face', 'book-back');
+            bookBack.innerHTML = `
+                <p><strong>Autor:</strong> ${bookId.author}</p>
+                <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
+                <button onclick="removeBookFromShelf('${bookId._id}')">Usuñ</button>
             `;
-            shelf.appendChild(bookDiv);
+
+            bookDiv.appendChild(bookFront);
+            bookDiv.appendChild(bookBack);
+            bookContainer.appendChild(bookDiv);
+            shelf.appendChild(bookContainer);
         });
     } catch (error) {
         console.error('B³¹d podczas ³adowania pó³ki:', error);
@@ -262,17 +280,31 @@ async function displayWishlist() {
 
         // Wy?wietl ksi¹¿ki na liœcie
         userWishlist.forEach(({ bookId }) => {
+            const bookContainer = document.createElement('div');
+            bookContainer.classList.add('book-container');
+
             const bookDiv = document.createElement('div');
-            bookDiv.classList.add('book-on-wishlist');
-            bookDiv.innerHTML = `
-                <div><strong>${bookId.title}</strong></div>
-                <div>${bookId.author}</div>
-                <button onclick="removeBookFromWishlist('${bookId._id}')">Usu?</button>
+            bookDiv.classList.add('book');
+
+            const bookFront = document.createElement('div');
+            bookFront.classList.add('book-face', 'book-front');
+            bookFront.innerHTML = `<strong>${bookId.title}</strong>`;
+
+            const bookBack = document.createElement('div');
+            bookBack.classList.add('book-face', 'book-back');
+            bookBack.innerHTML = `
+                <p><strong>Autor:</strong> ${bookId.author}</p>
+                <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
+                <button onclick="removeBookFromWishlist('${bookId._id}')">Usuñ</button>
             `;
-            wishlist.appendChild(bookDiv);
+
+            bookDiv.appendChild(bookFront);
+            bookDiv.appendChild(bookBack);
+            bookContainer.appendChild(bookDiv);
+            wishlist.appendChild(bookContainer);
         });
     } catch (error) {
-        console.error('B??d podczas ?adowania pó?ki:', error);
+        console.error('B³¹d podczas ³adowania pó³ki:', error);
         alert('Wyst?pi? b??d podczas ?adowania pó?ki.');
     }
 }
