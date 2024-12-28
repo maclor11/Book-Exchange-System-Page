@@ -82,7 +82,7 @@
 
             .section h2 {
                 text-align: center;
-                font-family: 'Georgia', serif;
+                font-family: Arial, sans-serif;
                 color: #5a3e2b;
                 margin-bottom: 15px;
             }
@@ -101,7 +101,7 @@
             border: 1px solid #b8a489;
             border-radius: 4px;
             text-align: center;
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             font-size: 14px;
             color: #3a2a1e;
             padding: 10px;
@@ -136,20 +136,20 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px; /* Odst?p mi?dzy logo a nazw? */
+            gap: 10px; /* Odstep miêdzy logo a nazwa */
         }
 
         .logo-image {
             width: 40px; /* Rozmiar logo */
             height: 40px;
-            border-radius: 50%; /* Opcjonalne: zaokr?glenie kraw?dzi */
+            border-radius: 50%; /* Opcjonalne: zaokraglenie krawedzi */
         }
 
         .app-name {
             font-size: 20px;
             font-weight: bold;
             color: white;
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
         }
 
         .suggestions {
@@ -169,7 +169,6 @@
                 .suggestions div:hover {
                     background-color: #f0f0f0;
                 }
-
     </style>
 </head>
 <body>
@@ -181,7 +180,7 @@
 
         <div id="currentDateTime"></div>
         <button onclick="logout()">Wyloguj</button>
-        <button onclick="dashboard()">Powrot</button>
+        <button onclick="dashboard()">Powrót</button>
     </div>
 
     <!-- G³ówna zawartoœæ -->
@@ -203,14 +202,14 @@
 
         <!-- Formularz dodawania ksi¹¿ek -->
         <div id="addBookForm">
-            <h2>Dodaj now? ksi??k?</h2>
-            <input type="text" id="bookTitle" placeholder="Tytu? ksi??ki" oninput="showSuggestions('title')" required>
-            <div id="titleSuggestions" class="suggestions"></div> <!-- Podpowiedzi dla tytu?u -->
+            <h2>Dodaj now¹ ksi¹¿kê</h2>
+            <input type="text" id="bookTitle" placeholder="Tytu³ ksi¹¿ki" oninput="showSuggestions('title')" required>
+            <div id="titleSuggestions" class="suggestions"></div> <!-- Podpowiedzi dla tytu³u -->
 
-            <input type="text" id="bookAuthor" placeholder="Autor ksi??ki" oninput="showSuggestions('author')" required>
+            <input type="text" id="bookAuthor" placeholder="Autor ksi¹¿ki" oninput="showSuggestions('author')" required>
             <div id="authorSuggestions" class="suggestions"></div> <!-- Podpowiedzi dla autora -->
 
-            <button onclick="addBook()">Dodaj ksi??k?</button>
+            <button onclick="addBook()">Dodaj do pó³ki</button>
             <button onclick="addBookToWishlist()">Dodaj do listy</button>
         </div>
     </div>
