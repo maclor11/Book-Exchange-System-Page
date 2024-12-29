@@ -277,6 +277,16 @@ app.delete('/api/user-wishlist', async (req, res) => {
 });
 
 
+// Endpoint pobierania listy wszystkich u¿ytkowników
+app.get('/api/users', async (req, res) => {
+    try {
+        const users = await User.find(); // Pobierz wszystkich u¿ytkowników
+        res.status(200).json(users); // Zwróæ ich jako JSON
+    } catch (err) {
+        console.error('B³¹d pobierania u¿ytkowników:', err);
+        res.status(500).json({ message: 'B³¹d serwera podczas pobierania u¿ytkowników.' });
+    }
+});
 
 
 

@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wymiana Książek</title>
     <style>
-        /* Styl ogólny */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
@@ -35,31 +34,99 @@
             top: 0;
         }
 
-            .navbar input[type="text"] {
-                padding: 5px;
-                width: 300px;
-                border: none;
-                border-radius: 4px;
-            }
+        .navbar input[type="text"] {
+            padding: 5px;
+            width: 300px;
+            border: none;
+            border-radius: 4px;
+        }
 
-            .navbar button {
-                background-color: #333;
-                color: white;
-                border: none;
-                padding: 8px 15px;
-                border-radius: 5px;
-                cursor: pointer;
-            }
+        .navbar button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-                .navbar button:hover {
-                    background-color: #555;
-                }
+        .navbar button:hover {
+            background-color: #555;
+        }
 
 
         .welcome-message {
             font-size: 1.4em;
             margin: 10px 0 20px;
             color: #4CAF50;
+        }
+
+        #shelf {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start; /* Karty zaczynają od lewej */
+            gap: 20px; /* Odstępy między kartami */
+            padding: 40px; /* Wewnętrzny margines */
+            border: 1px solid #d4b483; /* Obramowanie sekcji */
+            border-radius: 12px; /* Zaokrąglenie */
+            background-color: #fff; /* Tło sekcji */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtelny cień */
+            max-height: 400px; /* Opcjonalne ograniczenie wysokości */
+            overflow-y: auto; /* Pionowy przewijany pasek w przypadku dużej liczby kart */
+        }
+
+        .book-container {
+            perspective: 1000px;
+        }
+
+        .book {
+            width: 100px;
+            height: 160px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .book:hover {
+            transform: rotateY(180deg);
+        }
+
+        .book-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            font-family: 'Roboto', Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        .book-front {
+            background: linear-gradient(135deg, #e8e4d9, #f5f3eb);
+            border: 1px solid #b0a890;
+        }
+
+        .book-back {
+            background: linear-gradient(135deg, #f5f3eb, #e8e4d9);
+            border: 1px solid #b0a890;
+            transform: rotateY(180deg);
+        }
+
+        .book-front strong {
+            font-size: 18px;
+            color: #3e281d;
+        }
+
+        .book-back {
+            font-size: 14px;
+            color: #3e281d;
+            text-align: center;
         }
 
 
@@ -96,7 +163,12 @@
         <button onclick="bookshelf()">Moja półka i lista życzeń</button>
     </div>
 
-
+    <div class="sections">
+        <div class="section" id="bookshelf">
+            <h2>Półka na książki</h2>
+            <div id="shelf"></div>
+        </div>
+    </div>
 
     <!-- Główna zawartość -->
     <div class="container">
