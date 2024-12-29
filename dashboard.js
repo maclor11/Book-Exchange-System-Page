@@ -34,6 +34,21 @@ async function getUsernameById(userId) {
 
 async function displayBooks() {
     try {
+        const loggedInUsername = localStorage.getItem('username');
+        if (!loggedInUsername) {
+            alert('Musisz byæ zalogowany, aby zobaczyæ pó³kê.');
+            return;
+        }
+
+        // Pobierz zalogowanego u¿ytkownika
+        const loggedInUserResponse = await fetch(`http://localhost:3000/api/users/${loggedInUsername}`);
+        if (!loggedInUserResponse.ok) {
+            alert('Nie mo¿na znaleŸæ zalogowanego u¿ytkownika.');
+            return;
+        }
+        const loggedInUserData = await loggedInUserResponse.json();
+        const loggedInUserId = loggedInUserData.userId;
+
         // Pobierz wszystkich u¿ytkowników
         const usersResponse = await fetch(`http://localhost:3000/api/users`);
         if (!usersResponse.ok) {
@@ -42,9 +57,9 @@ async function displayBooks() {
         }
 
         const users = await usersResponse.json();
-        const userIds = users.map(user => user._id);
+        const userIds = users.map(user => user._id).filter(userId => userId !== loggedInUserId);
 
-        // Pobierz ksi¹¿ki wszystkich u¿ytkowników
+        // Pobierz ksi¹¿ki wszystkich u¿ytkowników z wyj¹tkiem zalogowanego
         const booksPromises = userIds.map(userId =>
             fetch(`http://localhost:3000/api/user-books/${userId}`)
         );
@@ -91,6 +106,81 @@ async function displayBooks() {
     }
 }
 
+async function displaySuggestions() {
+    try {
+        const username = localStorage.getItem('username');
+        if (!username) {
+            alert('Musisz byæ zalogowany, aby zobaczyæ sugestie.');
+            return;
+        }
+
+        // Pobierz userId na podstawie username
+        const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
+        if (!userResponse.ok) {
+            alert('Nie mo¿na znaleŸæ u¿ytkownika.');
+            return;
+        }
+
+        const userData = await userResponse.json();
+        const userId = userData.userId;
+
+        // Pobierz listê ¿yczeñ zalogowanego u¿ytkownika
+        const wishlistResponse = await fetch(`http://localhost:3000/api/user-wishlist/${userId}`);
+        if (!wishlistResponse.ok) {
+            alert('Nie mo¿na pobraæ listy ¿yczeñ.');
+            return;
+        }
+
+        const wishlist = await wishlistResponse.json();
+
+        // Pobierz wszystkie ksi¹¿ki z pó³ki
+        const booksResponse = await fetch(`http://localhost:3000/api/user-books`);
+        if (!booksResponse.ok) {
+            alert('Nie mo¿na pobraæ listy ksi¹¿ek.');
+            return;
+        }
+
+        const allBooks = await booksResponse.json();
+
+        // ZnajdŸ ksi¹¿ki, które mog¹ siê spodobaæ
+        const matchingBooks = allBooks.filter(({ bookId }) => {
+            return wishlist.some(wish =>
+                wish.bookId.title === bookId.title && wish.bookId.author === bookId.author
+            );
+        });
+
+        // Pobierz kontener sugestii
+        const suggestions = document.getElementById('suggestions');
+        suggestions.innerHTML = ''; // Wyczyœæ kontener sugestii
+
+        // Wyœwietl ksi¹¿ki w sekcji sugestii
+        matchingBooks.forEach(({ bookId, userId }) => {
+            const bookContainer = document.createElement('div');
+            bookContainer.classList.add('book-container');
+
+            const bookDiv = document.createElement('div');
+            bookDiv.classList.add('book');
+
+            const bookFront = document.createElement('div');
+            bookFront.classList.add('book-face', 'book-front');
+            bookFront.innerHTML = `<strong>${bookId.title}</strong><br><small>Autor: ${bookId.author}</small>`;
+
+            const bookBack = document.createElement('div');
+            bookBack.classList.add('book-face', 'book-back');
+            bookBack.innerHTML = `
+                <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
+            `;
+
+            bookDiv.appendChild(bookFront);
+            bookDiv.appendChild(bookBack);
+            bookContainer.appendChild(bookDiv);
+            suggestions.appendChild(bookContainer);
+        });
+    } catch (error) {
+        console.error('B³¹d podczas ³adowania sugestii:', error);
+        alert('Wyst¹pi³ b³¹d podczas ³adowania sugestii.');
+    }
+}
 
 
 
@@ -103,6 +193,7 @@ setInterval(updateDateTime, 1000);
 
 window.onload = () => {
     displayBooks();
+    displaySuggestions();
     updateDateTime();
 };
 
