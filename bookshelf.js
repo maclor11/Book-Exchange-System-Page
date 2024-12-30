@@ -462,4 +462,36 @@ function capitalize(string) {
 // Wywo?anie fetchBooks przy za³adowaniu strony
 document.addEventListener('DOMContentLoaded', fetchBooks);
 
+function animateAddToShelf() {
+    createThrowAnimation('Dodano na pó³kê!');
+    addBook(); // Funkcja dodaj¹ca ksi¹¿kê do pó³ki
+}
+
+function animateAddToWishlist() {
+    createThrowAnimation('Dodano do listy!');
+    addBookToWishlist(); // Funkcja dodaj¹ca ksi¹¿kê do listy ¿yczeñ
+}
+
+function createThrowAnimation(text) {
+    // ZnajdŸ pozycjê przycisku
+    const button = event.target;
+    const rect = button.getBoundingClientRect();
+
+    // Stwórz animowany element
+    const book = document.createElement('div');
+    book.classList.add('book-throw');
+    book.innerText = text;
+    document.body.appendChild(book);
+
+    // Ustaw pozycjê animowanego elementu
+    book.style.left = `${rect.left + rect.width / 2}px`;
+    book.style.top = `${rect.top}px`;
+
+    // Usuñ element po zakoñczeniu animacji
+    book.addEventListener('animationend', () => {
+        book.remove();
+    });
+}
+
+
 

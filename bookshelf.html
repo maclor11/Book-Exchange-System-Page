@@ -245,6 +245,41 @@
             color: white;
             font-family: Arial, sans-serif;
         }
+
+        .book-throw {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            background: linear-gradient(135deg, #e8e4d9, #f5f3eb);
+            border: 1px solid #b0a890;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Roboto', Arial, sans-serif;
+            color: #3e281d;
+            font-size: 14px;
+            animation: throwBook 1s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes throwBook {
+            0% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.2) translate(-50px, -150px) rotate(-20deg);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(0.8) translate(-80px, -300px) rotate(-45deg);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -285,8 +320,8 @@
             <input type="text" id="bookAuthor" placeholder="Autor książki" oninput="showSuggestions('author')" required>
             <div id="authorSuggestions" class="suggestions"></div> <!-- Podpowiedzi dla autora -->
 
-            <button onclick="addBook()">Dodaj do półki</button>
-            <button onclick="addBookToWishlist()">Dodaj do listy</button>
+            <button onclick="animateAddToShelf()">Dodaj do półki</button>
+            <button onclick="animateAddToWishlist()">Dodaj do listy</button>
         </div>
     </div>
 
