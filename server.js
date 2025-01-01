@@ -200,6 +200,18 @@ app.get('/api/user-books/:userId', async (req, res) => {
     }
 });
 
+app.get('/api/user-books/:userBooksId', async (req, res) => {
+    const { userBooksId } = req.params;
+
+    try {
+        const userBooks = await UserBook.find({ userBookId }).populate('userId');
+        res.status(200).json(userBooks);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'B³¹d serwera.' });
+    }
+});
+
 // Endpoint pobierania wszystkich ksi¹¿ek u¿ytkowników
 app.get('/api/user-books', async (req, res) => {
     try {

@@ -1,0 +1,315 @@
+﻿<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wymiana Książek</title>
+    <style>
+        /* Styl ogólny */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #f3e6e8, #f9f9f4);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: linear-gradient(135deg, #f3e6e8, #f9f9f4);
+            text-align: center;
+            font-size: 0px;
+            margin: 20px 0;
+        }
+
+        .navbar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+
+            .navbar input[type="text"] {
+                padding: 5px;
+                width: 300px;
+                border: none;
+                border-radius: 4px;
+            }
+
+            .navbar button {
+                background-color: #333;
+                color: white;
+                border: none;
+                padding: 8px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+                .navbar button:hover {
+                    background-color: #555;
+                }
+
+        .container {
+            padding: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .sections {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .section {
+            flex: 1;
+            padding: 20px;
+            background: #fff;
+            border: 2px solid #d4b483;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .section:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+            }
+
+            .section h2 {
+                text-align: center;
+                font-family: 'Roboto', Arial, sans-serif;
+                color: #5a3e2b;
+                margin-bottom: 15px;
+                font-size: 22px;
+            }
+
+        #shelf1, #shelf2 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start; /* Karty zaczynają od lewej */
+            gap: 20px; /* Odstępy między kartami */
+            padding: 40px; /* Wewnętrzny margines */
+            border: 1px solid #d4b483; /* Obramowanie sekcji */
+            border-radius: 12px; /* Zaokrąglenie */
+            background-color: #fff; /* Tło sekcji */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtelny cień */
+            max-height: 400px; /* Opcjonalne ograniczenie wysokości */
+            overflow-y: auto; /* Pionowy przewijany pasek w przypadku dużej liczby kart */
+        }
+
+        .book-container {
+            perspective: 1000px;
+        }
+
+        .book {
+            width: 100px;
+            height: 160px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+            .book:hover {
+                transform: rotateY(180deg);
+            }
+
+        .book-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            font-family: 'Roboto', Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        .book-front {
+            background: linear-gradient(135deg, #e8e4d9, #f5f3eb);
+            border: 1px solid #b0a890;
+        }
+
+        .book-back {
+            background: linear-gradient(135deg, #f5f3eb, #e8e4d9);
+            border: 1px solid #b0a890;
+            transform: rotateY(180deg);
+        }
+
+        .book-front strong {
+            font-size: 18px;
+            color: #3e281d;
+        }
+
+        .book-back {
+            font-size: 14px;
+            color: #3e281d;
+            text-align: center;
+        }
+
+        #addBookForm {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+            #addBookForm h2 {
+                color: #5a3e2b;
+                margin-bottom: 15px;
+            }
+
+            #addBookForm input {
+                padding: 10px;
+                margin: 10px 0;
+                width: calc(100% - 20px);
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 14px;
+            }
+
+            #addBookForm button {
+                padding: 10px 20px;
+                margin: 10px;
+                border: none;
+                border-radius: 8px;
+                background-color: #4CAF50;
+                color: white;
+                font-size: 14px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+            }
+
+                #addBookForm button:hover {
+                    background-color: #3e8e41;
+                }
+
+        .suggestions {
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 1000;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            .suggestions div {
+                padding: 10px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+            }
+
+                .suggestions div:hover {
+                    background-color: #f0f0f0;
+                }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Odstep miêdzy logo a nazwa */
+        }
+
+        .logo-image {
+            width: 40px; /* Rozmiar logo */
+            height: 40px;
+            border-radius: 50%; /* Opcjonalne: zaokraglenie krawedzi */
+        }
+
+        .app-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .book-throw {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            background: linear-gradient(135deg, #e8e4d9, #f5f3eb);
+            border: 1px solid #b0a890;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Roboto', Arial, sans-serif;
+            color: #3e281d;
+            font-size: 14px;
+            animation: throwBook 1s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes throwBook {
+            0% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.2) translate(-50px, -150px) rotate(-20deg);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(0.8) translate(-80px, -300px) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="Enchanted_Book.gif" alt="Logo" class="logo-image">
+            <span class="app-name">Bookswap</span>
+        </div>
+
+        <div id="currentDateTime"></div>
+        <button onclick="goBack()">Powrót</button>
+    </div>
+
+    <!-- Główna zawartość -->
+    <div class="container">
+        <h1>Witaj<span id="username1"></span>!</h1>
+        <div class="sections">
+            <!-- Sekcja Półka na książki -->
+            <div class="section" id="bookshelf">
+                <h2>Moja półka</h2>
+                <div id="shelf1"></div>
+            </div>
+
+            <!-- Sekcja Lista Życzeń -->
+            <div class="section" id="wishlistSection">
+                <h2>Półka użytkownika: <span id="username2"></span></h2>
+                <div id="shelf2"></div>
+            </div>
+        </div>
+
+    <script src="trade.js"></script>
+</body>
+</html>

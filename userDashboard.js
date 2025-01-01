@@ -93,6 +93,7 @@ async function displayBooks() {
             bookBack.innerHTML = `
                 <p><strong>Autor:</strong> ${bookId.author}</p>
                 <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
+                <button onclick="trade('${bookId._id}', '${userId}')">Wymiana</button>
             `;
 
             bookDiv.appendChild(bookFront);
@@ -210,4 +211,9 @@ function bookshelf() {
 
 function dashboard() {
     window.location.href = 'userDashboard.html';
+}
+
+function trade(bookId, userId) {
+    localStorage.setItem('userId2', userId);
+    window.location.href = 'trade.html';
 }
