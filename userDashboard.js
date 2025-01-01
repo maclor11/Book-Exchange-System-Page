@@ -215,5 +215,6 @@ function dashboard() {
 
 function trade(bookId, userId) {
     localStorage.setItem('userId2', userId);
+    localStorage.setItem('chosenBook', bookId);
     window.location.href = 'trade.html';
 }

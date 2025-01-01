@@ -2,7 +2,7 @@
 const username = localStorage.getItem('username');
 const userId = localStorage.getItem('userId');
 const userId2 = localStorage.getItem('userId2');
-
+const chosenBook = localStorage.getItem('chosenBook');
 function goBack() {
 	window.location.href = 'userDashboard.html';
 }
@@ -115,6 +115,14 @@ async function displayTradeBooks() {
                 <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
                 <button class="select-button">Wybierz</button>
             `;
+
+            if (bookId._id === chosenBook) {
+                bookBack.style.background = 'linear-gradient(135deg, #a8d5a2, #8fc98e)'; // Zielony gradient
+                bookBack.style.border = '1px solid #6d986e';
+                bookFront.style.background = 'linear-gradient(135deg, #a8d5a2, #8fc98e)'; // Zielony gradient
+                bookFront.style.border = '1px solid #6d986e';
+                bookBack.querySelector('.select-button').textContent = 'Usuñ';
+            }
 
             bookBack.querySelector('.select-button').addEventListener('click', (event) => {
                 const button = event.target;
