@@ -383,10 +383,6 @@ function updateDateTime() {
 }
 
 
-
-
-
-
 // Aktualizacja co sekundê
 setInterval(updateDateTime, 1000);
 
@@ -401,7 +397,7 @@ window.onload = () => {
 // Funkcja wylogowania 
 function logout() {
     localStorage.removeItem('username');
-    window.location.href = 'index.html';
+    window.location.href = 'questDashboard.html';
 }
 
 function bookshelf() {
@@ -409,7 +405,7 @@ function bookshelf() {
 }
 
 function dashboard() {
-    window.location.href = 'dashboard.html';
+    window.location.href = 'userDashboard.html';
 }
 
 let allBooks = []; // Bufor na ksi¹¿ki pobrane z serwera

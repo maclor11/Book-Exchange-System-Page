@@ -48,7 +48,7 @@ loginForm.addEventListener('submit', async (e) => {
         if (response.ok) {
             alert(result.message); // Komunikat sukcesu
             localStorage.setItem('username', username); // Zapisanie nazwy u¿ytkownika
-            window.location.href = 'dashboard.html';    // Przekierowanie na dashboard
+            window.location.href = 'userDashboard.html';    // Przekierowanie na dashboard
         } else {
             alert(result.message); // Komunikat b³êdu
         }

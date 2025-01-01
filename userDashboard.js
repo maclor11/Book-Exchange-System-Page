@@ -201,7 +201,7 @@ window.onload = () => {
 // Funkcja wylogowania (jeœli potrzebna w przysz³oœci)
 function logout() {
     localStorage.removeItem('username');
-    window.location.href = 'index.html';
+    window.location.href = 'questDashboard.html';
 }
 
 function bookshelf() {
@@ -209,5 +209,5 @@ function bookshelf() {
 }
 
 function dashboard() {
-    window.location.href = 'dashboard.html';
+    window.location.href = 'userDashboard.html';
 }
