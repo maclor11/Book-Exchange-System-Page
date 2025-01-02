@@ -4,6 +4,7 @@ const userId = localStorage.getItem('userId');
 const userId2 = localStorage.getItem('userId2');
 const chosenBook = localStorage.getItem('chosenBook');
 function goBack() {
+    localStorage.removeItem('userId2');
 	window.location.href = 'userDashboard.html';
 }
 
