@@ -51,6 +51,59 @@ const userWishlistSchema = new mongoose.Schema({
 const UserWishlist = mongoose.model('UserWishlist', userWishlistSchema);
 
 
+const tradeSchema = new mongoose.Schema({
+    senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    receiverId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    senderBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UserBook', required: true }],
+    receiverBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UserBook', required: true }],
+    tradeDate: { type: Date, default: Date.now },
+    status: { type: String, default: 'pending', enum: ['pending', 'accepted', 'declined'] }
+});
+
+const Trade = mongoose.model('Trade', tradeSchema);
+
+
+app.post('/api/trades', async (req, res) => {
+    const { senderId, receiverId, senderBooks, receiverBooks } = req.body;
+
+    if (!senderId || !receiverId || !senderBooks || !receiverBooks) {
+        return res.status(400).json({ message: 'All fields are required.' });
+    }
+
+    try {
+        const senderExists = await User.findById(senderId);
+        const receiverExists = await User.findById(receiverId);
+
+        if (!senderExists || !receiverExists) {
+            return res.status(404).json({ message: 'Sender or receiver not found.' });
+        }
+
+        const trade = new Trade({ senderId, receiverId, senderBooks, receiverBooks });
+        await trade.save();
+
+        res.status(201).json({ message: 'Trade request created.', trade });
+    } catch (error) {
+        console.error('Error creating trade:', error);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
+app.get('/api/trades/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const trades = await Trade.find({
+            $or: [{ senderId: userId }, { receiverId: userId }]
+        }).populate('senderBooks receiverBooks senderId receiverId');
+
+        res.status(200).json(trades);
+    } catch (error) {
+        console.error('Error fetching trades:', error);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
+
 
 // Endpoint dodawania ksi¹¿ki na pó³kê u¿ytkownika
 app.post('/api/user-books', async (req, res) => {

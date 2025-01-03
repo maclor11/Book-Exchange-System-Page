@@ -280,6 +280,22 @@
                 opacity: 0;
             }
         }
+
+        #sendTradeForm button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        #sendTradeForm button:hover {
+            background-color: #3e8e41;
+        }
     </style>
 </head>
 <body>
@@ -308,8 +324,10 @@
                 <h2>Półka użytkownika: <span id="username2"></span></h2>
                 <div id="shelf2"></div>
             </div>
-        </div>
 
+            
+        </div>
+        <button onclick="sendTradeOffer()">DUPNIJ SE WYMIANE BYCZKU</button>
     <script src="trade.js"></script>
 </body>
 </html>
