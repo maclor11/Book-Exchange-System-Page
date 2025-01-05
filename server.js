@@ -51,57 +51,53 @@ const userWishlistSchema = new mongoose.Schema({
 const UserWishlist = mongoose.model('UserWishlist', userWishlistSchema);
 
 
+// Schemat i model dla wymiany ksi¹¿ek miêdzy u¿ytkownikami (z wieloma ksi¹¿kami)
 const tradeSchema = new mongoose.Schema({
-    senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    receiverId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    senderBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UserBook', required: true }],
-    receiverBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UserBook', required: true }],
-    tradeDate: { type: Date, default: Date.now },
-    status: { type: String, default: 'pending', enum: ['pending', 'accepted', 'declined'] }
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    userId2: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    selectedBooks1: [{ type: mongoose.Schema.Types.ObjectId , ref: 'UserBook'}], // Ksi¹¿ki u¿ytkownika 1
+    selectedBooks2: [{ type: mongoose.Schema.Types.ObjectId ,  ref: 'UserBook'}], // Ksi¹¿ki u¿ytkownika 2
+    tradeDate: { type: Date, default: Date.now }, // Data wymiany
+    status: { type: String, enum: ['pending', 'completed', 'cancelled'], default: 'pending' }, // Status wymiany
 });
 
+// Model wymiany ksi¹¿ek
 const Trade = mongoose.model('Trade', tradeSchema);
 
 
+
 app.post('/api/trades', async (req, res) => {
-    const { senderId, receiverId, senderBooks, receiverBooks } = req.body;
-
-    if (!senderId || !receiverId || !senderBooks || !receiverBooks) {
-        return res.status(400).json({ message: 'All fields are required.' });
-    }
-
     try {
-        const senderExists = await User.findById(senderId);
-        const receiverExists = await User.findById(receiverId);
+        // SprawdŸ, czy dane zosta³y wys³ane
+        const { userId, userId2, selectedBooks1, selectedBooks2 } = req.body;
 
-        if (!senderExists || !receiverExists) {
-            return res.status(404).json({ message: 'Sender or receiver not found.' });
+        // Walidacja danych
+        if (!userId || !userId2) {
+            return res.status(400).json({ message: 'Invalid data sent.' });
         }
 
-        const trade = new Trade({ senderId, receiverId, senderBooks, receiverBooks });
+        // Logowanie danych do konsoli
+        console.log('Trade data:', req.body);
+
+        // Utworzenie nowej wymiany
+        const trade = new Trade({
+            userId,
+            userId2,
+            selectedBooks1,
+            selectedBooks2,
+        });
+
+        // Zapisz wymianê w bazie danych
         await trade.save();
 
+        // Zwróæ sukces
         res.status(201).json({ message: 'Trade request created.', trade });
     } catch (error) {
         console.error('Error creating trade:', error);
-        res.status(500).json({ message: 'Server error.' });
+        res.status(500).json({ message: 'Server error.', error: error.message });
     }
 });
 
-app.get('/api/trades/:userId', async (req, res) => {
-    const { userId } = req.params;
-
-    try {
-        const trades = await Trade.find({
-            $or: [{ senderId: userId }, { receiverId: userId }]
-        }).populate('senderBooks receiverBooks senderId receiverId');
-
-        res.status(200).json(trades);
-    } catch (error) {
-        console.error('Error fetching trades:', error);
-        res.status(500).json({ message: 'Server error.' });
-    }
-});
 
 
 
