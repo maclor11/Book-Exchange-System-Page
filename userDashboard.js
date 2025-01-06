@@ -225,6 +225,7 @@ async function displayNotification() {
         filteredTrades.forEach(trade => {
             const notification = document.createElement('li');
             const user1 = trade.userId.username || 'Nieznany u¿ytkownik';
+            const user2 = trade.userId._id;
             // Przygotowanie danych ksi¹¿ek
             const proposedBooks = trade.selectedBooks1.map(book => `${book.bookId.title} - ${book.bookId.author}`).join('<br>');
             const requestedBooks = trade.selectedBooks2.map(book => `${book.bookId.title} - ${book.bookId.author}`).join('<br>');
@@ -237,7 +238,7 @@ async function displayNotification() {
             <div class="notification-buttons">
             <button onclick="acceptTrade('${trade._id}')">Akceptuj</button>
             <button onclick="rejectTrade('${trade._id}')">Odrzuæ</button>
-            <button onclick="counterOffer('${trade._id}')">Kontroferta</button>
+            <button onclick="counterOffer('${trade._id}', '${user2}')">Kontroferta</button>
             </div>`;
 
             notificationList.appendChild(notification);
@@ -364,6 +365,16 @@ async function rejectTrade(tradeId) {
 }
 
 
-async function counterOffer() {
-
+async function counterOffer(tradeId, userId) {
+    alert(userId);
+    localStorage.setItem('userId2', userId);
+    // Wyœlij ¿¹danie usuniêcia u¿ytkownika (teraz przekazujemy userId w URL)
+    const response = await fetch(`http://localhost:3000/api/trades/byid/${tradeId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    
+    window.location.href = "kontroferta.html";
 }
