@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wymiana Książek</title>
     <style>
+        /* Styl ogólny */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #f3e6e8, #f9f9f4);
             margin: 0;
             padding: 0;
             display: flex;
@@ -18,8 +19,10 @@
         }
 
         h1 {
-            color: #333;
+            color: linear-gradient(135deg, #f3e6e8, #f9f9f4);
             text-align: center;
+            font-size: 0px;
+            margin: 20px 0;
         }
 
         .navbar {
@@ -30,7 +33,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
+            position: fixed;
             top: 0;
             z-index: 1000;
         }
@@ -55,12 +58,47 @@
                     background-color: #555;
                 }
 
-
-        .welcome-message {
-            font-size: 1.4em;
-            margin: 10px 0 20px;
-            color: #4CAF50;
+        .container {
+            padding: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
+
+        .sections {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .section {
+            flex: 1;
+            padding: 20px;
+            background: #fff;
+            border: 2px solid #d4b483;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .section:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+            }
+
+            .section h2 {
+                text-align: center;
+                font-family: 'Roboto', Arial, sans-serif;
+                color: #5a3e2b;
+                margin-bottom: 15px;
+                font-size: 22px;
+            }
 
         #shelf, #suggestions {
             display: flex;
@@ -130,25 +168,167 @@
             text-align: center;
         }
 
+        #addBookForm {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+            #addBookForm h2 {
+                color: #5a3e2b;
+                margin-bottom: 15px;
+            }
+
+            #addBookForm input {
+                padding: 10px;
+                margin: 10px 0;
+                width: calc(100% - 20px);
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 14px;
+            }
+
+            #addBookForm button {
+                padding: 10px 20px;
+                margin: 10px;
+                border: none;
+                border-radius: 8px;
+                background-color: #4CAF50;
+                color: white;
+                font-size: 14px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+            }
+
+                #addBookForm button:hover {
+                    background-color: #3e8e41;
+                }
+
+        .suggestions {
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 1000;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            .suggestions div {
+                padding: 10px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+            }
+
+                .suggestions div:hover {
+                    background-color: #f0f0f0;
+                }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px; /* Odstęp między logo a nazwą */
+            gap: 10px; /* Odstep miêdzy logo a nazwa */
         }
 
         .logo-image {
             width: 40px; /* Rozmiar logo */
             height: 40px;
-            border-radius: 50%; /* Opcjonalne: zaokrąglenie krawędzi */
+            border-radius: 50%; /* Opcjonalne: zaokraglenie krawedzi */
         }
 
         .app-name {
             font-size: 20px;
             font-weight: bold;
             color: white;
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
         }
+
+        /* Stylizacja powiadomień */
+        .notifications {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+            .notifications h2 {
+                font-size: 20px;
+                color: #5a3e2b;
+                margin-bottom: 15px;
+            }
+
+        #notificationList {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+            #notificationList li {
+                padding: 15px;
+                border-bottom: 1px solid #ddd;
+                font-size: 14px;
+                color: #3e281d;
+                transition: background-color 0.2s ease;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+                #notificationList li:hover {
+                    background-color: #f4f4f4;
+                }
+
+        .notification-details {
+            font-size: 14px;
+            color: #3e281d;
+        }
+
+        .notification-books {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #5a3e2b;
+        }
+
+        .notification-buttons {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+            .notification-buttons button {
+                padding: 8px 15px;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+            }
+
+                .notification-buttons button.accept {
+                    background-color: #4CAF50;
+                    color: white;
+                }
+
+                .notification-buttons button.reject {
+                    background-color: #f44336;
+                    color: white;
+                }
+
+                .notification-buttons button.counteroffer {
+                    background-color: #ffa500;
+                    color: white;
+                }
+
+                .notification-buttons button:hover {
+                    opacity: 0.8;
+                }
+
     </style>
 </head>
 <body>
@@ -164,21 +344,25 @@
         <button onclick="bookshelf()">Moja półka i lista życzeń</button>
     </div>
 
-    <div class="sections">
-        <div class="section" id="bookshelf">
-            <h2>WSZYSTKIE KSIĄŻKI</h2>
-            <div id="shelf"></div>
-        </div>
-
-        <div class="section" id="bookshelf">
-            <h2>Chciane</h2>
-            <div id="suggestions"></div>
-        </div>
-    </div>
-
-    <!-- Główna zawartość -->
     <div class="container">
-        <h1>Witaj, <span id="username"></span>!</p></h1>
+        <h1>Witaj <span id="username"></span>!</h1>
+        <div class="sections">
+            <!-- Sekcja Półka na książki -->
+            <div class="section" id="bookshelf">
+                <h2>Wszystkie książki</h2>
+                <div id="shelf"></div>
+            </div>
+
+            <!-- Sekcja Lista Życzeń -->
+            <div class="section" id="bookshelf">
+                <h2>To może ci się podobać!</h2>
+                <div id="suggestions"></div>
+            </div>
+        </div>
+        <div class="notifications" id="notifications">
+            <h2>Powiadomienia</h2>
+            <ul id="notificationList"></ul>
+        </div>
     </div>
 
     <script src="userDashboard.js"></script>

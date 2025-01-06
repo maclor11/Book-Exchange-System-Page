@@ -2,11 +2,6 @@
 const username = localStorage.getItem('username');
 const userId = localStorage.getItem('userId');
 
-if (!userId || userId === 'null') {
-    console.error('userId is missing or invalid.');
-    // Mo¿esz przekierowaæ u¿ytkownika lub poinformowaæ go o problemie
-}
-
 
 // Wyœwietlenie nazwy u¿ytkownika lub przekierowanie do logowania
 if (username) {
@@ -167,11 +162,12 @@ async function displaySuggestions() {
 
             const bookFront = document.createElement('div');
             bookFront.classList.add('book-face', 'book-front');
-            bookFront.innerHTML = `<strong>${bookId.title}</strong><br><small>Autor: ${bookId.author}</small>`;
+            bookFront.innerHTML = `<strong>${bookId.title}</strong><br><small>W³aœciciel: ${username}</small>`;
 
             const bookBack = document.createElement('div');
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
+                <p><strong>Autor:</strong> ${bookId.author}</p>
                 <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
                 <button onclick="trade('${bookId._id}', '${userId}')">Wymiana</button>
                 <button onclick="showUser('${userId, username}')">Wiêcej</button>
@@ -188,6 +184,78 @@ async function displaySuggestions() {
     }
 }
 
+async function displayNotification() {
+    try {
+
+        const username = localStorage.getItem('username'); // Pobierz nazwê u¿ytkownika z localStorage
+
+        if (!username) {
+            alert('Musisz byæ zalogowany, aby dodaæ ksi¹¿kê na pó³kê.');
+            return;
+        }
+
+        // Pobierz userId na podstawie username
+        const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
+        if (!userResponse.ok) {
+            alert('Nie mo¿na znaleŸæ u¿ytkownika.');
+            return;
+        }
+
+        const userData = await userResponse.json();
+        const userId = userData.userId;
+        if (!userId) {
+            alert('Musisz byæ zalogowany, aby wyœwietliæ powiadomienia.');
+            return;
+        }
+
+        const response = await fetch(`http://localhost:3000/api/trades/${userId}`);
+        if (!response.ok) {
+            throw new Error('Nie uda³o siê pobraæ powiadomieñ.');
+        }
+
+        const trades = await response.json();
+        const notificationList = document.getElementById('notificationList');
+        notificationList.innerHTML = ''; // Wyczyœæ powiadomienia
+
+        if (trades.length === 0) {
+            notificationList.innerHTML = '<li>Brak nowych powiadomieñ.</li>';
+            return;
+        }
+        console.log('Otrzymane dane wymiany:', trades);
+        trades.forEach(trade => {
+            const notification = document.createElement('li');
+            const user1 = trade.userId.username || 'Nieznany u¿ytkownik'; // Dodaj obs³ugê braku danych
+            const user2 = trade.userId2.username || 'Nieznany u¿ytkownik';
+
+            const proposedBooks = trade.selectedBooks1.map(book => `${book.bookId.title} by ${book.bookId.author}`).join(', ');
+            const requestedBooks = trade.selectedBooks2.map(book => `${book.bookId.title} by ${book.bookId.author}`).join(', ');
+
+
+            console.log('Proponowane ksi¹¿ki:', proposedBooks);
+            console.log('¯¹dane ksi¹¿ki:', requestedBooks);
+            notification.innerHTML = `
+                <p><strong>${user1}</strong> zaproponowa³ Ci wymianê ksi¹¿ek:</p>
+                <p><strong>Proponuje:</strong> ${proposedBooks}</p>
+                <p><strong>Chce:</strong> ${requestedBooks}</p>
+                <div class="notification-buttons">
+                    <button onclick="acceptTrade('${trade._id}')">Akceptuj</button>
+                    <button onclick="rejectTrade('${trade._id}')">Odrzuæ</button>
+                    <button onclick="counterOffer('${trade._id}')">Kontroferta</button>
+                </div>
+            `;
+
+            notificationList.appendChild(notification);
+        });
+        
+        
+
+    } catch (error) {
+        console.error('B³¹d podczas ³adowania powiadomieñ:', error);
+        alert('Wyst¹pi³ b³¹d podczas ³adowania powiadomieñ.');
+    }
+}
+
+
 
 
 
@@ -201,6 +269,7 @@ setInterval(updateDateTime, 1000);
 window.onload = () => {
     displayBooks();
     displaySuggestions();
+    displayNotification();
     updateDateTime();
 };
 

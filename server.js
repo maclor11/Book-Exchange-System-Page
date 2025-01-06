@@ -123,6 +123,49 @@ app.post('/api/trades', async (req, res) => {
 });
 
 
+app.get('/api/trades/:userId', async (req, res) => {
+    try {
+        const userId = req.params.userId;
+
+        const trades = await Trade.find({
+            $or: [{ userId }, { userId2: userId }]
+        })
+            .populate({
+                path: 'userId',
+                select: 'username'
+            })
+            .populate({
+                path: 'userId2',
+                select: 'username'
+            })
+            .populate({
+                path: 'selectedBooks1',
+                populate: {
+                    path: 'bookId',
+                    model: 'Book',
+                    select: 'title author'
+                }
+            })
+            .populate({
+                path: 'selectedBooks2',
+                populate: {
+                    path: 'bookId',
+                    model: 'Book',
+                    select: 'title author'
+                }
+            });
+
+        if (!trades.length) {
+            return res.status(404).json({ message: "Brak wymian dla tego u¿ytkownika." });
+        }
+
+        res.status(200).json(trades);
+    } catch (error) {
+        console.error("B³¹d podczas pobierania wymian dla u¿ytkownika:", error);
+        res.status(500).json({ message: "B³¹d serwera" });
+    }
+});
+
 
 
 // Endpoint dodawania ksi¹¿ki na pó³kê u¿ytkownika
@@ -382,6 +425,25 @@ app.get('/api/users', async (req, res) => {
     } catch (err) {
         console.error('B³¹d pobierania u¿ytkowników:', err);
         res.status(500).json({ message: 'B³¹d serwera podczas pobierania u¿ytkowników.' });
+    }
+});
+
+// Endpoint GET, który zwraca username u¿ytkownika po _id
+app.get('/api/users/:userId', async (req, res) => {
+    try {
+        // Pobranie u¿ytkownika z bazy na podstawie _id
+        const user = await User.findById(userId);
+
+        // Jeœli u¿ytkownik nie istnieje, zwróæ b³¹d 404
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Zwróæ tylko username
+        res.json({ username: user.username });
+    } catch (error) {
+        // Jeœli wyst¹pi³ b³¹d, zwróæ status 500
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
 

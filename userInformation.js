@@ -3,11 +3,6 @@ const username = localStorage.getItem('username');
 const userId = localStorage.getItem('userId');
 const userId2 = localStorage.getItem('userId2');
 
-
-
-
-
-
 // Wy?wietlenie nazwy u¿ytkownika lub przekierowanie do logowania
 if (username) {
     document.getElementById('username').innerText = username;
@@ -25,6 +20,23 @@ function updateDateTime() {
 }
 
 async function displayUsername2() {
+    const userId2= localStorage.getItem('userId2'); // Pobierz nazw? u?ytkownika z localStorage
+
+    if (!username) {
+        alert('Musisz byæ zalogowany, aby dodaæ ksi¹¿kê na listê ¿yczeñ.');
+        return;
+    }
+
+    // Pobierz userId na podstawie username
+    const userResponse = await fetch(`http://localhost:3000/api/users/${userId2}`);
+    if (!userResponse.ok) {
+        alert('Nie mo¿na znaleŸæ u¿ytkownika.');
+        return;
+    }
+
+    const userData = await userResponse.json();
+    localStorage.setItem('username2',userData.username);
+
 
 }
 
@@ -118,6 +130,7 @@ setInterval(updateDateTime, 1000);
 
 
 window.onload = () => {
+    displayUsername2();
     displayShelf();
     displayWishlist();
     updateDateTime();
