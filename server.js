@@ -106,7 +106,7 @@ const tradeSchema = new mongoose.Schema({
     selectedBooks1: [{ type: mongoose.Schema.Types.ObjectId , ref: 'UserBook'}], // Ksi¹¿ki u¿ytkownika 1
     selectedBooks2: [{ type: mongoose.Schema.Types.ObjectId ,  ref: 'UserBook'}], // Ksi¹¿ki u¿ytkownika 2
     tradeDate: { type: Date, default: Date.now }, // Data wymiany
-    status: { type: String, enum: ['pending', 'completed', 'cancelled'], default: 'pending' }, // Status wymiany
+    status: { type: String, enum: ['pending', 'completed'], default: 'pending' }, // Status wymiany
 });
 
 // Model wymiany ksi¹¿ek
@@ -141,6 +141,35 @@ app.post('/api/trades', async (req, res) => {
         res.status(500).json({ message: 'Server error.', error: error.message });
     }
 });
+
+app.post('/api/trades/:tradeId/status', async (req, res) => {
+    const { tradeId } = req.params; // Pobierz ID wymiany z parametru œcie¿ki
+    const { status } = req.body;   // Pobierz nowy status z cia³a ¿¹dania
+
+    // SprawdŸ, czy nowy status jest dostarczony
+    if (!status || !['pending', 'completed', 'cancelled'].includes(status)) {
+        return res.status(400).json({ message: 'Nieprawid³owy status. Dozwolone wartoœci: pending, completed, cancelled.' });
+    }
+
+    try {
+        // Zaktualizuj status wymiany
+        const trade = await Trade.findByIdAndUpdate(
+            tradeId,
+            { status },
+            { new: true } // Zwróæ zaktualizowany dokument
+        );
+
+        if (!trade) {
+            return res.status(404).json({ message: 'Nie znaleziono wymiany o podanym ID.' });
+        }
+
+        res.status(200).json({ message: 'Status wymiany zosta³ zaktualizowany.', trade });
+    } catch (error) {
+        console.error('B³¹d podczas aktualizacji statusu wymiany:', error);
+        res.status(500).json({ message: 'B³¹d serwera.' });
+    }
+});
+
 
 app.get('/api/trades/by-id/:tradeId', async (req, res) => {
     try {
@@ -428,16 +457,15 @@ app.delete('/api/user-books', async (req, res) => {
     }
 });
 
-// Endpoint usuwania ksi¹¿ki z pó³ki u¿ytkownika
 app.delete('/api/user-books/by-id/:userbooksId', async (req, res) => {
-    const { userbooksId } = req.body;
+    const { userbooksId } = req.params; // Pobierz ID z parametru œcie¿ki
 
     if (!userbooksId) {
-        return res.status(400).json({ message: 'Identyfikator u¿ytkownika i ksi¹¿ki s¹ wymagane.' });
+        return res.status(400).json({ message: 'Identyfikator ksi¹¿ki u¿ytkownika jest wymagany.' });
     }
 
     try {
-        const result = await UserBook.findOneAndDelete({ userbooksId });
+        const result = await UserBook.findByIdAndDelete(userbooksId); // Usuñ rekord na podstawie jego _id
 
         if (!result) {
             return res.status(404).json({ message: 'Nie znaleziono powi¹zania u¿ytkownika z ksi¹¿k¹.' });
@@ -445,10 +473,11 @@ app.delete('/api/user-books/by-id/:userbooksId', async (req, res) => {
 
         res.status(200).json({ message: 'Ksi¹¿ka zosta³a usuniêta z pó³ki.' });
     } catch (err) {
-        console.error(err);
+        console.error('B³¹d podczas usuwania UserBook:', err);
         res.status(500).json({ message: 'B³¹d serwera.' });
     }
 });
+
 
 app.delete('/api/user-wishlist', async (req, res) => {
     const { userId, bookId } = req.body;

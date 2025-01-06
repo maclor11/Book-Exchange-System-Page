@@ -210,8 +210,9 @@ async function displayNotification() {
 
         const trades = await response.json();
 
-        // Filtrowanie wymian, gdzie userId2 odpowiada zalogowanemu u¿ytkownikowi
-        const filteredTrades = trades.filter(trade => trade.userId2._id === userId);
+        const filteredTrades = trades.filter(
+            trade => trade.userId2._id === userId && trade.status === 'pending'
+        );
 
         const notificationList = document.getElementById('notificationList');
         notificationList.innerHTML = ''; // Wyczyœæ listê powiadomieñ
@@ -286,7 +287,6 @@ function showUser(userId, username) {
 
 async function acceptTrade(tradeId) {
     try {
-        // ZnajdŸ wymianê po jej ID
         const response = await fetch(`http://localhost:3000/api/trades/by-id/${tradeId}`);
         if (!response.ok) {
             throw new Error('Nie uda³o siê pobraæ powiadomieñ.');
@@ -297,6 +297,8 @@ async function acceptTrade(tradeId) {
         const userId2 = trades.userId2;
         const selectedBooks1 = trades.selectedBooks1; // Ksi¹¿ki u¿ytkownika userId
         const selectedBooks2 = trades.selectedBooks2; // Ksi¹¿ki u¿ytkownika userId2
+
+
         // Usuñ ksi¹¿ki dla userId z selectedBooks1
         for (const bookId of selectedBooks1) {
             const response = await fetch(`http://localhost:3000/api/user-books/by-id/${bookId}`, {
@@ -316,9 +318,17 @@ async function acceptTrade(tradeId) {
                 },
             });
         }
+
+
+        const response1 = await fetch(`http://localhost:3000/api/trades/${tradeId}/status`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: "completed" })
+        });
+
         console.log('Wymiana zakoñczona sukcesem');
         return { message: 'Wymiana zaakceptowana i zakoñczona', trade };
-
+        displayNotification();
     } catch (error) {
         console.error('B³¹d przy akceptowaniu wymiany:', error);
         return { message: 'B³¹d serwera', error: error.message };
@@ -342,10 +352,10 @@ async function rejectTrade(tradeId) {
         console.log('Wymiana zosta³a odrzucona');
         return { message: 'Wymiana odrzucona i usuniêta' };
         if (response.ok) {
-            alert(`U¿ytkownik ${username} zosta³ usuniêty!`);
-            displayUsers(); // Odœwie¿ pó³kê (lub inne dane)
+            alert(`Wymiana zosta³a odrzucona!`);
+            displayNotification(); // Odœwie¿ pó³kê (lub inne dane)
         } else {
-            alert('B³¹d podczas usuwania u¿ytkownika.');
+            alert('B³¹d odrzucania wymiany .');
         }
     } catch (error) {
         console.error('B³¹d przy odrzucaniu wymiany:', error);
