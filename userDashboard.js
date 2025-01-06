@@ -170,7 +170,7 @@ async function displaySuggestions() {
                 <p><strong>Autor:</strong> ${bookId.author}</p>
                 <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
                 <button onclick="trade('${bookId._id}', '${userId}')">Wymiana</button>
-                <button onclick="showUser('${userId, username}')">Wiêcej</button>
+                <button onclick="showUser('${userId}')">Wiêcej</button>
             `;
 
             bookDiv.appendChild(bookFront);
@@ -220,29 +220,24 @@ async function displayNotification() {
             notificationList.innerHTML = '<li>Brak nowych powiadomieñ.</li>';
             return;
         }
-
-        
-
         // Renderowanie powiadomieñ
         filteredTrades.forEach(trade => {
             const notification = document.createElement('li');
             const user1 = trade.userId.username || 'Nieznany u¿ytkownik';
-
             // Przygotowanie danych ksi¹¿ek
             const proposedBooks = trade.selectedBooks1.map(book => `${book.bookId.title} - ${book.bookId.author}`).join('<br>');
             const requestedBooks = trade.selectedBooks2.map(book => `${book.bookId.title} - ${book.bookId.author}`).join('<br>');
             console.log('ksiazki1:', proposedBooks);
             console.log('ksiazki2:', requestedBooks);
             notification.innerHTML = `
-        <p><strong>${user1}</strong> zaproponowa³ Ci wymianê ksi¹¿ek:</p>
-        <p><strong>Proponuje:</strong><br>${proposedBooks}</p>
-        <p><strong>Chce:</strong><br>${requestedBooks}</p>
-        <div class="notification-buttons">
+            <p><strong>${user1}</strong> zaproponowa³ Ci wymianê ksi¹¿ek:</p>
+            <p><strong>Proponuje:</strong><br>${proposedBooks}</p>
+            <p><strong>Chce:</strong><br>${requestedBooks}</p>
+            <div class="notification-buttons">
             <button onclick="acceptTrade('${trade._id}')">Akceptuj</button>
             <button onclick="rejectTrade('${trade._id}')">Odrzuæ</button>
             <button onclick="counterOffer('${trade._id}')">Kontroferta</button>
-        </div>
-    `;
+            </div>`;
 
             notificationList.appendChild(notification);
         });
@@ -254,18 +249,8 @@ async function displayNotification() {
     }
 }
 
-
-
-
-
-
-
-
-
 // Aktualizacja co sekundê
 setInterval(updateDateTime, 1000);
-
-
 
 window.onload = () => {
     displayBooks();
@@ -273,7 +258,6 @@ window.onload = () => {
     displayNotification();
     updateDateTime();
 };
-
 
 // Funkcja wylogowania (jeœli potrzebna w przysz³oœci)
 function logout() {
@@ -298,4 +282,16 @@ function trade(bookId, userId) {
 function showUser(userId, username) {
     localStorage.setItem('userId2', userId);
     window.location.href = 'userInformation.html';
+}
+
+function acceptTrade() {
+
+}
+
+function rejectTrade() {
+
+}
+
+function counterOffer() {
+
 }

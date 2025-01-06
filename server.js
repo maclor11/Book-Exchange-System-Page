@@ -167,10 +167,6 @@ app.get('/api/trades/:userId', async (req, res) => {
     }
 });
 
-
-
-
-
 // Endpoint dodawania ksi¹¿ki na pó³kê u¿ytkownika
 app.post('/api/user-books', async (req, res) => {
     const { userId, bookId } = req.body;
@@ -431,7 +427,7 @@ app.get('/api/users', async (req, res) => {
     }
 });
 
-// Endpoint GET, który zwraca username u¿ytkownika po _id
+/*// Endpoint GET, który zwraca username u¿ytkownika po _id
 app.get('/api/users/:userId', async (req, res) => {
     try {
         // Pobranie u¿ytkownika z bazy na podstawie _id
@@ -448,7 +444,7 @@ app.get('/api/users/:userId', async (req, res) => {
         // Jeœli wyst¹pi³ b³¹d, zwróæ status 500
         res.status(500).json({ message: 'Server error', error: error.message });
     }
-});
+});*/
 
 // Endpoint usuwania u¿ytkownika po ID
 app.delete('/api/users/:userId', async (req, res) => {
