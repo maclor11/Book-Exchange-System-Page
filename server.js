@@ -92,29 +92,25 @@ const Trade = mongoose.model('Trade', tradeSchema);
 
 app.post('/api/trades', async (req, res) => {
     try {
-        // SprawdŸ, czy dane zosta³y wys³ane
         const { userId, userId2, selectedBooks1, selectedBooks2 } = req.body;
 
-        // Walidacja danych
-        if (!userId || !userId2) {
-            return res.status(400).json({ message: 'Invalid data sent.' });
-        }
+        // ZnajdŸ dokumenty UserBook dla przekazanych bookId
+        const userBooks1 = await UserBook.find({ bookId: { $in: selectedBooks1 }, userId });
+        const userBooks2 = await UserBook.find({ bookId: { $in: selectedBooks2 }, userId: userId2 });
 
-        // Logowanie danych do konsoli
-        console.log('Trade data:', req.body);
+        // Pobierz _id dokumentów UserBook
+        const userBookIds1 = userBooks1.map(ub => ub._id);
+        const userBookIds2 = userBooks2.map(ub => ub._id);
 
-        // Utworzenie nowej wymiany
         const trade = new Trade({
             userId,
             userId2,
-            selectedBooks1,
-            selectedBooks2,
+            selectedBooks1: userBookIds1,
+            selectedBooks2: userBookIds2,
         });
 
-        // Zapisz wymianê w bazie danych
         await trade.save();
 
-        // Zwróæ sukces
         res.status(201).json({ message: 'Trade request created.', trade });
     } catch (error) {
         console.error('Error creating trade:', error);
@@ -123,10 +119,17 @@ app.post('/api/trades', async (req, res) => {
 });
 
 
+
 app.get('/api/trades/:userId', async (req, res) => {
     try {
-        const userId = req.params.userId;
+        const { userId } = req.params;
 
+        // Pobierz dokumenty wymiany bez populowania
+        const tradesWithoutPopulate = await Trade.find({
+            $or: [{ userId }, { userId2: userId }]
+        });
+
+        // Pobierz wymiany z pe³nym populowaniem
         const trades = await Trade.find({
             $or: [{ userId }, { userId2: userId }]
         })
@@ -155,16 +158,16 @@ app.get('/api/trades/:userId', async (req, res) => {
                 }
             });
 
-        if (!trades.length) {
-            return res.status(404).json({ message: "Brak wymian dla tego u¿ytkownika." });
-        }
+        console.log("Wymiany po populate:", JSON.stringify(trades, null, 2));
 
         res.status(200).json(trades);
     } catch (error) {
-        console.error("B³¹d podczas pobierania wymian dla u¿ytkownika:", error);
+        console.error("B³¹d podczas pobierania wymian:", error);
         res.status(500).json({ message: "B³¹d serwera" });
     }
 });
+
+
 
 
 

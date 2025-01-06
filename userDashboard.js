@@ -221,32 +221,32 @@ async function displayNotification() {
             return;
         }
 
-        console.log('Otrzymane dane wymiany (przefiltrowane):', filteredTrades);
+        
 
         // Renderowanie powiadomieñ
         filteredTrades.forEach(trade => {
             const notification = document.createElement('li');
             const user1 = trade.userId.username || 'Nieznany u¿ytkownik';
 
-            const proposedBooks = trade.selectedBooks1.map(book => `${book.bookId.title} (${book.bookId.author})`).join(', ');
-            const requestedBooks = trade.selectedBooks2.map(book => `${book.bookId.title} (${book.bookId.author})`).join(', ');
-
-            console.log('Proponowane ksi¹¿ki:', proposedBooks);
-            console.log('¯¹dane ksi¹¿ki:', requestedBooks);
-
+            // Przygotowanie danych ksi¹¿ek
+            const proposedBooks = trade.selectedBooks1.map(book => `${book.bookId.title} - ${book.bookId.author}`).join('<br>');
+            const requestedBooks = trade.selectedBooks2.map(book => `${book.bookId.title} - ${book.bookId.author}`).join('<br>');
+            console.log('ksiazki1:', proposedBooks);
+            console.log('ksiazki2:', requestedBooks);
             notification.innerHTML = `
-                <p><strong>${user1}</strong> zaproponowa³ Ci wymianê ksi¹¿ek:</p>
-                <p><strong>Proponuje:</strong> ${proposedBooks}</p>
-                <p><strong>Chce:</strong> ${requestedBooks}</p>
-                <div class="notification-buttons">
-                    <button onclick="acceptTrade('${trade._id}')">Akceptuj</button>
-                    <button onclick="rejectTrade('${trade._id}')">Odrzuæ</button>
-                    <button onclick="counterOffer('${trade._id}')">Kontroferta</button>
-                </div>
-            `;
+        <p><strong>${user1}</strong> zaproponowa³ Ci wymianê ksi¹¿ek:</p>
+        <p><strong>Proponuje:</strong><br>${proposedBooks}</p>
+        <p><strong>Chce:</strong><br>${requestedBooks}</p>
+        <div class="notification-buttons">
+            <button onclick="acceptTrade('${trade._id}')">Akceptuj</button>
+            <button onclick="rejectTrade('${trade._id}')">Odrzuæ</button>
+            <button onclick="counterOffer('${trade._id}')">Kontroferta</button>
+        </div>
+    `;
 
             notificationList.appendChild(notification);
         });
+
 
     } catch (error) {
         console.error('B³¹d podczas ³adowania powiadomieñ:', error);
