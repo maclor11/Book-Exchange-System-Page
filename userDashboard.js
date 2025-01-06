@@ -186,11 +186,9 @@ async function displaySuggestions() {
 
 async function displayNotification() {
     try {
-
-        const username = localStorage.getItem('username'); // Pobierz nazwê u¿ytkownika z localStorage
-
+        const username = localStorage.getItem('username');
         if (!username) {
-            alert('Musisz byæ zalogowany, aby dodaæ ksi¹¿kê na pó³kê.');
+            alert('Musisz byæ zalogowany, aby wyœwietliæ powiadomienia.');
             return;
         }
 
@@ -203,36 +201,39 @@ async function displayNotification() {
 
         const userData = await userResponse.json();
         const userId = userData.userId;
-        if (!userId) {
-            alert('Musisz byæ zalogowany, aby wyœwietliæ powiadomienia.');
-            return;
-        }
 
+        // Pobierz wymiany
         const response = await fetch(`http://localhost:3000/api/trades/${userId}`);
         if (!response.ok) {
             throw new Error('Nie uda³o siê pobraæ powiadomieñ.');
         }
 
         const trades = await response.json();
-        const notificationList = document.getElementById('notificationList');
-        notificationList.innerHTML = ''; // Wyczyœæ powiadomienia
 
-        if (trades.length === 0) {
+        // Filtrowanie wymian, gdzie userId2 odpowiada zalogowanemu u¿ytkownikowi
+        const filteredTrades = trades.filter(trade => trade.userId2._id === userId);
+
+        const notificationList = document.getElementById('notificationList');
+        notificationList.innerHTML = ''; // Wyczyœæ listê powiadomieñ
+
+        if (filteredTrades.length === 0) {
             notificationList.innerHTML = '<li>Brak nowych powiadomieñ.</li>';
             return;
         }
-        console.log('Otrzymane dane wymiany:', trades);
-        trades.forEach(trade => {
+
+        console.log('Otrzymane dane wymiany (przefiltrowane):', filteredTrades);
+
+        // Renderowanie powiadomieñ
+        filteredTrades.forEach(trade => {
             const notification = document.createElement('li');
-            const user1 = trade.userId.username || 'Nieznany u¿ytkownik'; // Dodaj obs³ugê braku danych
-            const user2 = trade.userId2.username || 'Nieznany u¿ytkownik';
+            const user1 = trade.userId.username || 'Nieznany u¿ytkownik';
 
-            const proposedBooks = trade.selectedBooks1.map(book => `${book.bookId.title} by ${book.bookId.author}`).join(', ');
-            const requestedBooks = trade.selectedBooks2.map(book => `${book.bookId.title} by ${book.bookId.author}`).join(', ');
-
+            const proposedBooks = trade.selectedBooks1.map(book => `${book.bookId.title} (${book.bookId.author})`).join(', ');
+            const requestedBooks = trade.selectedBooks2.map(book => `${book.bookId.title} (${book.bookId.author})`).join(', ');
 
             console.log('Proponowane ksi¹¿ki:', proposedBooks);
             console.log('¯¹dane ksi¹¿ki:', requestedBooks);
+
             notification.innerHTML = `
                 <p><strong>${user1}</strong> zaproponowa³ Ci wymianê ksi¹¿ek:</p>
                 <p><strong>Proponuje:</strong> ${proposedBooks}</p>
@@ -246,14 +247,14 @@ async function displayNotification() {
 
             notificationList.appendChild(notification);
         });
-        
-        
 
     } catch (error) {
         console.error('B³¹d podczas ³adowania powiadomieñ:', error);
         alert('Wyst¹pi³ b³¹d podczas ³adowania powiadomieñ.');
     }
 }
+
+
 
 
 
