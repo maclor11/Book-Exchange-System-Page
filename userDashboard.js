@@ -203,7 +203,7 @@ async function displayNotification() {
         const userId = userData.userId;
 
         // Pobierz wymiany
-        const response = await fetch(`http://localhost:3000/api/trades/${userId}`);
+        const response = await fetch(`http://localhost:3000/api/trades/by-user/${userId}`);
         if (!response.ok) {
             throw new Error('Nie uda³o siê pobraæ powiadomieñ.');
         }
@@ -241,7 +241,7 @@ async function displayNotification() {
 
             notificationList.appendChild(notification);
         });
-
+        console.log(trade._id);
 
     } catch (error) {
         console.error('B³¹d podczas ³adowania powiadomieñ:', error);
@@ -284,14 +284,76 @@ function showUser(userId, username) {
     window.location.href = 'userInformation.html';
 }
 
-function acceptTrade() {
+async function acceptTrade(tradeId) {
+    try {
+        // ZnajdŸ wymianê po jej ID
+        const response = await fetch(`http://localhost:3000/api/trades/by-id/${tradeId}`);
+        if (!response.ok) {
+            throw new Error('Nie uda³o siê pobraæ powiadomieñ.');
+        }
 
+        const trades = await response.json();
+        const userId = trades.userId;
+        const userId2 = trades.userId2;
+        const selectedBooks1 = trades.selectedBooks1; // Ksi¹¿ki u¿ytkownika userId
+        const selectedBooks2 = trades.selectedBooks2; // Ksi¹¿ki u¿ytkownika userId2
+        // Usuñ ksi¹¿ki dla userId z selectedBooks1
+        for (const bookId of selectedBooks1) {
+            const response = await fetch(`http://localhost:3000/api/user-books/by-id/${bookId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+        }
+
+        // Usuñ ksi¹¿ki dla userId2 z selectedBooks2
+        for (const bookId of selectedBooks2) {
+            const response = await fetch(`http://localhost:3000/api/user-books/by-id/${bookId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+        }
+        console.log('Wymiana zakoñczona sukcesem');
+        return { message: 'Wymiana zaakceptowana i zakoñczona', trade };
+
+    } catch (error) {
+        console.error('B³¹d przy akceptowaniu wymiany:', error);
+        return { message: 'B³¹d serwera', error: error.message };
+    }
 }
 
-function rejectTrade() {
 
+
+
+async function rejectTrade(tradeId) {
+    try {
+
+        // Wyœlij ¿¹danie usuniêcia u¿ytkownika (teraz przekazujemy userId w URL)
+        const response = await fetch(`http://localhost:3000/api/trades/byid/${tradeId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        console.log('Wymiana zosta³a odrzucona');
+        return { message: 'Wymiana odrzucona i usuniêta' };
+        if (response.ok) {
+            alert(`U¿ytkownik ${username} zosta³ usuniêty!`);
+            displayUsers(); // Odœwie¿ pó³kê (lub inne dane)
+        } else {
+            alert('B³¹d podczas usuwania u¿ytkownika.');
+        }
+    } catch (error) {
+        console.error('B³¹d przy odrzucaniu wymiany:', error);
+        return { message: 'B³¹d serwera', error: error.message };
+    }
 }
 
-function counterOffer() {
+
+async function counterOffer() {
 
 }

@@ -65,6 +65,30 @@ const userBookSchema = new mongoose.Schema({
 
 const UserBook = mongoose.model('UserBook', userBookSchema);
 
+userBookSchema.pre('findOneAndDelete', async function (next) {
+    try {
+        // Pobierz usuwany rekord UserBook
+        const userBook = await this.model.findOne(this.getQuery());
+        if (!userBook) return next();
+
+        const userBookId = userBook._id;
+
+        // Usuñ wymiany, w których usuwany UserBook jest u¿ywany
+        await Trade.deleteMany({
+            $or: [
+                { selectedBooks1: userBookId },
+                { selectedBooks2: userBookId },
+            ],
+        });
+
+        next();
+    } catch (error) {
+        console.error('B³¹d podczas usuwania powi¹zanych wymian:', error);
+        next(error);
+    }
+});
+
+
 // Schemat i model dla listy ¿yczeñ u¿ytkownika
 const userWishlistSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -118,18 +142,27 @@ app.post('/api/trades', async (req, res) => {
     }
 });
 
+app.get('/api/trades/by-id/:tradeId', async (req, res) => {
+    try {
+        const { tradeId } = req.params;
 
+        const trade = await Trade.findById(tradeId);
 
-app.get('/api/trades/:userId', async (req, res) => {
+        if (!trade) {
+            return res.status(404).json({ message: 'Wymiana nie znaleziona' });
+        }
+
+        res.status(200).json(trade);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'B³¹d serwera.' });
+    }
+});
+
+app.get('/api/trades/by-user/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
 
-        // Pobierz dokumenty wymiany bez populowania
-        const tradesWithoutPopulate = await Trade.find({
-            $or: [{ userId }, { userId2: userId }]
-        });
-
-        // Pobierz wymiany z pe³nym populowaniem
         const trades = await Trade.find({
             $or: [{ userId }, { userId2: userId }]
         })
@@ -158,14 +191,13 @@ app.get('/api/trades/:userId', async (req, res) => {
                 }
             });
 
-        console.log("Wymiany po populate:", JSON.stringify(trades, null, 2));
-
         res.status(200).json(trades);
     } catch (error) {
         console.error("B³¹d podczas pobierania wymian:", error);
         res.status(500).json({ message: "B³¹d serwera" });
     }
 });
+
 
 // Endpoint dodawania ksi¹¿ki na pó³kê u¿ytkownika
 app.post('/api/user-books', async (req, res) => {
@@ -387,6 +419,30 @@ app.delete('/api/user-books', async (req, res) => {
             return res.status(404).json({ message: 'Nie znaleziono powi¹zania u¿ytkownika z ksi¹¿k¹.' });
         }
 
+       await Trade.deleteMany({ $or: [{ userId }, { userId2: userId }] }); // Usuñ wymiany ksi¹¿ek, w których uczestniczy³ u¿ytkownik
+
+        res.status(200).json({ message: 'Ksi¹¿ka zosta³a usuniêta z pó³ki.' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'B³¹d serwera.' });
+    }
+});
+
+// Endpoint usuwania ksi¹¿ki z pó³ki u¿ytkownika
+app.delete('/api/user-books/by-id/:userbooksId', async (req, res) => {
+    const { userbooksId } = req.body;
+
+    if (!userbooksId) {
+        return res.status(400).json({ message: 'Identyfikator u¿ytkownika i ksi¹¿ki s¹ wymagane.' });
+    }
+
+    try {
+        const result = await UserBook.findOneAndDelete({ userbooksId });
+
+        if (!result) {
+            return res.status(404).json({ message: 'Nie znaleziono powi¹zania u¿ytkownika z ksi¹¿k¹.' });
+        }
+
         res.status(200).json({ message: 'Ksi¹¿ka zosta³a usuniêta z pó³ki.' });
     } catch (err) {
         console.error(err);
@@ -474,6 +530,26 @@ app.delete('/api/users/:userId', async (req, res) => {
     }
 });
 
+app.delete('/api/trades/byid/:tradeId', async (req, res) => {
+    try {
+        const { tradeId } = req.params;
+
+        // SprawdŸ, czy wymiana istnieje
+        const trade = await Trade.findById(tradeId);
+
+        if (!trade) {
+            return res.status(404).json({ message: 'Wymiana nie istnieje' });
+        }
+
+        // Usuñ wymianê z bazy danych
+        await Trade.findByIdAndDelete(tradeId);
+
+        res.status(200).json({ message: 'Wymiana zosta³a usuniêta' });
+    } catch (error) {
+        console.error('B³¹d przy usuwaniu wymiany:', error);
+        res.status(500).json({ message: 'B³¹d serwera', error: error.message });
+    }
+});
 
 
 
