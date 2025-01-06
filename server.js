@@ -23,6 +23,30 @@ const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
 });
+
+userSchema.pre('findOneAndDelete', async function (next) {
+    try {
+        const user = await this.model.findOne(this.getQuery()); // ZnajdŸ usuwanego u¿ytkownika
+        if (!user) return next();
+
+        const userId = user._id;
+
+        // Usuñ powi¹zane ksi¹¿ki u¿ytkownika
+        await UserBook.deleteMany({ userId });
+
+        // Usuñ powi¹zane ksi¹¿ki z listy ¿yczeñ
+        await UserWishlist.deleteMany({ userId });
+
+        // Usuñ wymiany, gdzie u¿ytkownik jest userId lub userId2
+        await Trade.deleteMany({ $or: [{ userId }, { userId2: userId }] });
+
+        next();
+    } catch (error) {
+        console.error('B³¹d podczas usuwania powi¹zanych dokumentów:', error);
+        next(error);
+    }
+});
+
 const User = mongoose.model('User', userSchema);
 
 // Schemat i model ksi¹¿ki
@@ -358,6 +382,34 @@ app.get('/api/users', async (req, res) => {
     } catch (err) {
         console.error('B³¹d pobierania u¿ytkowników:', err);
         res.status(500).json({ message: 'B³¹d serwera podczas pobierania u¿ytkowników.' });
+    }
+});
+
+// Endpoint usuwania u¿ytkownika po ID
+app.delete('/api/users/:userId', async (req, res) => {
+    const { userId } = req.params; // Pobieramy userId z parametru URL
+
+    if (!userId) {
+        return res.status(400).json({ message: 'Identyfikator u¿ytkownika jest wymagany.' });
+    }
+
+    try {
+        // Usuwanie u¿ytkownika na podstawie userId
+        const result = await User.findByIdAndDelete(userId);
+
+        if (!result) {
+            return res.status(404).json({ message: 'Nie znaleziono u¿ytkownika.' });
+        }
+
+        // Usuwanie powi¹zanych danych kaskadowo
+        await UserBook.deleteMany({ userId }); // Usuñ ksi¹¿ki powi¹zane z u¿ytkownikiem
+        await UserWishlist.deleteMany({ userId }); // Usuñ ksi¹¿ki z listy ¿yczeñ u¿ytkownika
+        await Trade.deleteMany({ $or: [{ userId }, { userId2: userId }] }); // Usuñ wymiany ksi¹¿ek, w których uczestniczy³ u¿ytkownik
+
+        res.status(200).json({ message: 'U¿ytkownik i powi¹zane dane zosta³y usuniête.' });
+    } catch (err) {
+        console.error('B³¹d podczas usuwania u¿ytkownika:', err);
+        res.status(500).json({ message: 'B³¹d serwera.' });
     }
 });
 

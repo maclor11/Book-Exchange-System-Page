@@ -215,7 +215,7 @@ async function sendTradeOffer() {
         const responseData = await response.json();
         console.log('Response from server:', responseData);
 
-
+        alert("12334");
         // Przekierowanie do strony z ofert¹ wymiany lub innego widoku
         window.location.href = 'userDashboard.html';
         localStorage.removeItem("userId2");

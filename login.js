@@ -48,11 +48,28 @@ loginForm.addEventListener('submit', async (e) => {
         if (response.ok) {
             alert(result.message); // Komunikat sukcesu
             localStorage.setItem('username', username); // Zapisanie nazwy u¿ytkownika
-            window.location.href = 'userDashboard.html';    // Przekierowanie na dashboard
+
+            const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
+            if (!userResponse.ok) {
+                alert('Nie mo¿na znaleŸæ u¿ytkownika.');
+                return;
+            }
+
+            const userData = await userResponse.json();
+            const userId = userData.userId;
+
+
+            // Sprawdzenie, czy userId to admin
+            if (userId === '677bbb93c3bf6ee5a20f9c86') {
+                window.location.href = 'adminDashboard.html'; // Przekierowanie na adminDashboard
+            } else {
+                window.location.href = 'userDashboard.html'; // Przekierowanie na userDashboard
+            }
         } else {
             alert(result.message); // Komunikat b³êdu
         }
     } catch (error) {
-        alert('Blad polaczenia z serwerem.');
+        alert('B³¹d po³¹czenia z serwerem.');
     }
 });
+

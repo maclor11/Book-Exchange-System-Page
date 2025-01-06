@@ -24,20 +24,6 @@ function updateDateTime() {
     document.getElementById('currentDateTime').textContent = `${date}, ${time}`;
 }
 
-async function getUsernameById(userId) {
-    try {
-        const response = await fetch(`http://localhost:3000/api/user/${userId}`);
-        if (!response.ok) {
-            throw new Error('Nie uda³o siê pobraæ nazwy u¿ytkownika.');
-        }
-        const data = await response.json();
-        return data.username;
-    } catch (error) {
-        console.error(error);
-        return null;
-    }
-}
-
 async function displayBooks() {
     try {
         const loggedInUsername = localStorage.getItem('username');
