@@ -86,6 +86,7 @@ async function displayBooks() {
                 <p><strong>Autor:</strong> ${bookId.author}</p>
                 <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
                 <button onclick="trade('${bookId._id}', '${userId}')">Wymiana</button>
+                <button onclick="showUser('${userId}')">Wiêcej</button>
             `;
 
             bookDiv.appendChild(bookFront);
@@ -173,6 +174,7 @@ async function displaySuggestions() {
             bookBack.innerHTML = `
                 <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
                 <button onclick="trade('${bookId._id}', '${userId}')">Wymiana</button>
+                <button onclick="showUser('${userId, username}')">Wiêcej</button>
             `;
 
             bookDiv.appendChild(bookFront);
@@ -221,4 +223,9 @@ function trade(bookId, userId) {
     localStorage.setItem('userId2', userId);
     localStorage.setItem('chosenBook', bookId);
     window.location.href = 'trade.html';
+}
+
+function showUser(userId, username) {
+    localStorage.setItem('userId2', userId);
+    window.location.href = 'userInformation.html';
 }

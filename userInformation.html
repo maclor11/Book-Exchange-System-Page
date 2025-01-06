@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
@@ -62,7 +62,7 @@
             color: #4CAF50;
         }
 
-        #shelf, #suggestions {
+        #shelf, #wishlist {
             display: flex;
             flex-wrap: wrap;
             justify-content: flex-start; /* Karty zaczynają od lewej */
@@ -149,6 +149,48 @@
             color: white;
             font-family: 'Arial', sans-serif;
         }
+
+        .sections {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .section {
+            flex: 1;
+            padding: 20px;
+            background: #fff;
+            border: 2px solid #d4b483;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .section:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+            }
+
+            .section h2 {
+                text-align: center;
+                font-family: 'Roboto', Arial, sans-serif;
+                color: #5a3e2b;
+                margin-bottom: 15px;
+                font-size: 22px;
+            }
+
+        .container {
+            padding: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -160,27 +202,28 @@
         </div>
 
         <div id="currentDateTime"></div>
-        <button onclick="logout()">Wyloguj</button>
-        <button onclick="bookshelf()">Moja półka i lista życzeń</button>
+        <button onclick="dashboard()">Powrót</button>
     </div>
 
-    <div class="sections">
-        <div class="section" id="bookshelf">
-            <h2>WSZYSTKIE KSIĄŻKI</h2>
-            <div id="shelf"></div>
-        </div>
-
-        <div class="section" id="bookshelf">
-            <h2>Chciane</h2>
-            <div id="suggestions"></div>
-        </div>
-    </div>
-
-    <!-- Główna zawartość -->
     <div class="container">
-        <h1>Witaj, <span id="username"></span>!</p></h1>
+        <h1>Profil użytkownika: <span id="username"></span>!</h1>
+        <div class="sections">
+            <!-- Sekcja Półka na książki -->
+            <div class="section" id="bookshelf">
+                <h2>Półka na książki</h2>
+                <div id="shelf"></div>
+            </div>
+
+            <!-- Sekcja Lista Życzeń -->
+            <div class="section" id="wishlistSection">
+                <h2>Lista życzeń</h2>
+                <div id="wishlist"></div>
+            </div>
+        </div>
     </div>
 
-    <script src="userDashboard.js"></script>
+
+
+    <script src="userInformation.js"></script>
 </body>
 </html>
