@@ -380,13 +380,13 @@ async function acceptTrade(tradeId) {
             alert('Wyst¹pi³ b³¹d przy usuwaniu ksi¹¿ek.');
             return;
         }
-
+        localStorage.setItem('tradeId', tradeId);
 
         // Usuñ film po zakoñczeniu odtwarzania (ok. 3 sekundy w zale¿noœci od d³ugoœci filmu)
         setTimeout(() => {}, 3000); // Zak³adaj¹c, ¿e film ma d³ugoœæ 3 sekundy
 
-        displayNotification();
-
+        //displayNotification();
+        window.location.href = "opinion.html";
     } catch (error) {
         console.error('B³¹d przy akceptowaniu wymiany:', error);
         alert('Wyst¹pi³ b³¹d przy akceptowaniu wymiany.');

@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wymiana Ksi¹¿ek</title>
+    <title>Wymiana KsiÄ…Å¼ek</title>
     <style>
-        /* Styl ogólny */
+        /* Styl ogÃ³lny */
         body {
             font-family: 'Roboto', Arial, sans-serif;
             background: linear-gradient(135deg, #f3e6e8, #f9f9f4);
@@ -19,9 +19,9 @@
         }
 
         h1 {
-            color: linear-gradient(135deg, #f3e6e8, #f9f9f4);
+            color: #5a3e2b;
             text-align: center;
-            font-size: 0px;
+            font-size: 36px;
             margin: 20px 0;
         }
 
@@ -66,6 +66,7 @@
             background: rgba(255, 255, 255, 0.8);
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 100px;
         }
 
         .sections {
@@ -77,89 +78,107 @@
             flex-wrap: wrap;
         }
 
-        .section {
-            flex: 1;
-            padding: 20px;
-            background: #fff;
-            border: 2px solid #d4b483;
-            border-radius: 15px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-            .section:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
-            }
-
-            .section h2 {
-                text-align: center;
-                font-family: 'Roboto', Arial, sans-serif;
-                color: #5a3e2b;
-                margin-bottom: 15px;
-                font-size: 22px;
-            }
-
-
-        #addBookForm {
-            margin-top: 30px;
-            padding: 20px;
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 500px;
+            margin: auto;
             background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
+            padding: 25px;
+            border-radius: 12px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
         }
 
-            #addBookForm h2 {
+            .form-container h2 {
                 color: #5a3e2b;
-                margin-bottom: 15px;
+                font-size: 28px;
+                margin-bottom: 20px;
+                text-align: center;
             }
 
-            #addBookForm input {
-                padding: 10px;
-                margin: 10px 0;
-                width: calc(100% - 20px);
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                font-size: 14px;
+        textarea,
+        select,
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+            button:hover {
+                background-color: #45a049;
             }
 
-            #addBookForm button {
-                padding: 10px 20px;
-                margin: 10px;
-                border: none;
-                border-radius: 8px;
-                background-color: #4CAF50;
-                color: white;
-                font-size: 14px;
-                cursor: pointer;
-                transition: background-color 0.2s ease;
+            button.cancel {
+                background-color: #f44336;
             }
 
-                #addBookForm button:hover {
-                    background-color: #3e8e41;
+                button.cancel:hover {
+                    background-color: #e53935;
                 }
 
+        /* Styl przyciskÃ³w */
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="navbar">
         <div class="logo">
-            <img src="Enchanted_Book.gif" alt="Logo" class="logo-image">
+            <img src="Enchanted_Book.gif" alt="Logo" class="logo-image" width="40" height="40">
             <span class="app-name">Bookswap</span>
         </div>
         <div id="currentDateTime"></div>
     </div>
 
-    <!-- G³ówna zawartoœæ -->
-    <div class="container">
-        <h1>Witaj<span id="username"></span>!</h1>
-        <div class="sections">
-        </div>
-        <div id="addBookForm">
-            <h2>Dodaj now¹ ksi¹¿kê</h2>
+    <!-- GÅ‚Ã³wna zawartoÅ›Ä‡ -->
+    <div id="addReviewForm" class="container">
+        <h1>Dodaj opiniÄ™</h1>
+        <div class="form-container">
+            <h2>Twoja opinia</h2>
 
-            <button onclick="animateAddToShelf()">Dodaj opiniê</button>
-            <button onclick="goBack()">Nie chcê dodawaæ opinii</button>
+            <!-- Opinie -->
+            <textarea id="bookReview" placeholder="Twoja opinia..." rows="6" required></textarea>
+
+            <!-- Combo box do wyboru liczby gwiazdek -->
+            <label for="bookRating">Ocena (1-5 gwiazdek):</label>
+            <select id="bookRating" required>
+                <option value="1">1 Gwiazdka</option>
+                <option value="2">2 Gwiazdki</option>
+                <option value="3">3 Gwiazdki</option>
+                <option value="4">4 Gwiazdki</option>
+                <option value="5">5 Gwiazdek</option>
+            </select>
+
+            <!-- Przycisk dodawania opinii -->
+            <div class="form-buttons">
+                <button onclick="addOpinion()">Dodaj opiniÄ™</button>
+                <button class="cancel" onclick="goBack()">Nie wystawiaj opinii</button>
+            </div>
         </div>
     </div>
 

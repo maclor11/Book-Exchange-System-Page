@@ -112,6 +112,55 @@ const tradeSchema = new mongoose.Schema({
 // Model wymiany ksi¹¿ek
 const Trade = mongoose.model('Trade', tradeSchema);
 
+const opinionSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    tradeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Trade', required: true },
+    message: { type: String, required: true },
+    stars: { type: 'number', required: true },
+});
+
+const Opinion = mongoose.model('Opinion', opinionSchema);
+
+app.post('/api/opinions', async (req, res) => {
+    try {
+        const { userId, tradeId, message, stars } = req.body;
+
+        // Sprawdzamy, czy wszystkie wymagane dane s¹ obecne
+        if (!userId || !tradeId || !message || !stars) {
+            return res.status(400).json({ message: 'Wszystkie pola musz¹ byæ wype³nione' });
+        }
+
+        // Tworzymy now¹ opiniê
+        const newOpinion = new Opinion({
+            userId,
+            tradeId,
+            message,
+            stars
+        });
+
+        // Zapisujemy opiniê w bazie danych
+        await newOpinion.save();
+        res.status(200).json({ message: 'Opinia zosta³a pomyœlnie dodana' });
+    } catch (error) {
+        console.error('B³¹d podczas dodawania opinii:', error);
+        res.status(500).json({ message: 'B³¹d serwera', error });
+    }
+});
+
+
+// Endpoint pobierania ksi¹¿ek z listy ¿yczeñ u¿ytkownika
+app.get('/api/opinions/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const opinions = await Opinion.find({ userId });
+        res.status(200).json(opinions);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'B³¹d serwera.' });
+    }
+});
+
 
 
 app.post('/api/trades', async (req, res) => {
