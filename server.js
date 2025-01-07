@@ -632,6 +632,7 @@ app.delete('/api/users/:userId', async (req, res) => {
         await UserBook.deleteMany({ userId }); // Usuñ ksi¹¿ki powi¹zane z u¿ytkownikiem
         await UserWishlist.deleteMany({ userId }); // Usuñ ksi¹¿ki z listy ¿yczeñ u¿ytkownika
         await Trade.deleteMany({ $or: [{ userId }, { userId2: userId }] }); // Usuñ wymiany ksi¹¿ek, w których uczestniczy³ u¿ytkownik
+        await Opinion.deleteMany({ userId }); // Usuñ ksi¹¿ki powi¹zane z u¿ytkownikiem
 
         res.status(200).json({ message: 'U¿ytkownik i powi¹zane dane zosta³y usuniête.' });
     } catch (err) {
