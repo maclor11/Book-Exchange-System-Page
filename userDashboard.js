@@ -389,24 +389,14 @@ async function acceptTrade(tradeId) {
 
     } catch (error) {
         console.error('B³¹d przy akceptowaniu wymiany:', error);
-        const explosion = document.getElementById('explosion');
-        if (explosion) {
-            document.body.removeChild(explosion);
-        }
         alert('Wyst¹pi³ b³¹d przy akceptowaniu wymiany.');
     }
 }
 
-
-
-
-
-
-
-
 async function rejectTrade(tradeId) {
     try {
-        // Wyœlij ¿¹danie usuniêcia u¿ytkownika (teraz przekazujemy userId w URL)
+
+        // Wyœlij ¿¹danie usuniêcia wymiany
         const response = await fetch(`http://localhost:3000/api/trades/byid/${tradeId}`, {
             method: 'DELETE',
             headers: {
@@ -414,22 +404,27 @@ async function rejectTrade(tradeId) {
             },
         });
 
-        console.log('Wymiana zosta³a odrzucona');
-        return { message: 'Wymiana odrzucona i usuniêta' };
-
+        // Po otrzymaniu odpowiedzi z serwera
         if (response.ok) {
-            alert(`Wymiana zosta³a odrzucona!`);
-            setTimeout(() => {}, 3000);
-            displayNotification();
+
+            // Usuñ animacjê wybuchu po 3 sekundach (zak³adaj¹c d³ugoœæ filmu)
+            setTimeout(() => {
+                displayNotification(); // Odœwie¿ powiadomienia
+            }, 3000);
         } else {
-            alert('B³¹d odrzucania wymiany .');
+            alert('B³¹d odrzucania wymiany.');
         }
-         // Odœwie¿ pó³kê (lub inne dane)
+
+        // Odœwie¿ dane na stronie
+        // Mo¿esz dodaæ np. prze³adowanie strony lub zaktualizowanie widoku
+        window.location.reload(); // Odœwie¿enie ca³ej strony (alternatywnie: dynamiczne aktualizowanie UI)
+
     } catch (error) {
         console.error('B³¹d przy odrzucaniu wymiany:', error);
         return { message: 'B³¹d serwera', error: error.message };
     }
 }
+
 
 
 async function counterOffer(tradeId, userId) {
