@@ -442,20 +442,39 @@ app.delete('/api/user-books', async (req, res) => {
     }
 
     try {
+        // ZnajdŸ UserBook na podstawie userId i bookId
+        const userBook = await UserBook.findOne({ userId, bookId });
+
+        if (!userBook) {
+            return res.status(404).json({ message: 'Nie znaleziono powi¹zania u¿ytkownika z ksi¹¿k¹.' });
+        }
+
+        const userbooksId = userBook._id;
+
+        // Usuñ rekord UserBook
         const result = await UserBook.findOneAndDelete({ userId, bookId });
 
         if (!result) {
             return res.status(404).json({ message: 'Nie znaleziono powi¹zania u¿ytkownika z ksi¹¿k¹.' });
         }
 
-       await Trade.deleteMany({ $or: [{ userId }, { userId2: userId }] }); // Usuñ wymiany ksi¹¿ek, w których uczestniczy³ u¿ytkownik
+        // Usuñ wymiany o statusie pending, gdzie usuniêta ksi¹¿ka znajduje siê w selectedBooks1 lub selectedBooks2
+        await Trade.deleteMany({
+            status: 'pending',
+            $or: [
+                { selectedBooks1: userbooksId },
+                { selectedBooks2: userbooksId }
+            ]
+        });
 
-        res.status(200).json({ message: 'Ksi¹¿ka zosta³a usuniêta z pó³ki.' });
+        res.status(200).json({ message: 'Ksi¹¿ka zosta³a usuniêta z pó³ki, a powi¹zane wymiany o statusie pending zosta³y usuniête.' });
     } catch (err) {
-        console.error(err);
+        console.error('B³¹d podczas usuwania UserBook lub wymian:', err);
         res.status(500).json({ message: 'B³¹d serwera.' });
     }
 });
+
+
 
 app.delete('/api/user-books/by-id/:userbooksId', async (req, res) => {
     const { userbooksId } = req.params; // Pobierz ID z parametru œcie¿ki
@@ -465,18 +484,31 @@ app.delete('/api/user-books/by-id/:userbooksId', async (req, res) => {
     }
 
     try {
-        const result = await UserBook.findByIdAndDelete(userbooksId); // Usuñ rekord na podstawie jego _id
+
+        // Usuñ rekord UserBook na podstawie jego _id
+        const result = await UserBook.findByIdAndDelete(userbooksId);
 
         if (!result) {
             return res.status(404).json({ message: 'Nie znaleziono powi¹zania u¿ytkownika z ksi¹¿k¹.' });
         }
 
-        res.status(200).json({ message: 'Ksi¹¿ka zosta³a usuniêta z pó³ki.' });
+        // Usuñ wymiany o statusie pending, gdzie usuniêta ksi¹¿ka znajduje siê w selectedBooks1 lub selectedBooks2
+        await Trade.deleteMany({
+            status: 'pending',
+            $or: [
+                { selectedBooks1: userbooksId },
+                { selectedBooks2: userbooksId }
+            ]
+        });
+
+        res.status(200).json({ message: 'Ksi¹¿ka zosta³a usuniêta z pó³ki, a powi¹zane wymiany o statusie pending zosta³y usuniête.' });
     } catch (err) {
-        console.error('B³¹d podczas usuwania UserBook:', err);
+        console.error('B³¹d podczas usuwania UserBook lub wymian:', err);
         res.status(500).json({ message: 'B³¹d serwera.' });
     }
 });
+
+
 
 
 app.delete('/api/user-wishlist', async (req, res) => {

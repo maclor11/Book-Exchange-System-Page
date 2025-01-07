@@ -203,6 +203,7 @@ async function removeUser(username) {
         if (response.ok) {
             alert(`U¿ytkownik ${username} zosta³ usuniêty!`);
             displayUsers(); // Odœwie¿ pó³kê (lub inne dane)
+            displayBooks();
         } else {
             alert('B³¹d podczas usuwania u¿ytkownika.');
         }

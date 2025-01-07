@@ -203,53 +203,99 @@ async function displayNotification() {
         const userId = userData.userId;
 
         // Pobierz wymiany
-        const response = await fetch(`http://localhost:3000/api/trades/by-user/${userId}`);
-        if (!response.ok) {
+        const tradeResponse = await fetch(`http://localhost:3000/api/trades/by-user/${userId}`);
+        if (!tradeResponse.ok) {
             throw new Error('Nie uda³o siê pobraæ powiadomieñ.');
         }
 
-        const trades = await response.json();
-
+        const trades = await tradeResponse.json();
         const filteredTrades = trades.filter(
             trade => trade.userId2._id === userId && trade.status === 'pending'
+        );
+
+        // Pobierz listê ¿yczeñ u¿ytkownika
+        const wishlistResponse = await fetch(`http://localhost:3000/api/user-wishlist/${userId}`);
+        if (!wishlistResponse.ok) {
+            alert('Nie mo¿na pobraæ listy ¿yczeñ.');
+            return;
+        }
+        const wishlist = await wishlistResponse.json();
+
+        // Pobierz wszystkich u¿ytkowników (bez zalogowanego)
+        const usersResponse = await fetch(`http://localhost:3000/api/users`);
+        if (!usersResponse.ok) {
+            alert('Nie mo¿na pobraæ listy u¿ytkowników.');
+            return;
+        }
+        const users = await usersResponse.json();
+        const userIds = users.map(user => user._id).filter(id => id !== userId);
+
+        // Pobierz ksi¹¿ki wszystkich u¿ytkowników z wyj¹tkiem zalogowanego
+        const booksPromises = userIds.map(id =>
+            fetch(`http://localhost:3000/api/user-books/${id}`)
+        );
+
+        const booksResponses = await Promise.all(booksPromises);
+        const allBooks = (await Promise.all(
+            booksResponses.map(response => response.json())
+        )).flat();
+
+        // Filtruj ksi¹¿ki zgodnie z list¹ ¿yczeñ
+        const matchingBooks = allBooks.filter(({ bookId }) =>
+            wishlist.some(wish => wish.bookId.title === bookId.title && wish.bookId.author === bookId.author)
         );
 
         const notificationList = document.getElementById('notificationList');
         notificationList.innerHTML = ''; // Wyczyœæ listê powiadomieñ
 
-        if (filteredTrades.length === 0) {
-            notificationList.innerHTML = '<li>Brak nowych powiadomieñ.</li>';
-            return;
+        // Powiadomienia o wymianach
+        if (filteredTrades.length > 0) {
+            filteredTrades.forEach(trade => {
+                const notification = document.createElement('li');
+                const user1 = trade.userId.username || 'Nieznany u¿ytkownik';
+                const user2 = trade.userId._id;
+
+                const proposedBooks = trade.selectedBooks1.map(book => `${book.bookId.title} - ${book.bookId.author}`).join('<br>');
+                const requestedBooks = trade.selectedBooks2.map(book => `${book.bookId.title} - ${book.bookId.author}`).join('<br>');
+
+                notification.innerHTML = `
+                <p><strong>${user1}</strong> zaproponowa³ Ci wymianê ksi¹¿ek:</p>
+                <p><strong>Proponuje:</strong><br>${proposedBooks}</p>
+                <p><strong>Chce:</strong><br>${requestedBooks}</p>
+                <div class="notification-buttons">
+                <button onclick="acceptTrade('${trade._id}')">Akceptuj</button>
+                <button onclick="rejectTrade('${trade._id}')">Odrzuæ</button>
+                <button onclick="counterOffer('${trade._id}', '${user2}')">Kontroferta</button>
+                </div>`;
+                notificationList.appendChild(notification);
+            });
         }
-        // Renderowanie powiadomieñ
-        filteredTrades.forEach(trade => {
-            const notification = document.createElement('li');
-            const user1 = trade.userId.username || 'Nieznany u¿ytkownik';
-            const user2 = trade.userId._id;
-            // Przygotowanie danych ksi¹¿ek
-            const proposedBooks = trade.selectedBooks1.map(book => `${book.bookId.title} - ${book.bookId.author}`).join('<br>');
-            const requestedBooks = trade.selectedBooks2.map(book => `${book.bookId.title} - ${book.bookId.author}`).join('<br>');
-            console.log('ksiazki1:', proposedBooks);
-            console.log('ksiazki2:', requestedBooks);
-            notification.innerHTML = `
-            <p><strong>${user1}</strong> zaproponowa³ Ci wymianê ksi¹¿ek:</p>
-            <p><strong>Proponuje:</strong><br>${proposedBooks}</p>
-            <p><strong>Chce:</strong><br>${requestedBooks}</p>
-            <div class="notification-buttons">
-            <button onclick="acceptTrade('${trade._id}')">Akceptuj</button>
-            <button onclick="rejectTrade('${trade._id}')">Odrzuæ</button>
-            <button onclick="counterOffer('${trade._id}', '${user2}')">Kontroferta</button>
-            </div>`;
 
-            notificationList.appendChild(notification);
-        });
-        console.log(trade._id);
+        // Powiadomienia o nowych ksi¹¿kach na pó³kach innych u¿ytkowników
+        if (matchingBooks.length > 0) {
+            matchingBooks.forEach(({ bookId, userId }) => {
+                const user = users.find(u => u._id === userId);
+                const username = user ? user.username : 'Nieznany u¿ytkownik';
 
+                const notification = document.createElement('li');
+                notification.innerHTML = `
+                <p><strong>${username}</strong> ma ksi¹¿kê z Twojej listy ¿yczeñ:</p>
+                <p><strong>${bookId.title}</strong> - ${bookId.author}</p>
+                `;
+                notificationList.appendChild(notification);
+            });
+        }
+
+        // Jeœli brak powiadomieñ
+        if (filteredTrades.length === 0 && matchingBooks.length === 0) {
+            notificationList.innerHTML = '<li>Brak nowych powiadomieñ.</li>';
+        }
     } catch (error) {
         console.error('B³¹d podczas ³adowania powiadomieñ:', error);
         alert('Wyst¹pi³ b³¹d podczas ³adowania powiadomieñ.');
     }
 }
+
 
 // Aktualizacja co sekundê
 setInterval(updateDateTime, 1000);
@@ -288,6 +334,40 @@ function showUser(userId, username) {
 
 async function acceptTrade(tradeId) {
     try {
+        // Dodanie animacji wybuchu
+        const explosion = document.createElement('div');
+        explosion.id = 'explosion';
+        explosion.style.position = 'fixed';
+        explosion.style.top = '50%';
+        explosion.style.left = '50%';
+        explosion.style.transform = 'translate(-50%, -50%)';
+        explosion.style.width = '100px';
+        explosion.style.height = '100px';
+        explosion.style.borderRadius = '50%';
+        explosion.style.background = 'radial-gradient(circle, #ffcc00, #ff6600)';
+        explosion.style.animation = 'explode 1s ease-out forwards'; // Animacja wybuchu
+        document.body.appendChild(explosion);
+
+        // Dodanie animacji CSS (wybuch)
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes explode {
+                0% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+                50% {
+                    transform: scale(1.5);
+                    opacity: 0.7;
+                }
+                100% {
+                    transform: scale(0);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
         const response = await fetch(`http://localhost:3000/api/trades/by-id/${tradeId}`);
         if (!response.ok) {
             throw new Error('Nie uda³o siê pobraæ powiadomieñ.');
@@ -296,30 +376,8 @@ async function acceptTrade(tradeId) {
         const trades = await response.json();
         const userId = trades.userId;
         const userId2 = trades.userId2;
-        const selectedBooks1 = trades.selectedBooks1; // Ksi¹¿ki u¿ytkownika userId
-        const selectedBooks2 = trades.selectedBooks2; // Ksi¹¿ki u¿ytkownika userId2
-
-
-        // Usuñ ksi¹¿ki dla userId z selectedBooks1
-        for (const bookId of selectedBooks1) {
-            const response = await fetch(`http://localhost:3000/api/user-books/by-id/${bookId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-        }
-
-        // Usuñ ksi¹¿ki dla userId2 z selectedBooks2
-        for (const bookId of selectedBooks2) {
-            const response = await fetch(`http://localhost:3000/api/user-books/by-id/${bookId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-        }
-
+        const selectedBooks1 = trades.selectedBooks1;
+        const selectedBooks2 = trades.selectedBooks2;
 
         const response1 = await fetch(`http://localhost:3000/api/trades/${tradeId}/status`, {
             method: 'POST',
@@ -327,14 +385,54 @@ async function acceptTrade(tradeId) {
             body: JSON.stringify({ status: "completed" })
         });
 
-        console.log('Wymiana zakoñczona sukcesem');
-        return { message: 'Wymiana zaakceptowana i zakoñczona', trade };
+        if (!response1.ok) {
+            throw new Error('Nie uda³o siê zaktualizowaæ statusu wymiany.');
+        }
+
+        const deleteBooks1 = selectedBooks1.map(async (bookId) => {
+            const response = await fetch(`http://localhost:3000/api/user-books/by-id/${bookId}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+            });
+            return response.ok;
+        });
+
+        const deleteBooks2 = selectedBooks2.map(async (bookId) => {
+            const response = await fetch(`http://localhost:3000/api/user-books/by-id/${bookId}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+            });
+            return response.ok;
+        });
+
+        const results = await Promise.all([...deleteBooks1, ...deleteBooks2]);
+
+        const allBooksDeleted = results.every(result => result);
+
+        if (!allBooksDeleted) {
+            alert('Wyst¹pi³ b³¹d przy usuwaniu ksi¹¿ek.');
+            return;
+        }
+
+        // Usuñ animacjê wybuchu po zakoñczeniu
+        setTimeout(() => {
+            document.body.removeChild(explosion);
+        }, 1000);
+
         displayNotification();
+
     } catch (error) {
         console.error('B³¹d przy akceptowaniu wymiany:', error);
-        return { message: 'B³¹d serwera', error: error.message };
+        const explosion = document.getElementById('explosion');
+        if (explosion) {
+            document.body.removeChild(explosion);
+        }
+        alert('Wyst¹pi³ b³¹d przy akceptowaniu wymiany.');
     }
 }
+
+
+
 
 
 
@@ -352,12 +450,15 @@ async function rejectTrade(tradeId) {
 
         console.log('Wymiana zosta³a odrzucona');
         return { message: 'Wymiana odrzucona i usuniêta' };
+
         if (response.ok) {
             alert(`Wymiana zosta³a odrzucona!`);
-            displayNotification(); // Odœwie¿ pó³kê (lub inne dane)
+
+            displayNotification();
         } else {
             alert('B³¹d odrzucania wymiany .');
         }
+         // Odœwie¿ pó³kê (lub inne dane)
     } catch (error) {
         console.error('B³¹d przy odrzucaniu wymiany:', error);
         return { message: 'B³¹d serwera', error: error.message };

@@ -191,6 +191,88 @@
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
+        .notifications {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+            .notifications h2 {
+                font-size: 20px;
+                color: #5a3e2b;
+                margin-bottom: 15px;
+            }
+
+        #notificationList {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+            #notificationList li {
+                padding: 15px;
+                border-bottom: 1px solid #ddd;
+                font-size: 14px;
+                color: #3e281d;
+                transition: background-color 0.2s ease;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+                #notificationList li:hover {
+                    background-color: #f4f4f4;
+                }
+
+        .notification-details {
+            font-size: 14px;
+            color: #3e281d;
+        }
+
+        .notification-books {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #5a3e2b;
+        }
+
+        .notification-buttons {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+            .notification-buttons button {
+                padding: 8px 15px;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+            }
+
+                .notification-buttons button.accept {
+                    background-color: #4CAF50;
+                    color: white;
+                }
+
+                .notification-buttons button.reject {
+                    background-color: #f44336;
+                    color: white;
+                }
+
+                .notification-buttons button.counteroffer {
+                    background-color: #ffa500;
+                    color: white;
+                }
+
+                .notification-buttons button:hover {
+                    opacity: 0.8;
+                }
+
     </style>
 </head>
 <body>
@@ -219,6 +301,10 @@
                 <h2>Lista życzeń</h2>
                 <div id="wishlist"></div>
             </div>
+        </div>
+        <div class="notifications" id="notifications">
+            <h2>Opinie:</h2>
+            <ul id="notificationList"></ul>
         </div>
     </div>
 
