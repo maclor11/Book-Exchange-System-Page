@@ -334,39 +334,6 @@ function showUser(userId, username) {
 
 async function acceptTrade(tradeId) {
     try {
-        // Dodanie animacji wybuchu
-        const explosion = document.createElement('div');
-        explosion.id = 'explosion';
-        explosion.style.position = 'fixed';
-        explosion.style.top = '50%';
-        explosion.style.left = '50%';
-        explosion.style.transform = 'translate(-50%, -50%)';
-        explosion.style.width = '100px';
-        explosion.style.height = '100px';
-        explosion.style.borderRadius = '50%';
-        explosion.style.background = 'radial-gradient(circle, #ffcc00, #ff6600)';
-        explosion.style.animation = 'explode 1s ease-out forwards'; // Animacja wybuchu
-        document.body.appendChild(explosion);
-
-        // Dodanie animacji CSS (wybuch)
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes explode {
-                0% {
-                    transform: scale(1);
-                    opacity: 1;
-                }
-                50% {
-                    transform: scale(1.5);
-                    opacity: 0.7;
-                }
-                100% {
-                    transform: scale(0);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
 
         const response = await fetch(`http://localhost:3000/api/trades/by-id/${tradeId}`);
         if (!response.ok) {
@@ -414,10 +381,9 @@ async function acceptTrade(tradeId) {
             return;
         }
 
-        // Usuñ animacjê wybuchu po zakoñczeniu
-        setTimeout(() => {
-            document.body.removeChild(explosion);
-        }, 1000);
+
+        // Usuñ film po zakoñczeniu odtwarzania (ok. 3 sekundy w zale¿noœci od d³ugoœci filmu)
+        setTimeout(() => {}, 3000); // Zak³adaj¹c, ¿e film ma d³ugoœæ 3 sekundy
 
         displayNotification();
 
@@ -437,9 +403,9 @@ async function acceptTrade(tradeId) {
 
 
 
+
 async function rejectTrade(tradeId) {
     try {
-
         // Wyœlij ¿¹danie usuniêcia u¿ytkownika (teraz przekazujemy userId w URL)
         const response = await fetch(`http://localhost:3000/api/trades/byid/${tradeId}`, {
             method: 'DELETE',
@@ -453,7 +419,7 @@ async function rejectTrade(tradeId) {
 
         if (response.ok) {
             alert(`Wymiana zosta³a odrzucona!`);
-
+            setTimeout(() => {}, 3000);
             displayNotification();
         } else {
             alert('B³¹d odrzucania wymiany .');
