@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wymiana Ksi¹¿ek</title>
+    <style>
+        /* Styl ogólny */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #f3e6e8, #f9f9f4);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #5a3e2b;
+            text-align: center;
+            font-size: 36px;
+            margin: 20px 0;
+        }
+
+        .navbar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+
+            .navbar input[type="text"] {
+                padding: 5px;
+                width: 300px;
+                border: none;
+                border-radius: 4px;
+            }
+
+            .navbar button {
+                background-color: #333;
+                color: white;
+                border: none;
+                padding: 8px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+                .navbar button:hover {
+                    background-color: #555;
+                }
+
+        .container {
+            padding: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 100px;
+        }
+
+        .sections {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 500px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+            .form-container h2 {
+                color: #5a3e2b;
+                font-size: 28px;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+        textarea,
+        select,
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+            button:hover {
+                background-color: #45a049;
+            }
+
+            button.cancel {
+                background-color: #f44336;
+            }
+
+                button.cancel:hover {
+                    background-color: #e53935;
+                }
+
+        /* Styl przycisków */
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="Enchanted_Book.gif" alt="Logo" class="logo-image" width="40" height="40">
+            <span class="app-name">Bookswap</span>
+        </div>
+        <div id="currentDateTime"></div>
+    </div>
+
+    <!-- G³ówna zawartoœæ -->
+    <div id="addReviewForm" class="container">
+        <h1>Dodaj opiniê</h1>
+        <div class="form-container">
+            <h2>Twoja opinia</h2>
+
+            <!-- Opinie -->
+            <textarea id="bookReview" placeholder="Twoja opinia..." rows="6" required></textarea>
+
+            <!-- Combo box do wyboru liczby gwiazdek -->
+            <label for="bookRating">Ocena (1-5 gwiazdek):</label>
+            <select id="bookRating" required>
+                <option value="1">1 Gwiazdka</option>
+                <option value="2">2 Gwiazdki</option>
+                <option value="3">3 Gwiazdki</option>
+                <option value="4">4 Gwiazdki</option>
+                <option value="5">5 Gwiazdek</option>
+            </select>
+
+            <!-- Przycisk dodawania opinii -->
+            <div class="form-buttons">
+                <button onclick="addOpinion()">Dodaj opiniê</button>
+                <button class="cancel" onclick="goBack()">Nie wystawiaj opinii</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="secondOpinion.js"></script>
+</body>
+</html>

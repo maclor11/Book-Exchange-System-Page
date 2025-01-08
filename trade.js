@@ -202,7 +202,7 @@ async function sendTradeOffer() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ userId, userId2, selectedBooks1, selectedBooks2 })
+            body: JSON.stringify({ userId, userId2, selectedBooks1, selectedBooks2})
         });
 
         if (!response.ok) {

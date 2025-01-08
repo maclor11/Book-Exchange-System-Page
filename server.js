@@ -107,6 +107,7 @@ const tradeSchema = new mongoose.Schema({
     selectedBooks2: [{ type: mongoose.Schema.Types.ObjectId ,  ref: 'UserBook'}], // Ksi¹¿ki u¿ytkownika 2
     tradeDate: { type: Date, default: Date.now }, // Data wymiany
     status: { type: String, enum: ['pending', 'completed'], default: 'pending' }, // Status wymiany
+    reviewed: { type: Number, default: 0, required: true },
 });
 
 // Model wymiany ksi¹¿ek
@@ -116,7 +117,7 @@ const opinionSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     tradeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Trade', required: true },
     message: { type: String, required: true },
-    stars: { type: 'number', required: true },
+    stars: { type: Number, required: true },
 });
 
 const Opinion = mongoose.model('Opinion', opinionSchema);
@@ -196,7 +197,7 @@ app.post('/api/trades/:tradeId/status', async (req, res) => {
     const { status } = req.body;   // Pobierz nowy status z cia³a ¿¹dania
 
     // SprawdŸ, czy nowy status jest dostarczony
-    if (!status || !['pending', 'completed', 'cancelled'].includes(status)) {
+    if (!status || !['pending', 'completed'].includes(status)) {
         return res.status(400).json({ message: 'Nieprawid³owy status. Dozwolone wartoœci: pending, completed, cancelled.' });
     }
 
@@ -205,6 +206,34 @@ app.post('/api/trades/:tradeId/status', async (req, res) => {
         const trade = await Trade.findByIdAndUpdate(
             tradeId,
             { status },
+            { new: true } // Zwróæ zaktualizowany dokument
+        );
+
+        if (!trade) {
+            return res.status(404).json({ message: 'Nie znaleziono wymiany o podanym ID.' });
+        }
+
+        res.status(200).json({ message: 'Status wymiany zosta³ zaktualizowany.', trade });
+    } catch (error) {
+        console.error('B³¹d podczas aktualizacji statusu wymiany:', error);
+        res.status(500).json({ message: 'B³¹d serwera.' });
+    }
+});
+
+app.post('/api/trades/:tradeId/reviewed', async (req, res) => {
+    const { tradeId } = req.params; // Pobierz ID wymiany z parametru œcie¿ki
+    const { reviewed } = req.body;   // Pobierz nowy status z cia³a ¿¹dania
+
+    // SprawdŸ, czy nowy status jest dostarczony
+    if (!reviewed || ![1, 0].includes(reviewed)) {
+        return res.status(400).json({ message: 'Nieprawid³owy status. Dozwolone wartoœci: 1, 0' });
+    }
+
+    try {
+        // Zaktualizuj status wymiany
+        const trade = await Trade.findByIdAndUpdate(
+            tradeId,
+            { reviewed },
             { new: true } // Zwróæ zaktualizowany dokument
         );
 

@@ -213,6 +213,11 @@ async function displayNotification() {
             trade => trade.userId2._id === userId && trade.status === 'pending'
         );
 
+        // Wymiany do oceny (review === 0 i status === 'completed')
+        const tradesToReview = trades.filter(
+            trade => trade.status === 'completed' && trade.reviewed === 0 && trade.userId._id === userId
+        );
+
         // Pobierz listê ¿yczeñ u¿ytkownika
         const wishlistResponse = await fetch(`http://localhost:3000/api/user-wishlist/${userId}`);
         if (!wishlistResponse.ok) {
@@ -271,6 +276,23 @@ async function displayNotification() {
             });
         }
 
+        // Powiadomienia o wymianach do oceny (review === 0 i status === 'completed')
+        if (tradesToReview.length > 0) {
+            tradesToReview.forEach(trade => {
+                const user2 = trade.userId2.username || 'Nieznany u¿ytkownik';
+
+                const notification = document.createElement('li');
+
+                notification.innerHTML = `
+                <p><strong>${user2}</strong> zaakceptowa³ Twoj¹ wymianê ksi¹¿ek</p>
+                <div class="notification-buttons">
+                <button onclick="leaveReview('${trade._id}', true)">Wystaw opiniê</button>
+                <button onclick="refresh()">Nie wystawiaj opinii</button>
+                </div>`;
+                notificationList.appendChild(notification);
+            });
+        }
+
         // Powiadomienia o nowych ksi¹¿kach na pó³kach innych u¿ytkowników
         if (matchingBooks.length > 0) {
             matchingBooks.forEach(({ bookId, userId }) => {
@@ -287,13 +309,18 @@ async function displayNotification() {
         }
 
         // Jeœli brak powiadomieñ
-        if (filteredTrades.length === 0 && matchingBooks.length === 0) {
+        if (filteredTrades.length === 0 && matchingBooks.length === 0 && tradesToReview.length === 0) {
             notificationList.innerHTML = '<li>Brak nowych powiadomieñ.</li>';
         }
     } catch (error) {
         console.error('B³¹d podczas ³adowania powiadomieñ:', error);
         alert('Wyst¹pi³ b³¹d podczas ³adowania powiadomieñ.');
     }
+}
+
+function leaveReview(tradeId) {
+    localStorage.setItem('tradeId', tradeId);
+    window.location.href = "secondOpinion.html";
 }
 
 
@@ -332,6 +359,10 @@ function showUser(userId, username) {
     window.location.href = 'userInformation.html';
 }
 
+function refresh() {
+    window.refresh();
+}
+
 async function acceptTrade(tradeId) {
     try {
 
@@ -345,6 +376,8 @@ async function acceptTrade(tradeId) {
         const userId2 = trades.userId2;
         const selectedBooks1 = trades.selectedBooks1;
         const selectedBooks2 = trades.selectedBooks2;
+
+
 
         const response1 = await fetch(`http://localhost:3000/api/trades/${tradeId}/status`, {
             method: 'POST',
