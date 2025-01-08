@@ -126,7 +126,7 @@
             transition: transform 0.6s;
         }
 
-            .book:hover {
+            .book.flipped {
                 transform: rotateY(180deg);
             }
 
@@ -144,6 +144,7 @@
             padding: 15px;
             font-family: 'Roboto', Arial, sans-serif;
             font-size: 16px;
+            overflow: hidden;
         }
 
         .book-front {
@@ -155,18 +156,24 @@
             background: linear-gradient(135deg, #f5f3eb, #e8e4d9);
             border: 1px solid #b0a890;
             transform: rotateY(180deg);
+            font-size: 14px;
+            color: #3e281d;
+            text-align: center;
+            overflow: hidden; /* Zapobiega wyświetlaniu tekstu poza element */
+            text-overflow: ellipsis; /* Dodaje "..." */
+            white-space: nowrap; /* Zapobiega łamaniu tekstu */
         }
 
         .book-front strong {
             font-size: 18px;
             color: #3e281d;
+            white-space: nowrap; /* Zapobiega łamaniu tekstu */
+            overflow: hidden; /* Ukrywa nadmiar tekstu */
+            text-overflow: ellipsis; /* Dodaje "..." na końcu, jeśli tekst jest za długi */
+            max-width: 100%; /* Zapewnia, że tekst nie przekracza szerokości elementu */
+            text-align: center; /* Wyrównanie do środka */
         }
 
-        .book-back {
-            font-size: 14px;
-            color: #3e281d;
-            text-align: center;
-        }
 
         #addBookForm {
             margin-top: 30px;

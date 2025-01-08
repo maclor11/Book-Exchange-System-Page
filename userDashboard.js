@@ -73,12 +73,12 @@ async function displayBooks() {
 
             const bookFront = document.createElement('div');
             bookFront.classList.add('book-face', 'book-front');
-            bookFront.innerHTML = `<strong>${bookId.title}</strong><br><small>W³aœciciel: ${username}</small>`;
+            bookFront.innerHTML = `<strong title="${bookId.title}">${bookId.title}</strong><br><small>W³aœciciel: ${username}</small>`;
 
             const bookBack = document.createElement('div');
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
-                <p><strong>Autor:</strong> ${bookId.author}</p>
+                <p><strong>Autor:</strong><br> <span title="${bookId.author}">${bookId.author}</span></p>
                 <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
                 <button onclick="trade('${bookId._id}', '${userId}')">Wymiana</button>
                 <button onclick="showUser('${userId}')">Wiêcej</button>
@@ -162,12 +162,12 @@ async function displaySuggestions() {
 
             const bookFront = document.createElement('div');
             bookFront.classList.add('book-face', 'book-front');
-            bookFront.innerHTML = `<strong>${bookId.title}</strong><br><small>W³aœciciel: ${username}</small>`;
+            bookFront.innerHTML = `<strong title="${bookId.title}">${bookId.title}</strong><br><small>W³aœciciel: ${username}</small>`;
 
             const bookBack = document.createElement('div');
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
-                <p><strong>Autor:</strong> ${bookId.author}</p>
+                <p><strong>Autor:</strong><br> <span title="${bookId.author}">${bookId.author}</span></p>
                 <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
                 <button onclick="trade('${bookId._id}', '${userId}')">Wymiana</button>
                 <button onclick="showUser('${userId}')">Wiêcej</button>
@@ -440,3 +440,24 @@ async function counterOffer(tradeId, userId) {
     
     window.location.href = "kontroferta.html";
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const shelf = document.getElementById('shelf');
+    shelf.addEventListener('click', (event) => {
+        const book = event.target.closest('.book');
+        if (book) {
+            book.classList.toggle('flipped');
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const shelf = document.getElementById('suggestions');
+    shelf.addEventListener('click', (event) => {
+        const book = event.target.closest('.book');
+        if (book) {
+            book.classList.toggle('flipped');
+        }
+    });
+});
+

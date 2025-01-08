@@ -126,7 +126,7 @@
             transition: transform 0.6s;
         }
 
-            .book:hover {
+            .book.flipped {
                 transform: rotateY(180deg);
             }
 
@@ -144,6 +144,7 @@
             padding: 15px;
             font-family: 'Roboto', Arial, sans-serif;
             font-size: 16px;
+            overflow: hidden;
         }
 
         .book-front {
@@ -155,77 +156,25 @@
             background: linear-gradient(135deg, #f5f3eb, #e8e4d9);
             border: 1px solid #b0a890;
             transform: rotateY(180deg);
+            font-size: 14px;
+            color: #3e281d;
+            text-align: center;
+            overflow: hidden; /* Zapobiega wyświetlaniu tekstu poza element */
+            text-overflow: ellipsis; /* Dodaje "..." */
+            white-space: nowrap; /* Zapobiega łamaniu tekstu */
         }
 
         .book-front strong {
             font-size: 18px;
             color: #3e281d;
+            white-space: nowrap; /* Zapobiega łamaniu tekstu */
+            overflow: hidden; /* Ukrywa nadmiar tekstu */
+            text-overflow: ellipsis; /* Dodaje "..." na końcu, jeśli tekst jest za długi */
+            max-width: 100%; /* Zapewnia, że tekst nie przekracza szerokości elementu */
+            text-align: center; /* Wyrównanie do środka */
         }
 
-        .book-back {
-            font-size: 14px;
-            color: #3e281d;
-            text-align: center;
-        }
-
-        #addBookForm {
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-        }
-
-            #addBookForm h2 {
-                color: #5a3e2b;
-                margin-bottom: 15px;
-            }
-
-            #addBookForm input {
-                padding: 10px;
-                margin: 10px 0;
-                width: calc(100% - 20px);
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                font-size: 14px;
-            }
-
-            #addBookForm button {
-                padding: 10px 20px;
-                margin: 10px;
-                border: none;
-                border-radius: 8px;
-                background-color: #4CAF50;
-                color: white;
-                font-size: 14px;
-                cursor: pointer;
-                transition: background-color 0.2s ease;
-            }
-
-                #addBookForm button:hover {
-                    background-color: #3e8e41;
-                }
-
-        .suggestions {
-            position: absolute;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            max-height: 150px;
-            overflow-y: auto;
-            z-index: 1000;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-            .suggestions div {
-                padding: 10px;
-                cursor: pointer;
-                transition: background-color 0.2s ease;
-            }
-
-                .suggestions div:hover {
-                    background-color: #f0f0f0;
-                }
+     
 
         .logo {
             display: flex;

@@ -141,15 +141,17 @@ async function displayShelf() {
 
             const bookFront = document.createElement('div');
             bookFront.classList.add('book-face', 'book-front');
-            bookFront.innerHTML = `<strong>${bookId.title}</strong>`;
+            bookFront.innerHTML = `<strong title="${bookId.title}">${bookId.title}</strong>`;
+
 
             const bookBack = document.createElement('div');
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
-                <p><strong>Autor:</strong> ${bookId.author}</p>
+                <p><strong>Autor:</strong><br> <span title="${bookId.author}">${bookId.author}</span></p>
                 <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
                 <button onclick="removeBookFromShelf('${bookId._id}')">Usuñ</button>
             `;
+
 
             bookDiv.appendChild(bookFront);
             bookDiv.appendChild(bookBack);
@@ -288,15 +290,17 @@ async function displayWishlist() {
 
             const bookFront = document.createElement('div');
             bookFront.classList.add('book-face', 'book-front');
-            bookFront.innerHTML = `<strong>${bookId.title}</strong>`;
+            bookFront.innerHTML = `<strong title="${bookId.title}">${bookId.title}</strong>`;
+
 
             const bookBack = document.createElement('div');
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
-                <p><strong>Autor:</strong> ${bookId.author}</p>
+                <p><strong>Autor:</strong> <br><span title="${bookId.author}">${bookId.author}</span></p>
                 <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
                 <button onclick="removeBookFromWishlist('${bookId._id}')">Usuñ</button>
             `;
+
 
             bookDiv.appendChild(bookFront);
             bookDiv.appendChild(bookBack);
@@ -418,7 +422,7 @@ async function fetchBooks() {
             allBooks = await response.json();
         }
     } catch (error) {
-        console.error('Blad podczas pobierania ksiazek:', error);
+        console.error('B³¹d podczas pobierania ksi¹¿ek:', error);
     }
 }
 
@@ -434,17 +438,30 @@ function showSuggestions(field) {
     if (!query) return; // Brak tekstu -> brak podpowiedzi
 
     // Filtruj ksi¹¿ki na podstawie wpisywanego tekstu
-    const suggestions = allBooks
-        .filter(book => book[field].toLowerCase().includes(query))
-        .slice(0, 5); // Maksymalnie 5 podpowiedzi
+    const uniqueSuggestions = Array.from(
+        new Set(
+            allBooks
+                .map(book => book[field])
+                .filter(value => value && value.toLowerCase().includes(query)) // Filtruj tylko te, które pasuj¹ do zapytania
+        )
+    ).slice(0, 5); // Maksymalnie 5 unikalnych podpowiedzi
 
     // Dodaj podpowiedzi do kontenera
-    suggestions.forEach(book => {
+    uniqueSuggestions.forEach(value => {
         const suggestion = document.createElement('div');
-        suggestion.textContent = book[field];
+        suggestion.textContent = value;
         suggestion.onclick = () => {
-            input.value = book[field]; // Ustaw wartoœæ pola na wybran¹ podpowiedŸ
+            input.value = value; // Ustaw wartoœæ pola na wybran¹ podpowiedŸ
             suggestionsDiv.innerHTML = ''; // Wyczyœæ podpowiedzi
+
+            // Jeœli wybrano tytu³, automatycznie uzupe³nij autora
+            if (field === 'title') {
+                const matchingBook = allBooks.find(book => book.title === value);
+                if (matchingBook) {
+                    const authorInput = document.getElementById('bookAuthor');
+                    authorInput.value = matchingBook.author; // Ustaw autora na podstawie wybranego tytu³u
+                }
+            }
         };
         suggestionsDiv.appendChild(suggestion);
     });
@@ -454,6 +471,7 @@ function showSuggestions(field) {
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
 
 // Wywo?anie fetchBooks przy za³adowaniu strony
 document.addEventListener('DOMContentLoaded', fetchBooks);
@@ -488,6 +506,27 @@ function createThrowAnimation(text) {
         book.remove();
     });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const shelf = document.getElementById('shelf');
+    shelf.addEventListener('click', (event) => {
+        const book = event.target.closest('.book');
+        if (book) {
+            book.classList.toggle('flipped');
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const shelf = document.getElementById('wishlist');
+    shelf.addEventListener('click', (event) => {
+        const book = event.target.closest('.book');
+        if (book) {
+            book.classList.toggle('flipped');
+        }
+    });
+});
+
 
 
 

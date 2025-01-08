@@ -46,15 +46,16 @@ async function displayShelf() {
 
             const bookFront = document.createElement('div');
             bookFront.classList.add('book-face', 'book-front');
-            bookFront.innerHTML = `<strong>${bookId.title}</strong>`;
+            bookFront.innerHTML = `<strong title="${bookId.title}">${bookId.title}</strong>`;
 
             const bookBack = document.createElement('div');
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
-                <p><strong>Autor:</strong> ${bookId.author}</p>
+                <p><strong>Autor:</strong><br> <span title="${bookId.author}">${bookId.author}</span></p>
                 <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
                 <button class="select-button">Wybierz</button>
             `;
+
 
             bookBack.querySelector('.select-button').addEventListener('click', (event) => {
                 const button = event.target;
@@ -112,12 +113,12 @@ async function displayTradeBooks() {
 
             const bookFront = document.createElement('div');
             bookFront.classList.add('book-face', 'book-front');
-            bookFront.innerHTML = `<strong>${bookId.title}</strong>`;
+            bookFront.innerHTML = `<strong title="${bookId.title}">${bookId.title}</strong>`;
 
             const bookBack = document.createElement('div');
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
-                <p><strong>Autor:</strong> ${bookId.author}</p>
+                <p><strong>Autor:</strong> <br><span title="${bookId.author}">${bookId.author}</span></p>
                 <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
                 <button class="select-button">Wybierz</button>
             `;
@@ -212,6 +213,28 @@ async function sendTradeOffer() {
     }
 
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const shelf = document.getElementById('shelf1');
+    shelf.addEventListener('click', (event) => {
+        const book = event.target.closest('.book');
+        if (book) {
+            book.classList.toggle('flipped');
+        }
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const shelf = document.getElementById('shelf2');
+    shelf.addEventListener('click', (event) => {
+        const book = event.target.closest('.book');
+        if (book) {
+            book.classList.toggle('flipped');
+        }
+    });
+});
+
 
 
 

@@ -20,7 +20,7 @@ mongoose.connect('mongodb://localhost:27017/logowanie', {
 
 // Schemat i model u¿ytkownika
 const userSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
+    username: { type: String, required: true, unique: true},
     password: { type: String, required: true },
 });
 

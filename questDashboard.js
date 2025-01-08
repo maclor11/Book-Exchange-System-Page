@@ -46,12 +46,12 @@ async function displayBooks() {
 
             const bookFront = document.createElement('div');
             bookFront.classList.add('book-face', 'book-front');
-            bookFront.innerHTML = `<strong>${bookId.title}</strong><br><small>W³aœciciel: ${username}</small>`;
+            bookFront.innerHTML = `<strong title="${bookId.title}">${bookId.title}</strong><br><small>W³aœciciel: ${username}</small>`;
 
             const bookBack = document.createElement('div');
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
-                <p><strong>Autor:</strong> ${bookId.author}</p>
+                <p><strong>Autor:</strong> <br><span title="${bookId.author}">${bookId.author}</span></p>
                 <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
             `;
 
@@ -80,5 +80,16 @@ window.onload = () => {
 function login() {
     window.location.href = 'index.html';
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const shelf = document.getElementById('shelf');
+    shelf.addEventListener('click', (event) => {
+        const book = event.target.closest('.book');
+        if (book) {
+            book.classList.toggle('flipped');
+        }
+    });
+});
+
 
 
