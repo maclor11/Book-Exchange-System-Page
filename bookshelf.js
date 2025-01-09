@@ -488,34 +488,11 @@ function capitalize(string) {
 document.addEventListener('DOMContentLoaded', fetchBooks);
 
 function animateAddToShelf() {  
-    addBook(); // Funkcja dodająca książkę do półki
-    createThrowAnimation('Dodano na półkę!');
+    addBook(); // Funkcja dodająca książkę do półki) 
 }
 
 function animateAddToWishlist() {
     addBookToWishlist(); // Funkcja dodająca książkę do listy życzeń
-    createThrowAnimation('Dodano do listy!');
-}
-
-function createThrowAnimation(text) {
-    // Znajdź pozycję przycisku
-    const button = event.target;
-    const rect = button.getBoundingClientRect();
-
-    // Stwórz animowany element
-    const book = document.createElement('div');
-    book.classList.add('book-throw');
-    book.innerText = text;
-    document.body.appendChild(book);
-
-    // Ustaw pozycję animowanego elementu
-    book.style.left = `${rect.left + rect.width / 2}px`;
-    book.style.top = `${rect.top}px`;
-
-    // Usuń element po zakończeniu animacji
-    book.addEventListener('animationend', () => {
-        book.remove();
-    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
