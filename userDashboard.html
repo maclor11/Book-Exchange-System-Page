@@ -7,8 +7,8 @@
     <style>
         /* Styl ogólny */
         body {
-            font-family: 'Roboto', Arial, sans-serif;
-            background: linear-gradient(135deg, #f3e6e8, #f9f9f4);
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
             margin: 0;
             padding: 0;
             display: flex;
@@ -19,10 +19,8 @@
         }
 
         h1 {
-            color: linear-gradient(135deg, #f3e6e8, #f9f9f4);
+            color: #333;
             text-align: center;
-            font-size: 0px;
-            margin: 20px 0;
         }
 
         .navbar {
@@ -33,7 +31,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: fixed;
+            position: sticky;
             top: 0;
             z-index: 1000;
         }
@@ -58,7 +56,15 @@
                     background-color: #555;
                 }
 
+
+        .welcome-message {
+            font-size: 1.4em;
+            margin: 10px 0 20px;
+            color: #4CAF50;
+        }
+
         .container {
+            padding-top: 80px;
             padding: 20px;
             text-align: center;
             width: 90%;
@@ -156,7 +162,7 @@
             background: linear-gradient(135deg, #f5f3eb, #e8e4d9);
             border: 1px solid #b0a890;
             transform: rotateY(180deg);
-            font-size: 14px;
+            font-size: 13px;
             color: #3e281d;
             text-align: center;
             overflow: hidden; /* Zapobiega wyświetlaniu tekstu poza element */
@@ -303,7 +309,7 @@
             </div>
 
             <!-- Sekcja Lista Życzeń -->
-            <div class="section" id="bookshelf">
+            <div class="section" id="wishlist">
                 <h2>To może ci się podobać!</h2>
                 <div id="suggestions"></div>
             </div>
