@@ -1,86 +1,87 @@
+Ôªø
 
 
-
-// Pobranie nazwy uøytkownika z lokalnego przechowywania
+// Pobranie nazwy u≈ºytkownika z lokalnego przechowywania
 const username = localStorage.getItem('username');
 const userId = localStorage.getItem('userId');
 
-// Wy?wietlenie nazwy uøytkownika lub przekierowanie do logowania
+// Wy?wietlenie nazwy u≈ºytkownika lub przekierowanie do logowania
 if (username) {
     document.getElementById('username').innerText = username;
 } else {
-    window.location.href = 'index.html'; // Jeúli brak nazwy, wraca do logowania
+    window.location.href = 'index.html'; // Je≈õli brak nazwy, wraca do logowania
 }
 
-// Dodawanie nowej ksiπøki
+// Dodawanie nowej ksiƒÖ≈ºki
 async function addBook() {
     const title = document.getElementById('bookTitle').value.trim();
     const author = document.getElementById('bookAuthor').value.trim();
+    const condition = document.getElementById('bookCondition').value;
+    const coverType = document.getElementById('bookCover').value;
 
-    if (!title || !author) {
-        let mess = "ProszÍ wype≥niÊ oba pola";
-        alert(mess);
+    if (!title || !author || !condition || !coverType) {
+        alert('Proszƒô wype≈Çniƒá wszystkie pola!');
         return;
     }
 
     try {
-        const username = localStorage.getItem('username'); // Pobierz nazwÍ uøytkownika z localStorage
+        const username = localStorage.getItem('username'); // Pobierz nazwƒô u≈ºytkownika z localStorage
 
         if (!username) {
-            alert('Musisz byÊ zalogowany, aby dodaÊ ksiπøkÍ na pÛ≥kÍ.');
+            alert('Musisz byƒá zalogowany, aby dodaƒá ksiƒÖ≈ºkƒô na p√≥≈Çkƒô.');
             return;
         }
 
         // Pobierz userId na podstawie username
         const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
         if (!userResponse.ok) {
-            alert('Nie moøna znaleüÊ uøytkownika.');
+            alert('Nie mo≈ºna znale≈∫ƒá u≈ºytkownika.');
             return;
         }
 
         const userData = await userResponse.json();
         const userId = userData.userId;
 
-        // Sprawdü, czy ksiπøka juø istnieje w bazie danych
+        // Sprawd≈∫, czy ksiƒÖ≈ºka ju≈º istnieje w bazie danych
         const existingBooksResponse = await fetch('http://localhost:3000/api/books');
         if (!existingBooksResponse.ok) {
-            alert('B≥πd podczas sprawdzania istniejπcych ksiπøek.');
+            alert('B≈ÇƒÖd podczas sprawdzania istniejƒÖcych ksiƒÖ≈ºek.');
             return;
         }
 
         const existingBooks = await existingBooksResponse.json();
-        const existingBook = existingBooks.find(book => book.title === title && book.author === author);
+        const existingBook = existingBooks.find(book => book.title === title && book.author === author && book.condition === condition && book.coverType === coverType);
 
         let bookId;
 
         if (existingBook) {
-            // Je?li ksiπøka istnieje, uøyj jej ID
+            // Je≈õli ksiƒÖ≈ºka istnieje, u≈ºyj jej ID
             bookId = existingBook._id;
         } else {
-            // Je?li ksiπøka nie istnieje, dodaj jπ do bazy danych
+            // Je≈õli ksiƒÖ≈ºka nie istnieje, dodaj jƒÖ do bazy danych
             const response = await fetch('http://localhost:3000/api/books', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ title, author }),
+                body: JSON.stringify({ title, author, condition, coverType }),
             });
 
             if (!response.ok) {
-                alert('B≥πd podczas dodawania ksiπøki.');
+                alert('B≈ÇƒÖd podczas dodawania ksiƒÖ≈ºki.');
                 return;
             }
 
             const newBook = await response.json();
             if (!newBook || !newBook._id) {
-                alert('Serwer nie zwrÛci≥ ID nowej ksiπøki.');
+                alert('Serwer nie zwr√≥ci≈Ç ID nowej ksiƒÖ≈ºki.');
                 return;
             }
 
-            bookId = newBook._id; // Ustaw `bookId` na wartoúÊ zwrÛconπ przez serwer
+            bookId = newBook._id; // Ustaw `bookId` na warto≈õƒá zwr√≥conƒÖ przez serwer
         }
 
-        // Dodaj ksiπøkÍ na pÛ≥kÍ uøytkownika
+        // Dodaj ksiƒÖ≈ºkƒô na p√≥≈Çkƒô u≈ºytkownika
         const shelfResponse = await fetch('http://localhost:3000/api/user-books', {
             method: 'POST',
             headers: {
@@ -90,17 +91,113 @@ async function addBook() {
         });
 
         if (shelfResponse.ok) {
-            alert('Ksiπøka zosta≥a pomyúlnie dodana na pÛ≥kÍ!');
+            alert('KsiƒÖ≈ºka zosta≈Ça pomy≈õlnie dodana na p√≥≈Çkƒô!');
             document.getElementById('bookTitle').value = '';
             document.getElementById('bookAuthor').value = '';
-            displayShelf(); // Odúwieø pÛ≥kÍ
+            document.getElementById('bookCondition').value = '';
+            document.getElementById('bookCover').value = '';
+            displayShelf(); // Od≈õwie≈º p√≥≈Çkƒô
             fetchBooks();
         } else {
-            alert('B≥πd podczas dodawania ksiπøki na pÛ≥kÍ.');
+            alert('B≈ÇƒÖd podczas dodawania ksiƒÖ≈ºki na p√≥≈Çkƒô.');
         }
     } catch (error) {
-        console.error('Wystπpi≥ b≥πd:', error);
-        alert('Wystπpi≥ b≥πd podczas komunikacji z serwerem.');
+        console.error('WystƒÖpi≈Ç b≈ÇƒÖd:', error);
+        alert('WystƒÖpi≈Ç b≈ÇƒÖd podczas komunikacji z serwerem.');
+    }
+}
+
+async function addBookToWishlist() {
+    const title = document.getElementById('bookTitle').value.trim();
+    const author = document.getElementById('bookAuthor').value.trim();
+    const condition = document.getElementById('bookCondition').value;
+    const coverType = document.getElementById('bookCover').value;
+
+    if (!title || !author || !condition || !coverType) {
+        alert('Proszƒô wype≈Çniƒá wszystkie pola!');
+        return;
+    }
+
+    try {
+        const username = localStorage.getItem('username'); // Pobierz nazw? u?ytkownika z localStorage
+
+        if (!username) {
+            alert('Musisz byƒá zalogowany, aby dodaƒá ksiƒÖ≈ºkƒô na listƒô ≈ºycze≈Ñ.');
+            return;
+        }
+
+        // Pobierz userId na podstawie username
+        const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
+        if (!userResponse.ok) {
+            alert('Nie mo≈ºna znale≈∫ƒá u≈ºytkownika.');
+            return;
+        }
+
+        const userData = await userResponse.json();
+        const userId = userData.userId;
+
+        // Sprawd≈∫, czy ksiƒÖ≈ºka ju≈º istnieje w bazie danych
+        const existingBooksResponse = await fetch('http://localhost:3000/api/books');
+        if (!existingBooksResponse.ok) {
+            alert('B≈ÇƒÖd podczas sprawdzania istniejƒÖcych ksiƒÖ≈ºek.');
+            return;
+        }
+
+        const existingBooks = await existingBooksResponse.json();
+        const existingBook = existingBooks.find(book => book.title === title && book.author === author && book.condition === condition && book.coverType === coverType);
+
+        let bookId;
+
+        if (existingBook) {
+            // Je≈õli ksiƒÖ≈ºka istnieje, u≈ºyj jej ID
+            bookId = existingBook._id;
+        } else {
+            // Je?li ksiƒÖ≈ºka nie istnieje, dodaj jƒÖ do bazy danych
+            const response = await fetch('http://localhost:3000/api/books', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title, author, condition, coverType}),
+            });
+
+            if (!response.ok) {
+                alert('B≈ÇƒÖd podczas dodawania ksiƒÖ≈ºki.');
+                return;
+            }
+
+            const newBook = await response.json();
+            if (!newBook || !newBook._id) {
+                alert('Serwer nie zwr√≥ci≈Ç ID nowej ksiƒÖ≈ºki.');
+                return;
+            }
+
+            bookId = newBook._id; // Ustaw `bookId` na warto≈õƒá zwr√≥conƒÖ przez serwer
+        }
+
+        // Dodaj ksiƒÖ≈ºkƒô na p√≥≈Çkƒô u≈ºytkownika
+        const shelfResponse = await fetch('http://localhost:3000/api/user-wishlist', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId, bookId }),
+        });
+
+        if (shelfResponse.ok) {
+            alert('KsiƒÖ≈ºka zosta≈Ça pomy≈õlnie dodana na listƒô ≈ºycze≈Ñ!');
+            document.getElementById('bookTitle').value = '';
+            document.getElementById('bookAuthor').value = '';
+            document.getElementById('bookCondition').value = '';
+            document.getElementById('bookCover').value = '';
+            displayWishlist();
+            fetchBooks();
+        } else {
+            alert('B≈ÇƒÖd podczas dodawania ksiƒÖ≈ºki na listƒô ≈ºycze≈Ñ.');
+        }
+    } catch (error) {
+        console.error('WystƒÖpi≈Ç b≈ÇƒÖd:', error);
+        alert('WystƒÖpi≈Ç b≈ÇƒÖd podczas komunikacji z serwerem.');
     }
 }
 
@@ -108,7 +205,7 @@ async function addBook() {
 async function displayShelf() {
     const username = localStorage.getItem('username');
     if (!username) {
-        alert('Musisz byÊ zalogowany, aby zobaczyÊ swojπ pÛ≥kÍ.');
+        alert('Musisz byƒá zalogowany, aby zobaczyƒá swojƒÖ p√≥≈Çkƒô.');
         return;
     }
 
@@ -116,22 +213,22 @@ async function displayShelf() {
         // Pobierz userId na podstawie username
         const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
         if (!userResponse.ok) {
-            alert('Nie moøna znaleüÊ uøytkownika.');
+            alert('Nie mo≈ºna znale≈∫ƒá u≈ºytkownika.');
             return;
         }
 
         const userData = await userResponse.json();
         const userId = userData.userId;
 
-        // Pobierz ksiπøki u?ytkownika
+        // Pobierz ksiƒÖ≈ºki u?ytkownika
         const response = await fetch(`http://localhost:3000/api/user-books/${userId}`);
         const userBooks = await response.json();
 
-        // Pobierz kontener pÛ≥ki
+        // Pobierz kontener p√≥≈Çki
         const shelf = document.getElementById('shelf');
-        shelf.innerHTML = ''; // WyczyúÊ pÛ≥kÍ
+        shelf.innerHTML = ''; // Wyczy≈õƒá p√≥≈Çkƒô
 
-        // Wy?wietl ksi??ki na pÛ?ce
+        // Wy?wietl ksi??ki na p√≥?ce
         userBooks.forEach(({ bookId }) => {
             const bookContainer = document.createElement('div');
             bookContainer.classList.add('book-container');
@@ -143,15 +240,14 @@ async function displayShelf() {
             bookFront.classList.add('book-face', 'book-front');
             bookFront.innerHTML = `<strong title="${bookId.title}">${bookId.title}</strong>`;
 
-
             const bookBack = document.createElement('div');
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
-                <p><strong>Autor:</strong><br> <span title="${bookId.author}">${bookId.author}</span></p>
-                <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
-                <button onclick="removeBookFromShelf('${bookId._id}')">UsuÒ</button>
-            `;
-
+            <p><strong>Autor:</strong><br> <span title="${bookId.author}">${bookId.author}</span></p>
+            <p><strong>Stan:</strong> ${bookId.condition || 'Nieznany'}</p>
+            <p><strong>Ok≈Çadka:</strong> ${bookId.coverType || 'Nieznana'}</p>
+            <button onclick="removeBookFromShelf('${bookId._id}')">Usu≈Ñ</button>
+        `;
 
             bookDiv.appendChild(bookFront);
             bookDiv.appendChild(bookBack);
@@ -159,105 +255,17 @@ async function displayShelf() {
             shelf.appendChild(bookContainer);
         });
     } catch (error) {
-        console.error('B≥πd podczas ≥adowania pÛ≥ki:', error);
-        alert('Wystπpi≥ b≥πd podczas ≥adowania pÛ≥ki.');
+        console.error('B≈ÇƒÖd podczas ≈Çadowania d√≥≈Çki:', error);
+        alert('WystƒÖpi≈Ç b≈ÇƒÖd podczas ≈Çadowania d√≥≈Çki.');
     }
 }
 
-async function addBookToWishlist() {
-    const title = document.getElementById('bookTitle').value.trim();
-    const author = document.getElementById('bookAuthor').value.trim();
 
-    if (!title || !author) {
-        alert('ProszÍ wype≥niÊ oba pola!');
-        return;
-    }
-
-    try {
-        const username = localStorage.getItem('username'); // Pobierz nazw? u?ytkownika z localStorage
-
-        if (!username) {
-            alert('Musisz byÊ zalogowany, aby dodaÊ ksiπøkÍ na listÍ øyczeÒ.');
-            return;
-        }
-
-        // Pobierz userId na podstawie username
-        const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
-        if (!userResponse.ok) {
-            alert('Nie moøna znaleüÊ uøytkownika.');
-            return;
-        }
-
-        const userData = await userResponse.json();
-        const userId = userData.userId;
-
-        // Sprawdü, czy ksiπøka juø istnieje w bazie danych
-        const existingBooksResponse = await fetch('http://localhost:3000/api/books');
-        if (!existingBooksResponse.ok) {
-            alert('B≥πd podczas sprawdzania istniejπcych ksiπøek.');
-            return;
-        }
-
-        const existingBooks = await existingBooksResponse.json();
-        const existingBook = existingBooks.find(book => book.title === title && book.author === author);
-
-        let bookId;
-
-        if (existingBook) {
-            // Jeúli ksiπøka istnieje, uøyj jej ID
-            bookId = existingBook._id;
-        } else {
-            // Je?li ksiπøka nie istnieje, dodaj jπ do bazy danych
-            const response = await fetch('http://localhost:3000/api/books', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ title, author }),
-            });
-
-            if (!response.ok) {
-                alert('B≥πd podczas dodawania ksiπøki.');
-                return;
-            }
-
-            const newBook = await response.json();
-            if (!newBook || !newBook._id) {
-                alert('Serwer nie zwrÛci≥ ID nowej ksiπøki.');
-                return;
-            }
-
-            bookId = newBook._id; // Ustaw `bookId` na wartoúÊ zwrÛconπ przez serwer
-        }
-
-        // Dodaj ksiπøkÍ na pÛ≥kÍ uøytkownika
-        const shelfResponse = await fetch('http://localhost:3000/api/user-wishlist', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userId, bookId }),
-        });
-
-        if (shelfResponse.ok) {
-            alert('Ksiπøka zosta≥a pomyúlnie dodana na listÍ øyczeÒ!');
-            document.getElementById('bookTitle').value = '';
-            document.getElementById('bookAuthor').value = '';
-            displayWishlist();
-            fetchBooks();
-        } else {
-            alert('B≥πd podczas dodawania ksiπøki na listÍ øyczeÒ.');
-        }
-    } catch (error) {
-        console.error('Wystπpi≥ b≥πd:', error);
-        alert('Wystπpi≥ b≥πd podczas komunikacji z serwerem.');
-    }
-}
 
 async function displayWishlist() {
     const username = localStorage.getItem('username');
     if (!username) {
-        alert('Musisz byÊ zalogowany, aby zobaczyÊ swojπ listÍ øyczeÒ.');
+        alert('Musisz byƒá zalogowany, aby zobaczyƒá swojƒÖ listƒô ≈ºycze≈Ñ.');
         return;
     }
 
@@ -265,22 +273,24 @@ async function displayWishlist() {
         // Pobierz userId na podstawie username
         const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
         if (!userResponse.ok) {
-            alert('Nie moøna znaleüÊ uøytkownika.');
+            alert('Nie mo≈ºna znale≈∫ƒá u≈ºytkownika.');
             return;
         }
 
         const userData = await userResponse.json();
         const userId = userData.userId;
 
-        // Pobierz ksiπøki uøytkownika
+        // Pobierz ksiƒÖ≈ºki u≈ºytkownika
         const response = await fetch(`http://localhost:3000/api/user-wishlist/${userId}`);
         const userWishlist = await response.json();
 
+
         // Pobierz kontener listy
         const wishlist = document.getElementById('wishlist');
-        wishlist.innerHTML = ''; // WyczyúÊ listÍ
+        wishlist.innerHTML = ''; // Wyczy≈õƒá listƒô
 
-        // Wy?wietl ksiπøki na liúcie
+
+        // Wy?wietl ksiƒÖ≈ºki na li≈õcie
         userWishlist.forEach(({ bookId }) => {
             const bookContainer = document.createElement('div');
             bookContainer.classList.add('book-container');
@@ -297,8 +307,9 @@ async function displayWishlist() {
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
                 <p><strong>Autor:</strong> <br><span title="${bookId.author}">${bookId.author}</span></p>
-                <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
-                <button onclick="removeBookFromWishlist('${bookId._id}')">UsuÒ</button>
+                <p><strong>Stan:</strong> ${bookId.condition}</p>
+                <p><strong>Ok≈Çadka:</strong> ${bookId.coverType}</p>
+                <button onclick="removeBookFromWishlist('${bookId._id}')">Usu≈Ñ</button>
             `;
 
 
@@ -308,15 +319,15 @@ async function displayWishlist() {
             wishlist.appendChild(bookContainer);
         });
     } catch (error) {
-        console.error('B≥πd podczas ≥adowania pÛ≥ki:', error);
-        alert('Wyst?pi? b??d podczas ?adowania pÛ?ki.');
+        console.error('B≈ÇƒÖd podczas ≈Çadowania p√≥≈Çki:', error);
+        alert('Wyst?pi? b??d podczas ?adowania p√≥?ki.');
     }
 }
 
 async function removeBookFromShelf(bookId) {
     const username = localStorage.getItem('username');
     if (!username) {
-        alert('Musisz byÊ zalogowany, aby usunπÊ ksiπøkÍ.');
+        alert('Musisz byƒá zalogowany, aby usunƒÖƒá ksiƒÖ≈ºkƒô.');
         return;
     }
 
@@ -334,21 +345,21 @@ async function removeBookFromShelf(bookId) {
         });
 
         if (response.ok) {
-            alert('Ksiπøka zosta≥a usuniÍta z pÛ≥ki!');
+            alert('KsiƒÖ≈ºka zosta≈Ça usuniƒôta z p√≥≈Çki!');
             displayShelf();
         } else {
-            alert('B≥πd podczas usuwania ksiπøki.');
+            alert('B≈ÇƒÖd podczas usuwania ksiƒÖ≈ºki.');
         }
     } catch (error) {
-        console.error('B≥πd:', error);
-        alert('Wystapil b≥πd podczas komunikacji z serwerem.');
+        console.error('B≈ÇƒÖd:', error);
+        alert('Wystapil b≈ÇƒÖd podczas komunikacji z serwerem.');
     }
 }
 
 async function removeBookFromWishlist(bookId) {
     const username = localStorage.getItem('username');
     if (!username) {
-        alert('Musisz byÊ zalogowany, aby usunπÊ ksiπøkÍ.');
+        alert('Musisz byƒá zalogowany, aby usunƒÖƒá ksiƒÖ≈ºkƒô.');
         return;
     }
 
@@ -366,14 +377,14 @@ async function removeBookFromWishlist(bookId) {
         });
 
         if (response.ok) {
-            alert('Ksiπøka zosta≥a usuniÍta z listy øyczeÒ!');
+            alert('KsiƒÖ≈ºka zosta≈Ça usuniƒôta z listy ≈ºycze≈Ñ!');
             displayWishlist();
         } else {
-            alert('B≥πd podczas usuwania ksiπøki.');
+            alert('B≈ÇƒÖd podczas usuwania ksiƒÖ≈ºki.');
         }
     } catch (error) {
-        console.error('B≥πd:', error);
-        alert('Wystapi≥ b≥πd podczas komunikacji z serwerem.');
+        console.error('B≈ÇƒÖd:', error);
+        alert('Wystapi≈Ç b≈ÇƒÖd podczas komunikacji z serwerem.');
     }
 }
 
@@ -387,7 +398,7 @@ function updateDateTime() {
 }
 
 
-// Aktualizacja co sekundÍ
+// Aktualizacja co sekundƒô
 setInterval(updateDateTime, 1000);
 
 
@@ -412,9 +423,9 @@ function dashboard() {
     window.location.href = 'userDashboard.html';
 }
 
-let allBooks = []; // Bufor na ksiπøki pobrane z serwera
+let allBooks = []; // Bufor na ksiƒÖ≈ºki pobrane z serwera
 
-// Pobierz ksiπøki z bazy danych przy za≥adowaniu strony
+// Pobierz ksiƒÖ≈ºki z bazy danych przy za≈Çadowaniu strony
 async function fetchBooks() {
     try {
         const response = await fetch('http://localhost:3000/api/books');
@@ -422,27 +433,27 @@ async function fetchBooks() {
             allBooks = await response.json();
         }
     } catch (error) {
-        console.error('B≥πd podczas pobierania ksiπøek:', error);
+        console.error('B≈ÇƒÖd podczas pobierania ksiƒÖ≈ºek:', error);
     }
 }
 
-// Wyúwietl podpowiedzi na podstawie wpisywanego tekstu
+// Wy≈õwietl podpowiedzi na podstawie wpisywanego tekstu
 function showSuggestions(field) {
     const input = document.getElementById(`book${capitalize(field)}`);
     const suggestionsDiv = document.getElementById(`${field}Suggestions`);
     const query = input.value.toLowerCase();
 
-    // WyczyúÊ istniejπce podpowiedzi
+    // Wyczy≈õƒá istniejƒÖce podpowiedzi
     suggestionsDiv.innerHTML = '';
 
     if (!query) return; // Brak tekstu -> brak podpowiedzi
 
-    // Filtruj ksiπøki na podstawie wpisywanego tekstu
+    // Filtruj ksiƒÖ≈ºki na podstawie wpisywanego tekstu
     const uniqueSuggestions = Array.from(
         new Set(
             allBooks
                 .map(book => book[field])
-                .filter(value => value && value.toLowerCase().includes(query)) // Filtruj tylko te, ktÛre pasujπ do zapytania
+                .filter(value => value && value.toLowerCase().includes(query)) // Filtruj tylko te, kt√≥re pasujƒÖ do zapytania
         )
     ).slice(0, 5); // Maksymalnie 5 unikalnych podpowiedzi
 
@@ -451,15 +462,15 @@ function showSuggestions(field) {
         const suggestion = document.createElement('div');
         suggestion.textContent = value;
         suggestion.onclick = () => {
-            input.value = value; // Ustaw wartoúÊ pola na wybranπ podpowiedü
-            suggestionsDiv.innerHTML = ''; // WyczyúÊ podpowiedzi
+            input.value = value; // Ustaw warto≈õƒá pola na wybranƒÖ podpowied≈∫
+            suggestionsDiv.innerHTML = ''; // Wyczy≈õƒá podpowiedzi
 
-            // Jeúli wybrano tytu≥, automatycznie uzupe≥nij autora
+            // Je≈õli wybrano tytu≈Ç, automatycznie uzupe≈Çnij autora
             if (field === 'title') {
                 const matchingBook = allBooks.find(book => book.title === value);
                 if (matchingBook) {
                     const authorInput = document.getElementById('bookAuthor');
-                    authorInput.value = matchingBook.author; // Ustaw autora na podstawie wybranego tytu≥u
+                    authorInput.value = matchingBook.author; // Ustaw autora na podstawie wybranego tytu≈Çu
                 }
             }
         };
@@ -467,41 +478,41 @@ function showSuggestions(field) {
     });
 }
 
-// Pomocnicza funkcja do formatowania nazw pÛl
+// Pomocnicza funkcja do formatowania nazw p√≥l
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 
-// Wywo?anie fetchBooks przy za≥adowaniu strony
+// Wywo?anie fetchBooks przy za≈Çadowaniu strony
 document.addEventListener('DOMContentLoaded', fetchBooks);
 
-function animateAddToShelf() {
-    createThrowAnimation('Dodano na pÛ≥kÍ!');
-    addBook(); // Funkcja dodajπca ksiπøkÍ do pÛ≥ki
+function animateAddToShelf() {  
+    addBook(); // Funkcja dodajƒÖca ksiƒÖ≈ºkƒô do p√≥≈Çki
+    createThrowAnimation('Dodano na p√≥≈Çkƒô!');
 }
 
 function animateAddToWishlist() {
+    addBookToWishlist(); // Funkcja dodajƒÖca ksiƒÖ≈ºkƒô do listy ≈ºycze≈Ñ
     createThrowAnimation('Dodano do listy!');
-    addBookToWishlist(); // Funkcja dodajπca ksiπøkÍ do listy øyczeÒ
 }
 
 function createThrowAnimation(text) {
-    // Znajdü pozycjÍ przycisku
+    // Znajd≈∫ pozycjƒô przycisku
     const button = event.target;
     const rect = button.getBoundingClientRect();
 
-    // StwÛrz animowany element
+    // Stw√≥rz animowany element
     const book = document.createElement('div');
     book.classList.add('book-throw');
     book.innerText = text;
     document.body.appendChild(book);
 
-    // Ustaw pozycjÍ animowanego elementu
+    // Ustaw pozycjƒô animowanego elementu
     book.style.left = `${rect.left + rect.width / 2}px`;
     book.style.top = `${rect.top}px`;
 
-    // UsuÒ element po zakoÒczeniu animacji
+    // Usu≈Ñ element po zako≈Ñczeniu animacji
     book.addEventListener('animationend', () => {
         book.remove();
     });

@@ -53,6 +53,8 @@ const User = mongoose.model('User', userSchema);
 const bookSchema = new mongoose.Schema({
     title: { type: String, required: true },
     author: { type: String, required: true },
+    condition: { type: String, enum: ['nowa', 'uzywana'], required: true },
+    coverType: { type: String, enum: ['miekka', 'twarda'], required: true},
 });
 const Book = mongoose.model('Book', bookSchema);
 
@@ -408,19 +410,19 @@ app.post('/login', async (req, res) => {
 
 // Endpoint dodawania ksi¹¿ki
 app.post('/api/books', async (req, res) => {
-    const { title, author } = req.body;
+    const { title, author, condition, coverType } = req.body;
 
-    if (!title || !author) {
+    if (!title || !author || !condition || !coverType) {
         return res.status(400).json({ message: 'Tytu³ i autor s¹ wymagane.' });
     }
 
     try {
-        const existingBook = await Book.findOne({ title, author });
+        const existingBook = await Book.findOne({ title, author, condition, coverType });
         if (existingBook) {
             return res.status(200).json(existingBook);
         }
 
-        const newBook = new Book({ title, author });
+        const newBook = new Book({ title, author, condition, coverType });
         await newBook.save();
         res.status(201).json({ message: 'Ksi¹¿ka dodana pomyœlnie!', _id: newBook._id });
     } catch (err) {

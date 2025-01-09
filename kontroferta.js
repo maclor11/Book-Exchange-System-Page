@@ -52,7 +52,8 @@ async function displayShelf() {
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
                 <p><strong>Autor:</strong><br> <span title="${bookId.author}">${bookId.author}</span></p>
-                <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
+                <p><strong>Stan:</strong> ${bookId.condition || 'Nieznany'}</p>
+                <p><strong>Ok³adka:</strong> ${bookId.coverType || 'Nieznana'}</p>
                 <button class="select-button">Wybierz</button>
             `;
 
@@ -119,7 +120,8 @@ async function displayTradeBooks() {
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
                 <p><strong>Autor:</strong> <br><span title="${bookId.author}">${bookId.author}</span></p>
-                <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
+                <p><strong>Stan:</strong> ${bookId.condition || 'Nieznany'}</p>
+                <p><strong>Ok³adka:</strong> ${bookId.coverType || 'Nieznana'}</p>
                 <button class="select-button">Wybierz</button>
             `;
 

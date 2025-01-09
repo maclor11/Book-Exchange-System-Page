@@ -71,7 +71,8 @@ async function displayBooks() {
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
                 <p><strong>Autor:</strong><br> <span title="${bookId.author}">${bookId.author}</span></p>
-                <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
+                <p><strong>Stan:</strong> ${bookId.condition || 'Nieznany'}</p>
+                <p><strong>Ok³adka:</strong> ${bookId.coverType || 'Nieznana'}</p>
                 <button onclick="removeBookFromShelf('${bookId._id}')">Usuñ</button>
             `;
 

@@ -79,9 +79,10 @@ async function displayBooks() {
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
                 <p><strong>Autor:</strong><br> <span title="${bookId.author}">${bookId.author}</span></p>
-                <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
+                <p><strong>Stan:</strong> ${bookId.condition || 'Nieznany'}</p>
+                <p><strong>Ok³adka:</strong> ${bookId.coverType || 'Nieznana'}</p>
                 <button onclick="trade('${bookId._id}', '${userId}')">Wymiana</button>
-                <button onclick="showUser('${userId}')">Wiêcej</button>
+                <button onclick="showUser('${userId}')">Profil</button>
             `;
 
             bookDiv.appendChild(bookFront);
@@ -142,7 +143,7 @@ async function displaySuggestions() {
 
         // Filtruj ksi¹¿ki zgodnie z list¹ ¿yczeñ
         const matchingBooks = allBooks.filter(({ bookId }) =>
-            wishlist.some(wish => wish.bookId.title === bookId.title && wish.bookId.author === bookId.author)
+            wishlist.some(wish => wish.bookId.title === bookId.title && wish.bookId.author === bookId.author && bookId.condition === condition && bookId.coverType === coverType)
         );
 
         // Pobierz kontener sugestii
@@ -168,9 +169,10 @@ async function displaySuggestions() {
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
                 <p><strong>Autor:</strong><br> <span title="${bookId.author}">${bookId.author}</span></p>
-                <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
+                <p><strong>Stan:</strong> ${bookId.condition || 'Nieznany'}</p>
+                <p><strong>Ok³adka:</strong> ${bookId.coverType || 'Nieznana'}</p>
                 <button onclick="trade('${bookId._id}', '${userId}')">Wymiana</button>
-                <button onclick="showUser('${userId}')">Wiêcej</button>
+                <button onclick="showUser('${userId}')">Profil</button>
             `;
 
             bookDiv.appendChild(bookFront);
@@ -247,7 +249,7 @@ async function displayNotification() {
 
         // Filtruj ksi¹¿ki zgodnie z list¹ ¿yczeñ
         const matchingBooks = allBooks.filter(({ bookId }) =>
-            wishlist.some(wish => wish.bookId.title === bookId.title && wish.bookId.author === bookId.author)
+            wishlist.some(wish => wish.bookId.title === bookId.title && wish.bookId.author === bookId.author && bookId.condition === condition && bookId.coverType === coverType)
         );
 
         const notificationList = document.getElementById('notificationList');

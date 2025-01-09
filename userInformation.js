@@ -39,7 +39,8 @@ async function displayShelf() {
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
                 <p><strong>Autor:</strong><br> <span title="${bookId.author}">${bookId.author}</span></p>
-                <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
+                <p><strong>Stan:</strong> ${bookId.condition || 'Nieznany'}</p>
+                <p><strong>Okładka:</strong> ${bookId.coverType || 'Nieznana'}</p>
             `;
             bookDiv.appendChild(bookFront);
             bookDiv.appendChild(bookBack);
@@ -72,7 +73,8 @@ async function displayWishlist() {
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
                <p><strong>Autor:</strong><br><span title="${bookId.author}">${bookId.author}</span></p>
-                <p><strong>Opis:</strong> ${bookId.description || 'Brak opisu.'}</p>
+                <p><strong>Stan:</strong> ${bookId.condition || 'Nieznany'}</p>
+                <p><strong>Okładka:</strong> ${bookId.coverType || 'Nieznana'}</p>
             `;
             bookDiv.appendChild(bookFront);
             bookDiv.appendChild(bookBack);

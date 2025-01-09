@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wymiana Książek</title>
     <style>
-        /* Styl ogólny */
         body {
             font-family: 'Roboto', Arial, sans-serif;
             background: linear-gradient(135deg, #f3e6e8, #f9f9f4);
@@ -103,15 +102,15 @@
         #shelf, #wishlist {
             display: flex;
             flex-wrap: wrap;
-            justify-content: flex-start; /* Karty zaczynają od lewej */
-            gap: 20px; /* Odstępy między kartami */
-            padding: 40px; /* Wewnętrzny margines */
-            border: 1px solid #d4b483; /* Obramowanie sekcji */
-            border-radius: 12px; /* Zaokrąglenie */
-            background-color: #fff; /* Tło sekcji */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtelny cień */
-            max-height: 400px; /* Opcjonalne ograniczenie wysokości */
-            overflow-y: auto; /* Pionowy przewijany pasek w przypadku dużej liczby kart */
+            justify-content: flex-start; 
+            gap: 20px;
+            padding: 40px; 
+            border: 1px solid #d4b483; 
+            border-radius: 12px; 
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-height: 400px; 
+            overflow-y: auto; 
         }
 
         .book-container {
@@ -197,6 +196,16 @@
                 font-size: 14px;
             }
 
+            #addBookForm select {
+                padding: 10px;
+                margin: 10px 0;
+                width: calc(100% - 20px);
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 14px;
+                background: white;
+            }
+
             #addBookForm button {
                 padding: 10px 20px;
                 margin: 10px;
@@ -212,6 +221,7 @@
                 #addBookForm button:hover {
                     background-color: #3e8e41;
                 }
+
 
         .suggestions {
             position: absolute;
@@ -326,6 +336,18 @@
 
             <input type="text" id="bookAuthor" placeholder="Autor książki" oninput="showSuggestions('author')" required>
             <div id="authorSuggestions" class="suggestions"></div> <!-- Podpowiedzi dla autora -->
+
+            <select id="bookCondition">
+                <option value="">Wybierz stan</option>
+                <option value="nowa">Nowa</option>
+                <option value="uzywana">Używana</option>
+            </select>
+
+            <select id="bookCover">
+                <option value="">Wybierz okładkę</option>
+                <option value="miekka">Miękka</option>
+                <option value="twarda">Twarda</option>
+            </select>
 
             <button onclick="animateAddToShelf()">Dodaj do półki</button>
             <button onclick="animateAddToWishlist()">Dodaj do listy</button>
