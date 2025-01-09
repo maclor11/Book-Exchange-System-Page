@@ -34,7 +34,7 @@ async function displayShelf() {
             bookDiv.classList.add('book');
             const bookFront = document.createElement('div');
             bookFront.classList.add('book-face', 'book-front');
-            bookFront.innerHTML = `<strong title="${bookId.title}">${bookId.title}</strong><br><small>Właściciel: ${username}</small>`;
+            bookFront.innerHTML = `<strong title="${bookId.title}">${bookId.title}</strong><br>`;
             const bookBack = document.createElement('div');
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
