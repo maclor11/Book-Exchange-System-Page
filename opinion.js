@@ -1,4 +1,11 @@
 const tradeId = localStorage.getItem('tradeId');
+const username = localStorage.getItem('username');
+
+if (username) {
+    document.getElementById('username').innerText = username;
+} else {
+    window.location.href = 'index.html'; // Jeœli brak nazwy, wraca do logowania
+}
 
 function goBack() {
     window.location.href = "userDashboard.html";

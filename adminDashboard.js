@@ -2,6 +2,11 @@
 const username = localStorage.getItem('username');
 const userId = localStorage.getItem('userId');
 
+if (username) {
+    document.getElementById('username').innerText = username;
+} else {
+    window.location.href = 'index.html'; // Jeœli brak nazwy, wraca do logowania
+}
 function logout() {
     window.location.href = "index.html";
 }

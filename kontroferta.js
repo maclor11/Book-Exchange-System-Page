@@ -5,6 +5,17 @@ const userId2 = localStorage.getItem('userId2');
 const selectedBooks1 = new Array();
 const selectedBooks2 = new Array();
 
+if (username) {
+    document.getElementById('username').innerText = username;
+} else {
+    window.location.href = 'index.html'; // Jeœli brak nazwy, wraca do logowania
+}
+
+if (username) {
+    document.getElementById('username').innerText = username;
+} else {
+    window.location.href = 'index.html'; // Jeœli brak nazwy, wraca do logowania
+}
 function goBack() {
     localStorage.removeItem('userId2');
     window.location.href = 'userDashboard.html';
