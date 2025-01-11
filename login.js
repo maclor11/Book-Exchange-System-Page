@@ -41,7 +41,7 @@ loginForm.addEventListener('submit', async (e) => {
         const response = await fetch('http://localhost:3000/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password }),
+            body: JSON.stringify({ username, password}),
         });
 
         const result = await response.json();
@@ -60,8 +60,15 @@ loginForm.addEventListener('submit', async (e) => {
             const userId = userData.userId;
 
 
+            const statusResponse = await fetch(`http://localhost:3000/api/users/by-id/status/${userId}`);
+            if (!statusResponse.ok) {
+                alert('Nie mo¿na znaleŸæ u¿ytkownika.');
+                return;
+            }
+            const statusData = await statusResponse.json();
+            const isAdmin = statusData.isAdmin;
             // Sprawdzenie, czy userId to admin
-            if (userId === '677bbb93c3bf6ee5a20f9c86') {
+            if (isAdmin === 1) {
                 window.location.href = 'adminDashboard.html'; // Przekierowanie na adminDashboard
             } else {
                 window.location.href = 'userDashboard.html'; // Przekierowanie na userDashboard

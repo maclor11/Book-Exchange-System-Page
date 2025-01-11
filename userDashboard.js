@@ -143,7 +143,7 @@ async function displaySuggestions() {
 
         // Filtruj książki zgodnie z listą życzeń
         const matchingBooks = allBooks.filter(({ bookId }) =>
-            wishlist.some(wish => wish.bookId.title === bookId.title && wish.bookId.author === bookId.author && bookId.condition === condition && bookId.coverType === coverType)
+            wishlist.some(wish => wish.bookId.title === bookId.title && wish.bookId.author === bookId.author)
         );
 
         // Pobierz kontener sugestii
@@ -221,7 +221,7 @@ async function displayNotification() {
         );
 
         const cancelledTrades = trades.filter(
-            trade => trade.status === 'cancelled' && trade.reviewed === 0 && trade.userId._id === userId
+            trade => trade.status === 'cancelled' && trade.userId._id === userId && trade.reviewed === 0
         );
 
         // Pobierz listę życzeń użytkownika
@@ -253,7 +253,7 @@ async function displayNotification() {
 
         // Filtruj książki zgodnie z listą życzeń
         const matchingBooks = allBooks.filter(({ bookId }) =>
-            wishlist.some(wish => wish.bookId.title === bookId.title && wish.bookId.author === bookId.author && bookId.condition === condition && bookId.coverType === coverType)
+            wishlist.some(wish => wish.bookId.title === bookId.title && wish.bookId.author === bookId.author)
         );
 
         const notificationList = document.getElementById('notificationList');
@@ -308,7 +308,6 @@ async function displayNotification() {
                 notification.innerHTML = `
                 <p><strong>${user2}</strong> odrzucił Twoją wymianę książek</p>
                 <div class="notification-buttons">
-                <button onclick="leaveReview(true)">Wystaw opinię</button>
                 <button onclick="deleteTrade('${trade._id}')">OK</button>
                 </div>`;
                 notificationList.appendChild(notification);
@@ -331,7 +330,7 @@ async function displayNotification() {
         }
 
         // Jeśli brak powiadomień
-        if (filteredTrades.length === 0 && matchingBooks.length === 0 && tradesToReview.length === 0) {
+        if (filteredTrades.length === 0 && matchingBooks.length === 0 && tradesToReview.length === 0 && cancelledTrades.length === 0) {
             notificationList.innerHTML = '<li>Brak nowych powiadomień.</li>';
         }
     } catch (error) {

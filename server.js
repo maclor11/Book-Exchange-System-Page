@@ -22,6 +22,7 @@ mongoose.connect('mongodb://localhost:27017/logowanie', {
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true},
     password: { type: String, required: true },
+    isAdmin: { type: Number, required: true, default: 0 },
 });
 
 userSchema.pre('findOneAndDelete', async function (next) {
@@ -373,7 +374,7 @@ app.post('/api/user-wishlist', async (req, res) => {
 
 // Endpoint rejestracji u¿ytkownika
 app.post('/register', async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, isAdmin } = req.body;
 
     try {
         // Sprawdzenie, czy u¿ytkownik ju¿ istnieje
@@ -383,7 +384,7 @@ app.post('/register', async (req, res) => {
         }
 
         // Tworzenie nowego u¿ytkownika
-        const newUser = new User({ username, password });
+        const newUser = new User({ username, password, isAdmin});
         await newUser.save();
         res.status(201).json({ message: 'Rejestracja zakoñczona sukcesem!' });
     } catch (error) {
@@ -496,7 +497,8 @@ app.get('/api/users/:username', async (req, res) => {
         res.status(500).json({ message: 'B³¹d serwera.' });
     }
 });
-// Endpoint wyszukiwania userId na podstawie username
+
+
 app.get('/api/users/by-id/:_id', async (req, res) => {
     const { _id } = req.params;
 
@@ -507,6 +509,22 @@ app.get('/api/users/by-id/:_id', async (req, res) => {
         }
 
         res.status(200).json({ username: user.username});
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'B³¹d serwera.' });
+    }
+});
+
+app.get('/api/users/by-id/status/:_id', async (req, res) => {
+    const { _id } = req.params;
+
+    try {
+        const user = await User.findById({ _id });
+        if (!user) {
+            return res.status(404).json({ message: 'Nie znaleziono u¿ytkownika.' });
+        }
+
+        res.status(200).json({ isAdmin: user.isAdmin });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'B³¹d serwera.' });
