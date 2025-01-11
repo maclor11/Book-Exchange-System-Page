@@ -18,8 +18,9 @@
         }
 
         h1 {
-            color: #333;
+            color: rgba(255, 255, 255, 0.8);
             text-align: center;
+            font-size: 0;
         }
 
         .navbar {
@@ -161,7 +162,7 @@
             justify-content: space-between;
             align-items: flex-start;
             gap: 20px;
-            margin-top: 20px;
+            //margin-top: 20px;
             flex-wrap: wrap;
         }
 
@@ -279,6 +280,24 @@
                     opacity: 0.8;
                 }
 
+        .custom-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #4CAF50;
+            text-align: center;
+            margin: 20px 0;
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #e8e4d9, #f5f3eb);
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid #d4b483;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+
+
     </style>
 </head>
 <body>
@@ -295,6 +314,8 @@
 
     <div class="container">
         <h1>Profil użytkownika: <span id="username"></span>!</h1>
+        <div class="custom-title">Profil użytkownika: <span id="username2"></span></div>
+
         <div class="sections">
             <!-- Sekcja Półka na książki -->
             <div class="section" id="bookshelf">

@@ -68,7 +68,7 @@ async function displayWishlist() {
             bookDiv.classList.add('book');
             const bookFront = document.createElement('div');
             bookFront.classList.add('book-face', 'book-front');
-            bookFront.innerHTML = `<strong title="${bookId.title}">${bookId.title}</strong><br><small>Właściciel: ${username}</small>`;
+            bookFront.innerHTML = `<strong title="${bookId.title}">${bookId.title}</strong><br>`;
             const bookBack = document.createElement('div');
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
@@ -132,10 +132,39 @@ async function displayOpinions() {
         alert('Wystąpił błąd podczas ładowania opinii.');
     }
 }
+
+async function getUsername2() {
+    try {
+        const response = await fetch(`http://localhost:3000/api/users/by-id/${userId2}`);
+
+        // Sprawdzamy, czy zapytanie zakończyło się pomyślnie
+        if (!response.ok) {
+            throw new Error('Błąd podczas pobierania danych użytkownika');
+        }
+
+        const userResponse = await response.json();
+        const username2 = userResponse.username;
+        if (username2) {
+            document.getElementById('username2').innerText = username2;
+        } else {
+            window.location.href = 'userDashboard.html'; // Jeœli brak nazwy, wraca do logowania
+        }
+
+    } catch (error) {
+        console.error('Wystąpił problem:', error.message);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    getUsername2();
+});
+
+
 // Aktualizacja co sekundê
 setInterval(updateDateTime, 1000);
 
 window.onload = () => {
+    getUsername2();
     displayShelf();
     displayWishlist();
     displayOpinions();

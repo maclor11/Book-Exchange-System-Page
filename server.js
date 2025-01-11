@@ -108,7 +108,7 @@ const tradeSchema = new mongoose.Schema({
     selectedBooks1: [{ type: mongoose.Schema.Types.ObjectId , ref: 'UserBook'}], // Ksi¹¿ki u¿ytkownika 1
     selectedBooks2: [{ type: mongoose.Schema.Types.ObjectId ,  ref: 'UserBook'}], // Ksi¹¿ki u¿ytkownika 2
     tradeDate: { type: Date, default: Date.now }, // Data wymiany
-    status: { type: String, enum: ['pending', 'completed'], default: 'pending' }, // Status wymiany
+    status: { type: String, enum: ['pending', 'completed', 'cancelled'], default: 'pending' }, // Status wymiany
     reviewed: { type: Number, default: 0, required: true },
 });
 
@@ -199,7 +199,7 @@ app.post('/api/trades/:tradeId/status', async (req, res) => {
     const { status } = req.body;   // Pobierz nowy status z cia³a ¿¹dania
 
     // SprawdŸ, czy nowy status jest dostarczony
-    if (!status || !['pending', 'completed'].includes(status)) {
+    if (!status || !['pending', 'completed', 'cancelled'].includes(status)) {
         return res.status(400).json({ message: 'Nieprawid³owy status. Dozwolone wartoœci: pending, completed, cancelled.' });
     }
 
@@ -491,6 +491,22 @@ app.get('/api/users/:username', async (req, res) => {
         }
 
         res.status(200).json({ userId: user._id });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'B³¹d serwera.' });
+    }
+});
+// Endpoint wyszukiwania userId na podstawie username
+app.get('/api/users/by-id/:_id', async (req, res) => {
+    const { _id } = req.params;
+
+    try {
+        const user = await User.findById({ _id });
+        if (!user) {
+            return res.status(404).json({ message: 'Nie znaleziono u¿ytkownika.' });
+        }
+
+        res.status(200).json({ username: user.username});
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'B³¹d serwera.' });
