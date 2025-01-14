@@ -3,6 +3,30 @@
   "WorkspaceRootPath": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\opinion.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:opinion.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\secondOpinion.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:secondOpinion.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\kontroferta.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:kontroferta.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\kontroferta.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:kontroferta.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\adminDashboard.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:adminDashboard.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\trade.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:trade.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\userDashboard.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:userDashboard.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
@@ -11,12 +35,8 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:server.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\secondOpinion.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:secondOpinion.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\trade.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:trade.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\login.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:login.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\questDashboard.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -43,14 +63,6 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:bookshelf.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\kontroferta.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:kontroferta.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\adminDashboard.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:adminDashboard.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\hp\\Desktop\\IOprojektGIT\\secondOpinion.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:secondOpinion.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
@@ -62,7 +74,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 12,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -82,46 +94,44 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "secondOpinion.js",
-              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\secondOpinion.js",
-              "RelativeDocumentMoniker": "secondOpinion.js",
-              "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\secondOpinion.js",
-              "RelativeToolTip": "secondOpinion.js",
-              "ViewState": "AQIAABgAAAAAAAAAAAAAAEEAAABfAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-01-11T13:15:12.613Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "userInformation.html",
-              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\userInformation.html",
-              "RelativeDocumentMoniker": "userInformation.html",
-              "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\userInformation.html",
-              "RelativeToolTip": "userInformation.html",
-              "ViewState": "AQIAAPYAAAAAAAAAAAAAABEBAAA7AAAA",
+              "DocumentIndex": 3,
+              "Title": "kontroferta.html",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\kontroferta.html",
+              "RelativeDocumentMoniker": "kontroferta.html",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\kontroferta.html",
+              "RelativeToolTip": "kontroferta.html",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-01-09T20:47:36.977Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-11T21:20:38.439Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "userInformation.js",
-              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\userInformation.js",
-              "RelativeDocumentMoniker": "userInformation.js",
-              "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\userInformation.js",
-              "RelativeToolTip": "userInformation.js",
-              "ViewState": "AQIAAGgAAAAAAAAAAAAowIoAAAAAAAAA",
+              "DocumentIndex": 0,
+              "Title": "opinion.js",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\opinion.js",
+              "RelativeDocumentMoniker": "opinion.js",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\opinion.js",
+              "RelativeToolTip": "opinion.js",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-01-09T20:44:06.63Z",
+              "WhenOpened": "2025-01-11T21:19:40.699Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 8,
+              "Title": "login.js",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\login.js",
+              "RelativeDocumentMoniker": "login.js",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\login.js",
+              "RelativeToolTip": "login.js",
+              "ViewState": "AQIAABoAAAAAAAAAAAAIwDcAAAAXAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-01-11T20:40:52.375Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "questDashboard.js",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\questDashboard.js",
               "RelativeDocumentMoniker": "questDashboard.js",
@@ -129,12 +139,11 @@
               "RelativeToolTip": "questDashboard.js",
               "ViewState": "AQIAACoAAAAAAAAAAAAAADQAAAAiAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-01-09T20:40:32.507Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-09T20:40:32.507Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 13,
               "Title": "bookshelf.js",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\bookshelf.js",
               "RelativeDocumentMoniker": "bookshelf.js",
@@ -146,32 +155,31 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 2,
               "Title": "kontroferta.js",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\kontroferta.js",
               "RelativeDocumentMoniker": "kontroferta.js",
               "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\kontroferta.js",
               "RelativeToolTip": "kontroferta.js",
-              "ViewState": "AQIAALgAAAAAAAAAAAAuwDcAAAAQAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2025-01-08T19:02:51.007Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "trade.js",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\trade.js",
               "RelativeDocumentMoniker": "trade.js",
               "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\trade.js",
               "RelativeToolTip": "trade.js",
-              "ViewState": "AQIAAKIAAAAAAAAAAAAAAIMAAABtAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-01-07T11:25:51.725Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-07T11:25:51.725Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 12,
               "Title": "userDashboard.html",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\userDashboard.html",
               "RelativeDocumentMoniker": "userDashboard.html",
@@ -183,33 +191,79 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 6,
               "Title": "userDashboard.js",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\userDashboard.js",
               "RelativeDocumentMoniker": "userDashboard.js",
               "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\userDashboard.js",
               "RelativeToolTip": "userDashboard.js",
-              "ViewState": "AQIAAB0BAAAAAAAAAAAAAEABAAA/AAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-01-01T20:07:31.058Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-01T20:07:31.058Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
               "Title": "server.js",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\server.js",
               "RelativeDocumentMoniker": "server.js",
               "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\server.js",
               "RelativeToolTip": "server.js",
-              "ViewState": "AQIAAJ0AAAAAAAAAAAAYwMEAAAAFAAAA",
+              "ViewState": "AQIAAJoCAAAAAAAAAAAAAA8CAAATAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-01-09T19:56:50.59Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-09T19:56:50.59Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 1,
+              "Title": "secondOpinion.js",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\secondOpinion.js",
+              "RelativeDocumentMoniker": "secondOpinion.js",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\secondOpinion.js",
+              "RelativeToolTip": "secondOpinion.js",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAbAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-01-11T13:15:12.613Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "adminDashboard.js",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\adminDashboard.js",
+              "RelativeDocumentMoniker": "adminDashboard.js",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\adminDashboard.js",
+              "RelativeToolTip": "adminDashboard.js",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-01-09T20:39:03.819Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "userInformation.js",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\userInformation.js",
+              "RelativeDocumentMoniker": "userInformation.js",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\userInformation.js",
+              "RelativeToolTip": "userInformation.js",
+              "ViewState": "AQIAAGgAAAAAAAAAAAAowIoAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-01-09T20:44:06.63Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "userInformation.html",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\userInformation.html",
+              "RelativeDocumentMoniker": "userInformation.html",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\userInformation.html",
+              "RelativeToolTip": "userInformation.html",
+              "ViewState": "AQIAAPYAAAAAAAAAAAAAABEBAAA7AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-01-09T20:47:36.977Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "bookshelf.html",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\bookshelf.html",
               "RelativeDocumentMoniker": "bookshelf.html",
@@ -221,19 +275,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "adminDashboard.js",
-              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\adminDashboard.js",
-              "RelativeDocumentMoniker": "adminDashboard.js",
-              "ToolTip": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\adminDashboard.js",
-              "RelativeToolTip": "adminDashboard.js",
-              "ViewState": "AQIAANYAAAAAAAAAAADwvzoAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-01-09T20:39:03.819Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 15,
               "Title": "secondOpinion.html",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\IOprojektGIT\\secondOpinion.html",
               "RelativeDocumentMoniker": "secondOpinion.html",

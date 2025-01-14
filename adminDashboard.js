@@ -22,7 +22,7 @@ function updateDateTime() {
 
 async function displayBooks() {
     try {
-        const loggedInUsername = localStorage.getItem('username');
+        const loggedInUsername = username;
 
         // Pobierz zalogowanego użytkownika
         const loggedInUserResponse = await fetch(`http://localhost:3000/api/users/${loggedInUsername}`);
