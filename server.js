@@ -1,4 +1,4 @@
-const express = require('express');
+Ôªøconst express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -13,12 +13,12 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
-// Po≥πczenie z MongoDB
+// Po≈ÇƒÖczenie z MongoDB
 mongoose.connect('mongodb://localhost:27017/logowanie', {
-}).then(() => console.log('Po≥πczono z MongoDB!'))
-    .catch(err => console.error('B≥πd po≥πczenia z MongoDB:', err));
+}).then(() => console.log('Po≈ÇƒÖczono z MongoDB!'))
+    .catch(err => console.error('B≈ÇƒÖd po≈ÇƒÖczenia z MongoDB:', err));
 
-// Schemat i model uøytkownika
+// Schemat i model u≈ºytkownika
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true},
     password: { type: String, required: true },
@@ -27,30 +27,30 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre('findOneAndDelete', async function (next) {
     try {
-        const user = await this.model.findOne(this.getQuery()); // Znajdü usuwanego uøytkownika
+        const user = await this.model.findOne(this.getQuery()); // Znajd≈∫ usuwanego u≈ºytkownika
         if (!user) return next();
 
         const userId = user._id;
 
-        // UsuÒ powiπzane ksiπøki uøytkownika
+        // Usu≈Ñ powiƒÖzane ksiƒÖ≈ºki u≈ºytkownika
         await UserBook.deleteMany({ userId });
 
-        // UsuÒ powiπzane ksiπøki z listy øyczeÒ
+        // Usu≈Ñ powiƒÖzane ksiƒÖ≈ºki z listy ≈ºycze≈Ñ
         await UserWishlist.deleteMany({ userId });
 
-        // UsuÒ wymiany, gdzie uøytkownik jest userId lub userId2
+        // Usu≈Ñ wymiany, gdzie u≈ºytkownik jest userId lub userId2
         await Trade.deleteMany({ $or: [{ userId }, { userId2: userId }] });
 
         next();
     } catch (error) {
-        console.error('B≥πd podczas usuwania powiπzanych dokumentÛw:', error);
+        console.error('B≈ÇƒÖd podczas usuwania powiƒÖzanych dokument√≥w:', error);
         next(error);
     }
 });
 
 const User = mongoose.model('User', userSchema);
 
-// Schemat i model ksiπøki
+// Schemat i model ksiƒÖ≈ºki
 const bookSchema = new mongoose.Schema({
     title: { type: String, required: true },
     author: { type: String, required: true },
@@ -59,11 +59,11 @@ const bookSchema = new mongoose.Schema({
 });
 const Book = mongoose.model('Book', bookSchema);
 
-// Schemat i model dla relacji uøytkownik-ksiπøka
+// Schemat i model dla relacji u≈ºytkownik-ksiƒÖ≈ºka
 const userBookSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book', required: true },
-    ownedDate: { type: Date, default: Date.now }, // Data dodania ksiπøki
+    ownedDate: { type: Date, default: Date.now }, // Data dodania ksiƒÖ≈ºki
 });
 
 const UserBook = mongoose.model('UserBook', userBookSchema);
@@ -76,7 +76,7 @@ userBookSchema.pre('findOneAndDelete', async function (next) {
 
         const userBookId = userBook._id;
 
-        // UsuÒ wymiany, w ktÛrych usuwany UserBook jest uøywany
+        // Usu≈Ñ wymiany, w kt√≥rych usuwany UserBook jest u≈ºywany
         await Trade.deleteMany({
             $or: [
                 { selectedBooks1: userBookId },
@@ -86,34 +86,34 @@ userBookSchema.pre('findOneAndDelete', async function (next) {
 
         next();
     } catch (error) {
-        console.error('B≥πd podczas usuwania powiπzanych wymian:', error);
+        console.error('B≈ÇƒÖd podczas usuwania powiƒÖzanych wymian:', error);
         next(error);
     }
 });
 
 
-// Schemat i model dla listy øyczeÒ uøytkownika
+// Schemat i model dla listy ≈ºycze≈Ñ u≈ºytkownika
 const userWishlistSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book', required: true },
-    ownedDate: { type: Date, default: Date.now }, // Data dodania ksiπøki
+    ownedDate: { type: Date, default: Date.now }, // Data dodania ksiƒÖ≈ºki
 });
 
 const UserWishlist = mongoose.model('UserWishlist', userWishlistSchema);
 
 
-// Schemat i model dla wymiany ksiπøek miÍdzy uøytkownikami (z wieloma ksiπøkami)
+// Schemat i model dla wymiany ksiƒÖ≈ºek miƒôdzy u≈ºytkownikami (z wieloma ksiƒÖ≈ºkami)
 const tradeSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     userId2: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    selectedBooks1: [{ type: mongoose.Schema.Types.ObjectId , ref: 'UserBook'}], // Ksiπøki uøytkownika 1
-    selectedBooks2: [{ type: mongoose.Schema.Types.ObjectId ,  ref: 'UserBook'}], // Ksiπøki uøytkownika 2
+    selectedBooks1: [{ type: mongoose.Schema.Types.ObjectId , ref: 'UserBook'}], // KsiƒÖ≈ºki u≈ºytkownika 1
+    selectedBooks2: [{ type: mongoose.Schema.Types.ObjectId ,  ref: 'UserBook'}], // KsiƒÖ≈ºki u≈ºytkownika 2
     tradeDate: { type: Date, default: Date.now }, // Data wymiany
     status: { type: String, enum: ['pending', 'completed', 'cancelled'], default: 'pending' }, // Status wymiany
     reviewed: { type: Number, default: 0, required: true },
 });
 
-// Model wymiany ksiπøek
+// Model wymiany ksiƒÖ≈ºek
 const Trade = mongoose.model('Trade', tradeSchema);
 
 const opinionSchema = new mongoose.Schema({
@@ -129,12 +129,12 @@ app.post('/api/opinions', async (req, res) => {
     try {
         const { userId, tradeId, message, stars } = req.body;
 
-        // Sprawdzamy, czy wszystkie wymagane dane sπ obecne
+        // Sprawdzamy, czy wszystkie wymagane dane sƒÖ obecne
         if (!userId || !tradeId || !message || !stars) {
-            return res.status(400).json({ message: 'Wszystkie pola muszπ byÊ wype≥nione' });
+            return res.status(400).json({ message: 'Wszystkie pola muszƒÖ byƒá wype≈Çnione' });
         }
 
-        // Tworzymy nowπ opiniÍ
+        // Tworzymy nowƒÖ opiniƒô
         const newOpinion = new Opinion({
             userId,
             tradeId,
@@ -142,17 +142,17 @@ app.post('/api/opinions', async (req, res) => {
             stars
         });
 
-        // Zapisujemy opiniÍ w bazie danych
+        // Zapisujemy opiniƒô w bazie danych
         await newOpinion.save();
-        res.status(200).json({ message: 'Opinia zosta≥a pomyúlnie dodana' });
+        res.status(200).json({ message: 'Opinia zosta≈Ça pomy≈õlnie dodana' });
     } catch (error) {
-        console.error('B≥πd podczas dodawania opinii:', error);
-        res.status(500).json({ message: 'B≥πd serwera', error });
+        console.error('B≈ÇƒÖd podczas dodawania opinii:', error);
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera', error });
     }
 });
 
 
-// Endpoint pobierania ksiπøek z listy øyczeÒ uøytkownika
+// Endpoint pobierania ksiƒÖ≈ºek z listy ≈ºycze≈Ñ u≈ºytkownika
 app.get('/api/opinions/:userId', async (req, res) => {
     const { userId } = req.params;
 
@@ -161,7 +161,7 @@ app.get('/api/opinions/:userId', async (req, res) => {
         res.status(200).json(opinions);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
@@ -171,11 +171,11 @@ app.post('/api/trades', async (req, res) => {
     try {
         const { userId, userId2, selectedBooks1, selectedBooks2 } = req.body;
 
-        // Znajdü dokumenty UserBook dla przekazanych bookId
+        // Znajd≈∫ dokumenty UserBook dla przekazanych bookId
         const userBooks1 = await UserBook.find({ bookId: { $in: selectedBooks1 }, userId });
         const userBooks2 = await UserBook.find({ bookId: { $in: selectedBooks2 }, userId: userId2 });
 
-        // Pobierz _id dokumentÛw UserBook
+        // Pobierz _id dokument√≥w UserBook
         const userBookIds1 = userBooks1.map(ub => ub._id);
         const userBookIds2 = userBooks2.map(ub => ub._id);
 
@@ -196,12 +196,12 @@ app.post('/api/trades', async (req, res) => {
 });
 
 app.post('/api/trades/:tradeId/status', async (req, res) => {
-    const { tradeId } = req.params; // Pobierz ID wymiany z parametru úcieøki
-    const { status } = req.body;   // Pobierz nowy status z cia≥a øπdania
+    const { tradeId } = req.params; // Pobierz ID wymiany z parametru ≈õcie≈ºki
+    const { status } = req.body;   // Pobierz nowy status z cia≈Ça ≈ºƒÖdania
 
-    // Sprawdü, czy nowy status jest dostarczony
+    // Sprawd≈∫, czy nowy status jest dostarczony
     if (!status || !['pending', 'completed', 'cancelled'].includes(status)) {
-        return res.status(400).json({ message: 'Nieprawid≥owy status. Dozwolone wartoúci: pending, completed, cancelled.' });
+        return res.status(400).json({ message: 'Nieprawid≈Çowy status. Dozwolone warto≈õci: pending, completed, cancelled.' });
     }
 
     try {
@@ -209,27 +209,27 @@ app.post('/api/trades/:tradeId/status', async (req, res) => {
         const trade = await Trade.findByIdAndUpdate(
             tradeId,
             { status },
-            { new: true } // ZwrÛÊ zaktualizowany dokument
+            { new: true } // Zwr√≥ƒá zaktualizowany dokument
         );
 
         if (!trade) {
             return res.status(404).json({ message: 'Nie znaleziono wymiany o podanym ID.' });
         }
 
-        res.status(200).json({ message: 'Status wymiany zosta≥ zaktualizowany.', trade });
+        res.status(200).json({ message: 'Status wymiany zosta≈Ç zaktualizowany.', trade });
     } catch (error) {
-        console.error('B≥πd podczas aktualizacji statusu wymiany:', error);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        console.error('B≈ÇƒÖd podczas aktualizacji statusu wymiany:', error);
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
 app.post('/api/trades/:tradeId/reviewed', async (req, res) => {
-    const { tradeId } = req.params; // Pobierz ID wymiany z parametru úcieøki
-    const { reviewed } = req.body;   // Pobierz nowy status z cia≥a øπdania
+    const { tradeId } = req.params; // Pobierz ID wymiany z parametru ≈õcie≈ºki
+    const { reviewed } = req.body;   // Pobierz nowy status z cia≈Ça ≈ºƒÖdania
 
-    // Sprawdü, czy nowy status jest dostarczony
+    // Sprawd≈∫, czy nowy status jest dostarczony
     if (!reviewed || ![1, 0].includes(reviewed)) {
-        return res.status(400).json({ message: 'Nieprawid≥owy status. Dozwolone wartoúci: 1, 0' });
+        return res.status(400).json({ message: 'Nieprawid≈Çowy status. Dozwolone warto≈õci: 1, 0' });
     }
 
     try {
@@ -237,17 +237,17 @@ app.post('/api/trades/:tradeId/reviewed', async (req, res) => {
         const trade = await Trade.findByIdAndUpdate(
             tradeId,
             { reviewed },
-            { new: true } // ZwrÛÊ zaktualizowany dokument
+            { new: true } // Zwr√≥ƒá zaktualizowany dokument
         );
 
         if (!trade) {
             return res.status(404).json({ message: 'Nie znaleziono wymiany o podanym ID.' });
         }
 
-        res.status(200).json({ message: 'Status wymiany zosta≥ zaktualizowany.', trade });
+        res.status(200).json({ message: 'Status wymiany zosta≈Ç zaktualizowany.', trade });
     } catch (error) {
-        console.error('B≥πd podczas aktualizacji statusu wymiany:', error);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        console.error('B≈ÇƒÖd podczas aktualizacji statusu wymiany:', error);
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
@@ -265,7 +265,7 @@ app.get('/api/trades/by-id/:tradeId', async (req, res) => {
         res.status(200).json(trade);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
@@ -303,18 +303,18 @@ app.get('/api/trades/by-user/:userId', async (req, res) => {
 
         res.status(200).json(trades);
     } catch (error) {
-        console.error("B≥πd podczas pobierania wymian:", error);
-        res.status(500).json({ message: "B≥πd serwera" });
+        console.error("B≈ÇƒÖd podczas pobierania wymian:", error);
+        res.status(500).json({ message: "B≈ÇƒÖd serwera" });
     }
 });
 
 
-// Endpoint dodawania ksiπøki na pÛ≥kÍ uøytkownika
+// Endpoint dodawania ksiƒÖ≈ºki na p√≥≈Çkƒô u≈ºytkownika
 app.post('/api/user-books', async (req, res) => {
     const { userId, bookId } = req.body;
 
     if (!userId || !bookId) {
-        return res.status(400).json({ message: 'Identyfikator uøytkownika i ksiπøki sπ wymagane.' });
+        return res.status(400).json({ message: 'Identyfikator u≈ºytkownika i ksiƒÖ≈ºki sƒÖ wymagane.' });
     }
 
     try {
@@ -322,30 +322,30 @@ app.post('/api/user-books', async (req, res) => {
         const bookExists = await Book.findById(bookId);
 
         if (!userExists || !bookExists) {
-            return res.status(404).json({ message: 'Nie znaleziono uøytkownika lub ksiπøki.' });
+            return res.status(404).json({ message: 'Nie znaleziono u≈ºytkownika lub ksiƒÖ≈ºki.' });
         }
 
         const userBookExists = await UserBook.findOne({ userId, bookId });
         if (userBookExists) {
-            return res.status(409).json({ message: 'Ksiπøka jest juø na pÛ≥ce uøytkownika.' });
+            return res.status(409).json({ message: 'KsiƒÖ≈ºka jest ju≈º na p√≥≈Çce u≈ºytkownika.' });
         }
 
         const userBook = new UserBook({ userId, bookId });
         await userBook.save();
 
-        res.status(201).json({ message: 'Ksiπøka zosta≥a dodana do uøytkownika.' });
+        res.status(201).json({ message: 'KsiƒÖ≈ºka zosta≈Ça dodana do u≈ºytkownika.' });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
-// Endpoint dodawania ksiπøki do listy øyczeÒ uøytkownika
+// Endpoint dodawania ksiƒÖ≈ºki do listy ≈ºycze≈Ñ u≈ºytkownika
 app.post('/api/user-wishlist', async (req, res) => {
     const { userId, bookId } = req.body;
 
     if (!userId || !bookId) {
-        return res.status(400).json({ message: 'Identyfikator uøytkownika i ksiπøki sπ wymagane.' });
+        return res.status(400).json({ message: 'Identyfikator u≈ºytkownika i ksiƒÖ≈ºki sƒÖ wymagane.' });
     }
 
     try {
@@ -353,68 +353,68 @@ app.post('/api/user-wishlist', async (req, res) => {
         const bookExists = await Book.findById(bookId);
 
         if (!userExists || !bookExists) {
-            return res.status(404).json({ message: 'Nie znaleziono uøytkownika lub ksiπøki.' });
+            return res.status(404).json({ message: 'Nie znaleziono u≈ºytkownika lub ksiƒÖ≈ºki.' });
         }
 
         const userBookExists = await UserWishlist.findOne({ userId, bookId });
         if (userBookExists) {
-            return res.status(409).json({ message: 'Ksiπøka jest juø na pÛ≥ce uøytkownika.' });
+            return res.status(409).json({ message: 'KsiƒÖ≈ºka jest ju≈º na p√≥≈Çce u≈ºytkownika.' });
         }
 
         const userBook = new UserWishlist({ userId, bookId });
         await userBook.save();
 
-        res.status(201).json({ message: 'Ksiπøka zosta≥a dodana do uøytkownika.' });
+        res.status(201).json({ message: 'KsiƒÖ≈ºka zosta≈Ça dodana do u≈ºytkownika.' });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
 
-// Endpoint rejestracji uøytkownika
+// Endpoint rejestracji u≈ºytkownika
 app.post('/register', async (req, res) => {
     const { username, password, isAdmin } = req.body;
 
     try {
-        // Sprawdzenie, czy uøytkownik juø istnieje
+        // Sprawdzenie, czy u≈ºytkownik ju≈º istnieje
         const existingUser = await User.findOne({ username });
         if (existingUser) {
-            return res.status(400).json({ message: 'Nazwa uøytkownika juø istnieje.' });
+            return res.status(400).json({ message: 'Nazwa u≈ºytkownika ju≈º istnieje.' });
         }
 
-        // Tworzenie nowego uøytkownika
+        // Tworzenie nowego u≈ºytkownika
         const newUser = new User({ username, password, isAdmin});
         await newUser.save();
-        res.status(201).json({ message: 'Rejestracja zakoÒczona sukcesem!' });
+        res.status(201).json({ message: 'Rejestracja zako≈Ñczona sukcesem!' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
-// Endpoint logowania uøytkownika
+// Endpoint logowania u≈ºytkownika
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
     try {
         const user = await User.findOne({ username });
         if (!user || user.password !== password) {
-            return res.status(401).json({ message: 'Nieprawid≥owe dane logowania.' });
+            return res.status(401).json({ message: 'Nieprawid≈Çowe dane logowania.' });
         }
-        res.status(200).json({ message: 'Zalogowano pomyúlnie!' });
+        res.status(200).json({ message: 'Zalogowano pomy≈õlnie!' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
-// Endpoint dodawania ksiπøki
+// Endpoint dodawania ksiƒÖ≈ºki
 app.post('/api/books', async (req, res) => {
     const { title, author, condition, coverType } = req.body;
 
     if (!title || !author || !condition || !coverType) {
-        return res.status(400).json({ message: 'Tytu≥ i autor sπ wymagane.' });
+        return res.status(400).json({ message: 'Tytu≈Ç i autor sƒÖ wymagane.' });
     }
 
     try {
@@ -425,14 +425,14 @@ app.post('/api/books', async (req, res) => {
 
         const newBook = new Book({ title, author, condition, coverType });
         await newBook.save();
-        res.status(201).json({ message: 'Ksiπøka dodana pomyúlnie!', _id: newBook._id });
+        res.status(201).json({ message: 'KsiƒÖ≈ºka dodana pomy≈õlnie!', _id: newBook._id });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
-// Endpoint pobierania ksiπøek
+// Endpoint pobierania ksiƒÖ≈ºek
 app.get('/api/books', async (req, res) => {
     try {
         const books = await Book.find();
@@ -440,11 +440,11 @@ app.get('/api/books', async (req, res) => {
         res.status(200).json(books);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
-// Endpoint pobierania ksiπøek uøytkownika
+// Endpoint pobierania ksiƒÖ≈ºek u≈ºytkownika
 app.get('/api/user-books/:userId', async (req, res) => {
     const { userId } = req.params;
 
@@ -453,7 +453,7 @@ app.get('/api/user-books/:userId', async (req, res) => {
         res.status(200).json(userBooks);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
@@ -465,18 +465,18 @@ app.get('/api/user-books/:userBooksId', async (req, res) => {
         res.status(200).json(userBooks);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
-// Endpoint pobierania wszystkich ksiπøek uøytkownikÛw
+// Endpoint pobierania wszystkich ksiƒÖ≈ºek u≈ºytkownik√≥w
 app.get('/api/user-books', async (req, res) => {
     try {
         const userBooks = await UserBook.find().populate('bookId userId');
         res.status(200).json(userBooks);
     } catch (err) {
-        console.error('B≥πd podczas pobierania ksiπøek uøytkownikÛw:', err);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        console.error('B≈ÇƒÖd podczas pobierania ksiƒÖ≈ºek u≈ºytkownik√≥w:', err);
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
@@ -488,13 +488,13 @@ app.get('/api/users/:username', async (req, res) => {
     try {
         const user = await User.findOne({ username });
         if (!user) {
-            return res.status(404).json({ message: 'Nie znaleziono uøytkownika.' });
+            return res.status(404).json({ message: 'Nie znaleziono u≈ºytkownika.' });
         }
 
         res.status(200).json({ userId: user._id });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
@@ -505,13 +505,13 @@ app.get('/api/users/by-id/:_id', async (req, res) => {
     try {
         const user = await User.findById({ _id });
         if (!user) {
-            return res.status(404).json({ message: 'Nie znaleziono uøytkownika.' });
+            return res.status(404).json({ message: 'Nie znaleziono u≈ºytkownika.' });
         }
 
         res.status(200).json({ username: user.username});
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
@@ -521,19 +521,19 @@ app.get('/api/users/by-id/status/:_id', async (req, res) => {
     try {
         const user = await User.findById({ _id });
         if (!user) {
-            return res.status(404).json({ message: 'Nie znaleziono uøytkownika.' });
+            return res.status(404).json({ message: 'Nie znaleziono u≈ºytkownika.' });
         }
 
         res.status(200).json({ isAdmin: user.isAdmin });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
 
 
-// Endpoint pobierania ksiπøek z listy øyczeÒ uøytkownika
+// Endpoint pobierania ksiƒÖ≈ºek z listy ≈ºycze≈Ñ u≈ºytkownika
 app.get('/api/user-wishlist/:userId', async (req, res) => {
     const { userId } = req.params;
 
@@ -542,37 +542,37 @@ app.get('/api/user-wishlist/:userId', async (req, res) => {
         res.status(200).json(userBooks);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
 
-// Endpoint usuwania ksiπøki z pÛ≥ki uøytkownika
+// Endpoint usuwania ksiƒÖ≈ºki z p√≥≈Çki u≈ºytkownika
 app.delete('/api/user-books', async (req, res) => {
     const { userId, bookId } = req.body;
 
     if (!userId || !bookId) {
-        return res.status(400).json({ message: 'Identyfikator uøytkownika i ksiπøki sπ wymagane.' });
+        return res.status(400).json({ message: 'Identyfikator u≈ºytkownika i ksiƒÖ≈ºki sƒÖ wymagane.' });
     }
 
     try {
-        // Znajdü UserBook na podstawie userId i bookId
+        // Znajd≈∫ UserBook na podstawie userId i bookId
         const userBook = await UserBook.findOne({ userId, bookId });
 
         if (!userBook) {
-            return res.status(404).json({ message: 'Nie znaleziono powiπzania uøytkownika z ksiπøkπ.' });
+            return res.status(404).json({ message: 'Nie znaleziono powiƒÖzania u≈ºytkownika z ksiƒÖ≈ºkƒÖ.' });
         }
 
         const userbooksId = userBook._id;
 
-        // UsuÒ rekord UserBook
+        // Usu≈Ñ rekord UserBook
         const result = await UserBook.findOneAndDelete({ userId, bookId });
 
         if (!result) {
-            return res.status(404).json({ message: 'Nie znaleziono powiπzania uøytkownika z ksiπøkπ.' });
+            return res.status(404).json({ message: 'Nie znaleziono powiƒÖzania u≈ºytkownika z ksiƒÖ≈ºkƒÖ.' });
         }
 
-        // UsuÒ wymiany o statusie pending, gdzie usuniÍta ksiπøka znajduje siÍ w selectedBooks1 lub selectedBooks2
+        // Usu≈Ñ wymiany o statusie pending, gdzie usuniƒôta ksiƒÖ≈ºka znajduje siƒô w selectedBooks1 lub selectedBooks2
         await Trade.deleteMany({
             status: 'pending',
             $or: [
@@ -581,32 +581,32 @@ app.delete('/api/user-books', async (req, res) => {
             ]
         });
 
-        res.status(200).json({ message: 'Ksiπøka zosta≥a usuniÍta z pÛ≥ki, a powiπzane wymiany o statusie pending zosta≥y usuniÍte.' });
+        res.status(200).json({ message: 'KsiƒÖ≈ºka zosta≈Ça usuniƒôta z p√≥≈Çki, a powiƒÖzane wymiany o statusie pending zosta≈Çy usuniƒôte.' });
     } catch (err) {
-        console.error('B≥πd podczas usuwania UserBook lub wymian:', err);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        console.error('B≈ÇƒÖd podczas usuwania UserBook lub wymian:', err);
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
 
 
 app.delete('/api/user-books/by-id/:userbooksId', async (req, res) => {
-    const { userbooksId } = req.params; // Pobierz ID z parametru úcieøki
+    const { userbooksId } = req.params; // Pobierz ID z parametru ≈õcie≈ºki
 
     if (!userbooksId) {
-        return res.status(400).json({ message: 'Identyfikator ksiπøki uøytkownika jest wymagany.' });
+        return res.status(400).json({ message: 'Identyfikator ksiƒÖ≈ºki u≈ºytkownika jest wymagany.' });
     }
 
     try {
 
-        // UsuÒ rekord UserBook na podstawie jego _id
+        // Usu≈Ñ rekord UserBook na podstawie jego _id
         const result = await UserBook.findByIdAndDelete(userbooksId);
 
         if (!result) {
-            return res.status(404).json({ message: 'Nie znaleziono powiπzania uøytkownika z ksiπøkπ.' });
+            return res.status(404).json({ message: 'Nie znaleziono powiƒÖzania u≈ºytkownika z ksiƒÖ≈ºkƒÖ.' });
         }
 
-        // UsuÒ wymiany o statusie pending, gdzie usuniÍta ksiπøka znajduje siÍ w selectedBooks1 lub selectedBooks2
+        // Usu≈Ñ wymiany o statusie pending, gdzie usuniƒôta ksiƒÖ≈ºka znajduje siƒô w selectedBooks1 lub selectedBooks2
         await Trade.deleteMany({
             status: 'pending',
             $or: [
@@ -615,10 +615,10 @@ app.delete('/api/user-books/by-id/:userbooksId', async (req, res) => {
             ]
         });
 
-        res.status(200).json({ message: 'Ksiπøka zosta≥a usuniÍta z pÛ≥ki, a powiπzane wymiany o statusie pending zosta≥y usuniÍte.' });
+        res.status(200).json({ message: 'KsiƒÖ≈ºka zosta≈Ça usuniƒôta z p√≥≈Çki, a powiƒÖzane wymiany o statusie pending zosta≈Çy usuniƒôte.' });
     } catch (err) {
-        console.error('B≥πd podczas usuwania UserBook lub wymian:', err);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        console.error('B≈ÇƒÖd podczas usuwania UserBook lub wymian:', err);
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
@@ -629,80 +629,80 @@ app.delete('/api/user-wishlist', async (req, res) => {
     const { userId, bookId } = req.body;
 
     if (!userId || !bookId) {
-        return res.status(400).json({ message: 'Identyfikator uøytkownika i ksiπøki sπ wymagane.' });
+        return res.status(400).json({ message: 'Identyfikator u≈ºytkownika i ksiƒÖ≈ºki sƒÖ wymagane.' });
     }
 
     try {
         const result = await UserWishlist.findOneAndDelete({ userId, bookId });
 
         if (!result) {
-            return res.status(404).json({ message: 'Nie znaleziono powiπzania uøytkownika z ksiπøkπ.' });
+            return res.status(404).json({ message: 'Nie znaleziono powiƒÖzania u≈ºytkownika z ksiƒÖ≈ºkƒÖ.' });
         }
 
-        res.status(200).json({ message: 'Ksiπøka zosta≥a usuniÍta z pÛ≥ki.' });
+        res.status(200).json({ message: 'KsiƒÖ≈ºka zosta≈Ça usuniƒôta z p√≥≈Çki.' });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
 
-// Endpoint pobierania listy wszystkich uøytkownikÛw
+// Endpoint pobierania listy wszystkich u≈ºytkownik√≥w
 app.get('/api/users', async (req, res) => {
     try {
-        const users = await User.find(); // Pobierz wszystkich uøytkownikÛw
-        res.status(200).json(users); // ZwrÛÊ ich jako JSON
+        const users = await User.find(); // Pobierz wszystkich u≈ºytkownik√≥w
+        res.status(200).json(users); // Zwr√≥ƒá ich jako JSON
     } catch (err) {
-        console.error('B≥πd pobierania uøytkownikÛw:', err);
-        res.status(500).json({ message: 'B≥πd serwera podczas pobierania uøytkownikÛw.' });
+        console.error('B≈ÇƒÖd pobierania u≈ºytkownik√≥w:', err);
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera podczas pobierania u≈ºytkownik√≥w.' });
     }
 });
 
-/*// Endpoint GET, ktÛry zwraca username uøytkownika po _id
+/*// Endpoint GET, kt√≥ry zwraca username u≈ºytkownika po _id
 app.get('/api/users/:userId', async (req, res) => {
     try {
-        // Pobranie uøytkownika z bazy na podstawie _id
+        // Pobranie u≈ºytkownika z bazy na podstawie _id
         const user = await User.findById(userId);
 
-        // Jeúli uøytkownik nie istnieje, zwrÛÊ b≥πd 404
+        // Je≈õli u≈ºytkownik nie istnieje, zwr√≥ƒá b≈ÇƒÖd 404
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        // ZwrÛÊ tylko username
+        // Zwr√≥ƒá tylko username
         res.json({ username: user.username });
     } catch (error) {
-        // Jeúli wystπpi≥ b≥πd, zwrÛÊ status 500
+        // Je≈õli wystƒÖpi≈Ç b≈ÇƒÖd, zwr√≥ƒá status 500
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 });*/
 
-// Endpoint usuwania uøytkownika po ID
+// Endpoint usuwania u≈ºytkownika po ID
 app.delete('/api/users/:userId', async (req, res) => {
     const { userId } = req.params; // Pobieramy userId z parametru URL
 
     if (!userId) {
-        return res.status(400).json({ message: 'Identyfikator uøytkownika jest wymagany.' });
+        return res.status(400).json({ message: 'Identyfikator u≈ºytkownika jest wymagany.' });
     }
 
     try {
-        // Usuwanie uøytkownika na podstawie userId
+        // Usuwanie u≈ºytkownika na podstawie userId
         const result = await User.findByIdAndDelete(userId);
 
         if (!result) {
-            return res.status(404).json({ message: 'Nie znaleziono uøytkownika.' });
+            return res.status(404).json({ message: 'Nie znaleziono u≈ºytkownika.' });
         }
 
-        // Usuwanie powiπzanych danych kaskadowo
-        await UserBook.deleteMany({ userId }); // UsuÒ ksiπøki powiπzane z uøytkownikiem
-        await UserWishlist.deleteMany({ userId }); // UsuÒ ksiπøki z listy øyczeÒ uøytkownika
-        await Trade.deleteMany({ $or: [{ userId }, { userId2: userId }] }); // UsuÒ wymiany ksiπøek, w ktÛrych uczestniczy≥ uøytkownik
-        await Opinion.deleteMany({ userId }); // UsuÒ ksiπøki powiπzane z uøytkownikiem
+        // Usuwanie powiƒÖzanych danych kaskadowo
+        await UserBook.deleteMany({ userId }); // Usu≈Ñ ksiƒÖ≈ºki powiƒÖzane z u≈ºytkownikiem
+        await UserWishlist.deleteMany({ userId }); // Usu≈Ñ ksiƒÖ≈ºki z listy ≈ºycze≈Ñ u≈ºytkownika
+        await Trade.deleteMany({ $or: [{ userId }, { userId2: userId }] }); // Usu≈Ñ wymiany ksiƒÖ≈ºek, w kt√≥rych uczestniczy≈Ç u≈ºytkownik
+        await Opinion.deleteMany({ userId }); // Usu≈Ñ ksiƒÖ≈ºki powiƒÖzane z u≈ºytkownikiem
 
-        res.status(200).json({ message: 'Uøytkownik i powiπzane dane zosta≥y usuniÍte.' });
+        res.status(200).json({ message: 'U≈ºytkownik i powiƒÖzane dane zosta≈Çy usuniƒôte.' });
     } catch (err) {
-        console.error('B≥πd podczas usuwania uøytkownika:', err);
-        res.status(500).json({ message: 'B≥πd serwera.' });
+        console.error('B≈ÇƒÖd podczas usuwania u≈ºytkownika:', err);
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera.' });
     }
 });
 
@@ -710,20 +710,20 @@ app.delete('/api/trades/byid/:tradeId', async (req, res) => {
     try {
         const { tradeId } = req.params;
 
-        // Sprawdü, czy wymiana istnieje
+        // Sprawd≈∫, czy wymiana istnieje
         const trade = await Trade.findById(tradeId);
 
         if (!trade) {
             return res.status(404).json({ message: 'Wymiana nie istnieje' });
         }
 
-        // UsuÒ wymianÍ z bazy danych
+        // Usu≈Ñ wymianƒô z bazy danych
         await Trade.findByIdAndDelete(tradeId);
 
-        res.status(200).json({ message: 'Wymiana zosta≥a usuniÍta' });
+        res.status(200).json({ message: 'Wymiana zosta≈Ça usuniƒôta' });
     } catch (error) {
-        console.error('B≥πd przy usuwaniu wymiany:', error);
-        res.status(500).json({ message: 'B≥πd serwera', error: error.message });
+        console.error('B≈ÇƒÖd przy usuwaniu wymiany:', error);
+        res.status(500).json({ message: 'B≈ÇƒÖd serwera', error: error.message });
     }
 });
 
@@ -732,4 +732,4 @@ app.delete('/api/trades/byid/:tradeId', async (req, res) => {
 
 
 // Start serwera
-app.listen(PORT, () => console.log(`Serwer dzia≥a na http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Serwer dzia≈Ça na http://localhost:${PORT}`));

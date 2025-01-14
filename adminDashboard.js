@@ -1,11 +1,11 @@
-// Pobranie nazwy uøytkownika z lokalnego przechowywania
+Ôªø// Pobranie nazwy u≈ºytkownika z lokalnego przechowywania
 const username = localStorage.getItem('username');
 const userId = localStorage.getItem('userId');
 
 if (username) {
     document.getElementById('username').innerText = username;
 } else {
-    window.location.href = 'index.html'; // Jeúli brak nazwy, wraca do logowania
+    window.location.href = 'index.html'; // Je≈õli brak nazwy, wraca do logowania
 }
 function logout() {
     window.location.href = "index.html";
@@ -24,26 +24,26 @@ async function displayBooks() {
     try {
         const loggedInUsername = localStorage.getItem('username');
 
-        // Pobierz zalogowanego uøytkownika
+        // Pobierz zalogowanego u≈ºytkownika
         const loggedInUserResponse = await fetch(`http://localhost:3000/api/users/${loggedInUsername}`);
         if (!loggedInUserResponse.ok) {
-            alert('Nie moøna znaleüÊ zalogowanego uøytkownika.');
+            alert('Nie mo≈ºna znale≈∫ƒá zalogowanego u≈ºytkownika.');
             return;
         }
         const loggedInUserData = await loggedInUserResponse.json();
         const loggedInUserId = loggedInUserData.userId;
 
-        // Pobierz wszystkich uøytkownikÛw
+        // Pobierz wszystkich u≈ºytkownik√≥w
         const usersResponse = await fetch(`http://localhost:3000/api/users`);
         if (!usersResponse.ok) {
-            alert('Nie moøna pobraÊ listy uøytkownikÛw.');
+            alert('Nie mo≈ºna pobraƒá listy u≈ºytkownik√≥w.');
             return;
         }
 
         const users = await usersResponse.json();
         const userIds = users.map(user => user._id).filter(userId => userId !== loggedInUserId);
 
-        // Pobierz ksiπøki wszystkich uøytkownikÛw z wyjπtkiem zalogowanego
+        // Pobierz ksiƒÖ≈ºki wszystkich u≈ºytkownik√≥w z wyjƒÖtkiem zalogowanego
         const booksPromises = userIds.map(userId =>
             fetch(`http://localhost:3000/api/user-books/${userId}`)
         );
@@ -53,13 +53,13 @@ async function displayBooks() {
             booksResponses.map(response => response.json())
         )).flat();
 
-        // Pobierz kontener pÛ≥ki
+        // Pobierz kontener p√≥≈Çki
         const shelf = document.getElementById('shelf');
-        shelf.innerHTML = ''; // WyczyúÊ pÛ≥kÍ
+        shelf.innerHTML = ''; // Wyczy≈õƒá p√≥≈Çkƒô
 
-        // Wyúwietl ksiπøki na pÛ≥ce
+        // Wy≈õwietl ksiƒÖ≈ºki na p√≥≈Çce
         allBooks.forEach(({ bookId, userId }) => {
-            const user = users.find(u => u._id === userId); // Znajdü w≥aúciciela ksiπøki
+            const user = users.find(u => u._id === userId); // Znajd≈∫ w≈Ça≈õciciela ksiƒÖ≈ºki
             const username = user ? user.username : 'Nieznany';
 
             const bookContainer = document.createElement('div');
@@ -70,15 +70,15 @@ async function displayBooks() {
 
             const bookFront = document.createElement('div');
             bookFront.classList.add('book-face', 'book-front');
-            bookFront.innerHTML = `<strong title="${bookId.title}">${bookId.title}</strong><br><small>W≥aúciciel: ${username}</small>`;
+            bookFront.innerHTML = `<strong title="${bookId.title}">${bookId.title}</strong><br><small>W≈Ça≈õciciel: ${username}</small>`;
 
             const bookBack = document.createElement('div');
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
                 <p><strong>Autor:</strong><br> <span title="${bookId.author}">${bookId.author}</span></p>
                 <p><strong>Stan:</strong> ${bookId.condition || 'Nieznany'}</p>
-                <p><strong>Ok≥adka:</strong> ${bookId.coverType || 'Nieznana'}</p>
-                <button onclick="removeBookFromShelf('${bookId._id}')">UsuÒ</button>
+                <p><strong>Ok≈Çadka:</strong> ${bookId.coverType || 'Nieznana'}</p>
+                <button onclick="removeBookFromShelf('${bookId._id}')">Usu≈Ñ</button>
             `;
 
             bookDiv.appendChild(bookFront);
@@ -87,8 +87,8 @@ async function displayBooks() {
             shelf.appendChild(bookContainer);
         });
     } catch (error) {
-        console.error('B≥πd podczas ≥adowania pÛ≥ki:', error);
-        alert('Wystπpi≥ b≥πd podczas ≥adowania pÛ≥ki.');
+        console.error('B≈ÇƒÖd podczas ≈Çadowania p√≥≈Çki:', error);
+        alert('WystƒÖpi≈Ç b≈ÇƒÖd podczas ≈Çadowania p√≥≈Çki.');
     }
 }
 
@@ -98,32 +98,32 @@ async function displayUsers() {
     try {
         const loggedInUsername = localStorage.getItem('username');
 
-        // Pobierz zalogowanego uøytkownika
+        // Pobierz zalogowanego u≈ºytkownika
         const loggedInUserResponse = await fetch(`http://localhost:3000/api/users/${loggedInUsername}`);
         if (!loggedInUserResponse.ok) {
-            alert('Nie moøna znaleüÊ zalogowanego uøytkownika.');
+            alert('Nie mo≈ºna znale≈∫ƒá zalogowanego u≈ºytkownika.');
             return;
         }
         const loggedInUserData = await loggedInUserResponse.json();
         const loggedInUserId = loggedInUserData.userId;
 
-        // Pobierz wszystkich uøytkownikÛw
+        // Pobierz wszystkich u≈ºytkownik√≥w
         const usersResponse = await fetch(`http://localhost:3000/api/users`);
         if (!usersResponse.ok) {
-            alert('Nie moøna pobraÊ listy uøytkownikÛw.');
+            alert('Nie mo≈ºna pobraƒá listy u≈ºytkownik√≥w.');
             return;
         }
 
         const users = await usersResponse.json();
 
-        // Filtruj uøytkownikÛw, aby nie pokazywaÊ zalogowanego uøytkownika
+        // Filtruj u≈ºytkownik√≥w, aby nie pokazywaƒá zalogowanego u≈ºytkownika
         const otherUsers = users.filter(user => user._id !== loggedInUserId);
 
-        // Pobierz kontener na uøytkownikÛw
+        // Pobierz kontener na u≈ºytkownik√≥w
         const usersContainer = document.getElementById('users');
-        usersContainer.innerHTML = ''; // WyczyúÊ kontener
+        usersContainer.innerHTML = ''; // Wyczy≈õƒá kontener
 
-        // Wyúwietl uøytkownikÛw w kartach
+        // Wy≈õwietl u≈ºytkownik√≥w w kartach
         otherUsers.forEach(user => {
             const userContainer = document.createElement('div');
             userContainer.classList.add('users'); // Styl jak "book-container"
@@ -139,7 +139,7 @@ async function displayUsers() {
             userBack.classList.add('book-face', 'book-back'); // Styl jak "book-face" i "book-back"
             userBack.innerHTML = `
                 <p><strong>Login:</strong>  <span title="${user.username}">${user.username}</span></p>
-                <button onclick="removeUser('${user.username}')">UsuÒ uøytkownika</button>
+                <button onclick="removeUser('${user.username}')">Usu≈Ñ u≈ºytkownika</button>
             `;
 
             userDiv.appendChild(userFront);
@@ -148,24 +148,24 @@ async function displayUsers() {
             usersContainer.appendChild(userContainer);
         });
     } catch (error) {
-        console.error('B≥πd podczas ≥adowania uøytkownikÛw:', error);
-        alert('Wystπpi≥ b≥πd podczas ≥adowania uøytkownikÛw.');
+        console.error('B≈ÇƒÖd podczas ≈Çadowania u≈ºytkownik√≥w:', error);
+        alert('WystƒÖpi≈Ç b≈ÇƒÖd podczas ≈Çadowania u≈ºytkownik√≥w.');
     }
 }
 
 
 async function removeBookFromShelf(bookId, targetUsername) {
     try {
-        // Pobierz dane uøytkownika na podstawie przekazanego targetUsername
+        // Pobierz dane u≈ºytkownika na podstawie przekazanego targetUsername
         const userResponse = await fetch(`http://localhost:3000/api/users/${targetUsername}`);
         if (!userResponse.ok) {
-            alert('Nie moøna znaleüÊ uøytkownika.');
+            alert('Nie mo≈ºna znale≈∫ƒá u≈ºytkownika.');
             return;
         }
         const userData = await userResponse.json();
         const userId = userData.userId;
 
-        // Wyúlij øπdanie usuniÍcia ksiπøki
+        // Wy≈õlij ≈ºƒÖdanie usuniƒôcia ksiƒÖ≈ºki
         const response = await fetch('http://localhost:3000/api/user-books', {
             method: 'DELETE',
             headers: {
@@ -175,29 +175,29 @@ async function removeBookFromShelf(bookId, targetUsername) {
         });
 
         if (response.ok) {
-            alert(`Ksiπøka zosta≥a usuniÍta z pÛ≥ki uøytkownika ${targetUsername}!`);
-            displayBooks(); // Odúwieø pÛ≥kÍ
+            alert(`KsiƒÖ≈ºka zosta≈Ça usuniƒôta z p√≥≈Çki u≈ºytkownika ${targetUsername}!`);
+            displayBooks(); // Od≈õwie≈º p√≥≈Çkƒô
         } else {
-            alert('B≥πd podczas usuwania ksiπøki.');
+            alert('B≈ÇƒÖd podczas usuwania ksiƒÖ≈ºki.');
         }
     } catch (error) {
-        console.error('B≥πd:', error);
-        alert('Wystπpi≥ b≥πd podczas komunikacji z serwerem.');
+        console.error('B≈ÇƒÖd:', error);
+        alert('WystƒÖpi≈Ç b≈ÇƒÖd podczas komunikacji z serwerem.');
     }
 }
 
 async function removeUser(username) {
     try {
-        // Pobierz dane uøytkownika na podstawie przekazanego username
+        // Pobierz dane u≈ºytkownika na podstawie przekazanego username
         const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
         if (!userResponse.ok) {
-            alert('Nie moøna znaleüÊ uøytkownika.');
+            alert('Nie mo≈ºna znale≈∫ƒá u≈ºytkownika.');
             return;
         }
         const userData = await userResponse.json();
         const userId = userData.userId;
 
-        // Wyúlij øπdanie usuniÍcia uøytkownika (teraz przekazujemy userId w URL)
+        // Wy≈õlij ≈ºƒÖdanie usuniƒôcia u≈ºytkownika (teraz przekazujemy userId w URL)
         const response = await fetch(`http://localhost:3000/api/users/${userId}`, {
             method: 'DELETE',
             headers: {
@@ -206,21 +206,21 @@ async function removeUser(username) {
         });
 
         if (response.ok) {
-            alert(`Uøytkownik ${username} zosta≥ usuniÍty!`);
-            displayUsers(); // Odúwieø pÛ≥kÍ (lub inne dane)
+            alert(`U≈ºytkownik ${username} zosta≈Ç usuniƒôty!`);
+            displayUsers(); // Od≈õwie≈º p√≥≈Çkƒô (lub inne dane)
             displayBooks();
         } else {
-            alert('B≥πd podczas usuwania uøytkownika.');
+            alert('B≈ÇƒÖd podczas usuwania u≈ºytkownika.');
         }
     } catch (error) {
-        console.error('B≥πd:', error);
-        alert('Wystπpi≥ b≥πd podczas komunikacji z serwerem.');
+        console.error('B≈ÇƒÖd:', error);
+        alert('WystƒÖpi≈Ç b≈ÇƒÖd podczas komunikacji z serwerem.');
     }
 }
 
 
 
-// Aktualizacja co sekundÍ
+// Aktualizacja co sekundƒô
 setInterval(updateDateTime, 1000);
 
 window.onload = () => {

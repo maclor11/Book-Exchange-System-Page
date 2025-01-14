@@ -1,4 +1,4 @@
-// Pobranie nazwy u¿ytkownika z lokalnego przechowywania
+ï»¿// Pobranie nazwy uÅ¼ytkownika z lokalnego przechowywania
 const username = localStorage.getItem('username');
 const userId = localStorage.getItem('userId');
 const userId2 = localStorage.getItem('userId2');
@@ -10,7 +10,7 @@ const selectedBooks2 = new Array();
 if (username) {
     document.getElementById('username').innerText = username;
 } else {
-    window.location.href = 'index.html'; // Jeœli brak nazwy, wraca do logowania
+    window.location.href = 'index.html'; // JeÅ›li brak nazwy, wraca do logowania
 }
 function goBack() {
     localStorage.removeItem('userId2');
@@ -28,22 +28,22 @@ async function displayShelf() {
         // Pobierz userId na podstawie username
         const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
         if (!userResponse.ok) {
-            alert('Nie mo¿na znaleŸæ u¿ytkownika.');
+            alert('Nie moÅ¼na znaleÅºÄ‡ uÅ¼ytkownika.');
             return;
         }
 
         const userData = await userResponse.json();
         const userId = userData.userId;
 
-        // Pobierz ksi¹¿ki u¿ytkownika
+        // Pobierz ksiÄ…Å¼ki uÅ¼ytkownika
         const response = await fetch(`http://localhost:3000/api/user-books/${userId}`);
         const userBooks = await response.json();
 
-        // Pobierz kontener pó³ki
+        // Pobierz kontener pÃ³Å‚ki
         const shelf = document.getElementById('shelf1');
-        shelf.innerHTML = ''; // Wyczyœæ pó³kê
+        shelf.innerHTML = ''; // WyczyÅ›Ä‡ pÃ³Å‚kÄ™
 
-        // Wyœwietl ksi¹¿ki na pó³ce
+        // WyÅ›wietl ksiÄ…Å¼ki na pÃ³Å‚ce
         userBooks.forEach(({ bookId }) => {
             const bookContainer = document.createElement('div');
             bookContainer.classList.add('book-container');
@@ -60,7 +60,7 @@ async function displayShelf() {
             bookBack.innerHTML = `
                 <p><strong>Autor:</strong> <br><span title="${bookId.author}">${bookId.author}</span></p>
                 <p><strong>Stan:</strong> ${bookId.condition || 'Nieznany'}</p>
-                <p><strong>Ok³adka:</strong> ${bookId.coverType || 'Nieznana'}</p>
+                <p><strong>OkÅ‚adka:</strong> ${bookId.coverType || 'Nieznana'}</p>
                 <button class="select-button">Wybierz</button>
             `;
 
@@ -70,12 +70,12 @@ async function displayShelf() {
                 const bookFront = bookBack.parentElement.querySelector('.book-front');
 
                 if (button.textContent === 'Wybierz') {
-                    button.textContent = 'Usuñ';
+                    button.textContent = 'UsuÅ„';
                     bookBack.style.background = 'linear-gradient(135deg, #a8d5a2, #8fc98e)'; // Gradient zielony
                     bookBack.style.border = '1px solid #6d986e';
                     bookFront.style.background = 'linear-gradient(135deg, #a8d5a2, #8fc98e)'; // Gradient zielony
                     bookFront.style.border = '1px solid #6d986e';
-                    // Dodanie ksi¹¿ki do mapy (zaznaczenie)
+                    // Dodanie ksiÄ…Å¼ki do mapy (zaznaczenie)
                     selectedBooks1.push(bookId._id);
                 } else {
                     button.textContent = 'Wybierz';
@@ -83,7 +83,7 @@ async function displayShelf() {
                     bookBack.style.border = '1px solid #b0a890';
                     bookFront.style.background = 'linear-gradient(135deg, #f5f3eb, #e8e4d9)'; // Oryginalny gradient
                     bookFront.style.border = '1px solid #b0a890';
-                    // Dodanie ksi¹¿ki do mapy (zaznaczenie)
+                    // Dodanie ksiÄ…Å¼ki do mapy (zaznaczenie)
                     selectedBooks1.pop(bookId._id);
                 }
             });
@@ -94,24 +94,24 @@ async function displayShelf() {
             shelf.appendChild(bookContainer);
         });
     } catch (error) {
-        console.error('B³¹d podczas ³adowania pó³ki:', error);
-        alert('Wyst¹pi³ b³¹d podczas ³adowania pó³ki.');
+        console.error('BÅ‚Ä…d podczas Å‚adowania pÃ³Å‚ki:', error);
+        alert('WystÄ…piÅ‚ bÅ‚Ä…d podczas Å‚adowania pÃ³Å‚ki.');
     }
 }
 
 async function displayTradeBooks() {
     try {
 
-        // Pobierz ksi¹¿ki u¿ytkownika
+        // Pobierz ksiÄ…Å¼ki uÅ¼ytkownika
         const response = await fetch(`http://localhost:3000/api/user-books/${userId2}`);
         const userBooks = await response.json();
 
 
-        // Pobierz kontener pó³ki
+        // Pobierz kontener pÃ³Å‚ki
         const shelf = document.getElementById('shelf2');
-        shelf.innerHTML = ''; // Wyczyœæ pó³kê
+        shelf.innerHTML = ''; // WyczyÅ›Ä‡ pÃ³Å‚kÄ™
 
-        // Wyœwietl ksi¹¿ki na pó³ce
+        // WyÅ›wietl ksiÄ…Å¼ki na pÃ³Å‚ce
         userBooks.forEach(({ bookId }) => {
             const bookContainer = document.createElement('div');
             bookContainer.classList.add('book-container');
@@ -128,7 +128,7 @@ async function displayTradeBooks() {
             bookBack.innerHTML = `
                 <p><strong>Autor:</strong> <br><span title="${bookId.author}">${bookId.author}</span></p>
                 <p><strong>Stan:</strong> ${bookId.condition || 'Nieznany'}</p>
-                <p><strong>Ok³adka:</strong> ${bookId.coverType || 'Nieznana'}</p>
+                <p><strong>OkÅ‚adka:</strong> ${bookId.coverType || 'Nieznana'}</p>
                 <button class="select-button">Wybierz</button>
             `;
 
@@ -137,8 +137,8 @@ async function displayTradeBooks() {
                 bookBack.style.border = '1px solid #6d986e';
                 bookFront.style.background = 'linear-gradient(135deg, #a8d5a2, #8fc98e)'; // Zielony gradient
                 bookFront.style.border = '1px solid #6d986e';
-                bookBack.querySelector('.select-button').textContent = 'Usuñ';
-                // Dodanie ksi¹¿ki do mapy (zaznaczenie)
+                bookBack.querySelector('.select-button').textContent = 'UsuÅ„';
+                // Dodanie ksiÄ…Å¼ki do mapy (zaznaczenie)
                 selectedBooks2.push(bookId._id);
 
             }
@@ -149,12 +149,12 @@ async function displayTradeBooks() {
                 const bookFront = bookBack.parentElement.querySelector('.book-front');
 
                 if (button.textContent === 'Wybierz') {
-                    button.textContent = 'Usuñ';
+                    button.textContent = 'UsuÅ„';
                     bookBack.style.background = 'linear-gradient(135deg, #a8d5a2, #8fc98e)'; // Gradient zielony
                     bookBack.style.border = '1px solid #6d986e';
                     bookFront.style.background = 'linear-gradient(135deg, #a8d5a2, #8fc98e)'; // Gradient zielony
                     bookFront.style.border = '1px solid #6d986e';
-                    // Dodanie ksi¹¿ki do mapy (zaznaczenie)
+                    // Dodanie ksiÄ…Å¼ki do mapy (zaznaczenie)
                     selectedBooks2.push(bookId._id);
                 } else {
                     button.textContent = 'Wybierz';
@@ -162,7 +162,7 @@ async function displayTradeBooks() {
                     bookBack.style.border = '1px solid #b0a890';
                     bookFront.style.background = 'linear-gradient(135deg, #f5f3eb, #e8e4d9)'; // Oryginalny gradient
                     bookFront.style.border = '1px solid #b0a890';
-                    // Dodanie ksi¹¿ki do mapy (zaznaczenie)
+                    // Dodanie ksiÄ…Å¼ki do mapy (zaznaczenie)
                     selectedBooks2.pop(bookId._id);
                 }
             });
@@ -173,8 +173,8 @@ async function displayTradeBooks() {
             shelf.appendChild(bookContainer);
         });
     } catch (error) {
-        console.error('B³¹d podczas ³adowania pó³ki:', error);
-        alert('Wyst¹pi³ b³¹d podczas ³adowania pó³ki.');
+        console.error('BÅ‚Ä…d podczas Å‚adowania pÃ³Å‚ki:', error);
+        alert('WystÄ…piÅ‚ bÅ‚Ä…d podczas Å‚adowania pÃ³Å‚ki.');
     }
 }
 
@@ -192,16 +192,16 @@ async function sendTradeOffer() {
         // Pobierz userId na podstawie username
         const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
         if (!userResponse.ok) {
-            alert('Nie mo¿na znaleŸæ u¿ytkownika.');
+            alert('Nie moÅ¼na znaleÅºÄ‡ uÅ¼ytkownika.');
             return;
         }
 
         const userData = await userResponse.json();
         const userId = userData.userId;
 
-        // Jeœli nie ma wybranych ksi¹¿ek, przerwij
+        // JeÅ›li nie ma wybranych ksiÄ…Å¼ek, przerwij
         if (selectedBooks1.length === 0 || selectedBooks2.length === 0) {
-            alert('Wybierz przynajmniej jedn¹ ksi¹¿kê do wymiany.');
+            alert('Wybierz przynajmniej jednÄ… ksiÄ…Å¼kÄ™ do wymiany.');
             return;
         }
 
@@ -214,22 +214,22 @@ async function sendTradeOffer() {
         });
 
         if (!response.ok) {
-            const errorResponse = await response.text();  // Odczytaj odpowiedŸ serwera w postaci tekstu
-            console.error('B³¹d odpowiedzi serwera:', errorResponse);
-            alert('Wyst¹pi³ b³¹d podczas wysy³ania oferty wymiany.');
+            const errorResponse = await response.text();  // Odczytaj odpowiedÅº serwera w postaci tekstu
+            console.error('BÅ‚Ä…d odpowiedzi serwera:', errorResponse);
+            alert('WystÄ…piÅ‚ bÅ‚Ä…d podczas wysyÅ‚ania oferty wymiany.');
             return;
         }
 
         const responseData = await response.json();
         console.log('Response from server:', responseData);
 
-        alert("Oferta wymiany zosta³a wys³ana pomyœlnie!");
-        // Przekierowanie do strony z ofert¹ wymiany lub innego widoku
+        alert("Oferta wymiany zostaÅ‚a wysÅ‚ana pomyÅ›lnie!");
+        // Przekierowanie do strony z ofertÄ… wymiany lub innego widoku
         window.location.href = 'userDashboard.html';
         localStorage.removeItem("userId2");
     } catch (error) {
-        console.error('B³¹d podczas wysy³ania oferty wymiany:', error);
-        alert('Wyst¹pi³ b³¹d podczas wysy³ania oferty wymiany.');
+        console.error('BÅ‚Ä…d podczas wysyÅ‚ania oferty wymiany:', error);
+        alert('WystÄ…piÅ‚ bÅ‚Ä…d podczas wysyÅ‚ania oferty wymiany.');
     }
    
 }

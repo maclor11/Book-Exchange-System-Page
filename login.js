@@ -1,7 +1,7 @@
-const registerForm = document.getElementById('register-form');
+ï»¿const registerForm = document.getElementById('register-form');
 const loginForm = document.getElementById('login-form');
 
-// Funkcja czyszczenia pól formularza
+// Funkcja czyszczenia pÃ³l formularza
 function clearFormFields(form) {
     form.reset();
 }
@@ -21,10 +21,10 @@ registerForm.addEventListener('submit', async (e) => {
         });
 
         const result = await response.json();
-        alert(result.message); // Komunikat obs³uguj¹cy polskie znaki
+        alert(result.message); // Komunikat obsÅ‚ugujÄ…cy polskie znaki
 
         if (response.ok) {
-            clearFormFields(registerForm); // Czyszczenie pól po sukcesie
+            clearFormFields(registerForm); // Czyszczenie pÃ³l po sukcesie
         }
     } catch (error) {
         alert('Blad polaczenia z serwerem.');
@@ -48,11 +48,11 @@ loginForm.addEventListener('submit', async (e) => {
 
         if (response.ok) {
             alert(result.message); // Komunikat sukcesu
-            localStorage.setItem('username', username); // Zapisanie nazwy u¿ytkownika
+            localStorage.setItem('username', username); // Zapisanie nazwy uÅ¼ytkownika
 
             const userResponse = await fetch(`http://localhost:3000/api/users/${username}`);
             if (!userResponse.ok) {
-                alert('Nie mo¿na znaleŸæ u¿ytkownika.');
+                alert('Nie moÅ¼na znaleÅºÄ‡ uÅ¼ytkownika.');
                 return;
             }
 
@@ -62,7 +62,7 @@ loginForm.addEventListener('submit', async (e) => {
 
             const statusResponse = await fetch(`http://localhost:3000/api/users/by-id/status/${userId}`);
             if (!statusResponse.ok) {
-                alert('Nie mo¿na znaleŸæ u¿ytkownika.');
+                alert('Nie moÅ¼na znaleÅºÄ‡ uÅ¼ytkownika.');
                 return;
             }
             const statusData = await statusResponse.json();
@@ -74,10 +74,10 @@ loginForm.addEventListener('submit', async (e) => {
                 window.location.href = 'userDashboard.html'; // Przekierowanie na userDashboard
             }
         } else {
-            alert(result.message); // Komunikat b³êdu
+            alert(result.message); // Komunikat bÅ‚Ä™du
         }
     } catch (error) {
-        alert('B³¹d po³¹czenia z serwerem.');
+        alert('BÅ‚Ä…d poÅ‚Ä…czenia z serwerem.');
     }
 
 
@@ -97,11 +97,11 @@ function validateUsername() {
     }
 }
 
-// Funkcja walidacji has³a
+// Funkcja walidacji hasÅ‚a
 function validatePassword() {
     const password = document.getElementById('reg-password').value;
     const passwordError = document.getElementById('password-error');
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)/; // Has³o musi mieæ przynajmniej jedn¹ du¿¹ literê i cyfrê
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)/; // HasÅ‚o musi mieÄ‡ przynajmniej jednÄ… duÅ¼Ä… literÄ™ i cyfrÄ™
 
     if (!passwordRegex.test(password)) {
         passwordError.style.display = 'inline';

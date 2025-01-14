@@ -1,10 +1,10 @@
-const tradeId = localStorage.getItem('tradeId');
+ï»¿const tradeId = localStorage.getItem('tradeId');
 const username = localStorage.getItem('username');
 
 if (username) {
     document.getElementById('username').innerText = username;
 } else {
-    window.location.href = 'index.html'; // Jeœli brak nazwy, wraca do logowania
+    window.location.href = 'index.html'; // JeÅ›li brak nazwy, wraca do logowania
 }
 
 function goBack() {
@@ -20,7 +20,7 @@ function updateDateTime() {
     document.getElementById('currentDateTime').textContent = `${date}, ${time}`;
 }
 
-// Aktualizacja co sekundê
+// Aktualizacja co sekundÄ™
 setInterval(updateDateTime, 1000);
 
 window.onload = () => {
@@ -29,28 +29,28 @@ window.onload = () => {
 
 
 async function addOpinion() {
-    // Pobierz wartoœci z formularza
+    // Pobierz wartoÅ›ci z formularza
     const message = document.getElementById("bookReview").value; // Tekst opinii
     const stars = document.getElementById("bookRating").value; // Ocena (liczba gwiazdek)
 
     if (!message || !stars) {
-        alert("Wszystkie pola musz¹ byæ wype³nione.");
+        alert("Wszystkie pola muszÄ… byÄ‡ wypeÅ‚nione.");
         return;
     }
 
     try {
-        // Najpierw musimy pobraæ dane wymiany (trade), aby uzyskaæ userId
+        // Najpierw musimy pobraÄ‡ dane wymiany (trade), aby uzyskaÄ‡ userId
         const response = await fetch(`http://localhost:3000/api/trades/by-id/${tradeId}`);
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data.message || 'Wyst¹pi³ problem z pobraniem wymiany');
+            throw new Error(data.message || 'WystÄ…piÅ‚ problem z pobraniem wymiany');
         }
 
         const trade = data;
-        const userId = trade.userId; // ID u¿ytkownika, któremu wystawiamy opiniê
+        const userId = trade.userId; // ID uÅ¼ytkownika, ktÃ³remu wystawiamy opiniÄ™
 
-        // Teraz wykonaj POST, aby dodaæ opiniê
+        // Teraz wykonaj POST, aby dodaÄ‡ opiniÄ™
         const opinionData = {
             userId: userId,
             tradeId: tradeId,
@@ -69,16 +69,16 @@ async function addOpinion() {
         const postData = await postResponse.json();
 
         if (postResponse.ok) {
-            alert('Opinia zosta³a pomyœlnie dodana');
-            // Mo¿esz dodaæ jakieœ dzia³ania po zapisaniu opinii (np. wyczyœciæ formularz)
+            alert('Opinia zostaÅ‚a pomyÅ›lnie dodana');
+            // MoÅ¼esz dodaÄ‡ jakieÅ› dziaÅ‚ania po zapisaniu opinii (np. wyczyÅ›ciÄ‡ formularz)
             document.getElementById("bookReview").value = "";
-            document.getElementById("bookRating").value = "1"; // Ustawienie domyœlnej wartoœci
+            document.getElementById("bookRating").value = "1"; // Ustawienie domyÅ›lnej wartoÅ›ci
         } else {
-            throw new Error(postData.message || 'Wyst¹pi³ b³¹d podczas dodawania opinii');
+            throw new Error(postData.message || 'WystÄ…piÅ‚ bÅ‚Ä…d podczas dodawania opinii');
         }
         window.location.href = "userDashBoard.html";
     } catch (error) {
-        console.error('B³¹d:', error);
-        alert('Wyst¹pi³ b³¹d podczas dodawania opinii');
+        console.error('BÅ‚Ä…d:', error);
+        alert('WystÄ…piÅ‚ bÅ‚Ä…d podczas dodawania opinii');
     }
 }

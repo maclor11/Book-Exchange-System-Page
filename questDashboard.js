@@ -1,4 +1,4 @@
-function updateDateTime() {
+ï»¿function updateDateTime() {
     const now = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const date = now.toLocaleDateString('pl-PL', options);
@@ -9,17 +9,17 @@ function updateDateTime() {
 
 async function displayBooks() {
     try {
-        // Pobierz wszystkich u¿ytkowników
+        // Pobierz wszystkich uÅ¼ytkownikÃ³w
         const usersResponse = await fetch(`http://localhost:3000/api/users`);
         if (!usersResponse.ok) {
-            alert('Nie mo¿na pobraæ listy u¿ytkowników.');
+            alert('Nie moÅ¼na pobraÄ‡ listy uÅ¼ytkownikÃ³w.');
             return;
         }
 
         const users = await usersResponse.json();
         const userIds = users.map(user => user._id).filter(userId => userId);
 
-        // Pobierz ksi¹¿ki wszystkich u¿ytkowników z wyj¹tkiem zalogowanego
+        // Pobierz ksiÄ…Å¼ki wszystkich uÅ¼ytkownikÃ³w z wyjÄ…tkiem zalogowanego
         const booksPromises = userIds.map(userId =>
             fetch(`http://localhost:3000/api/user-books/${userId}`)
         );
@@ -29,13 +29,13 @@ async function displayBooks() {
             booksResponses.map(response => response.json())
         )).flat();
 
-        // Pobierz kontener pó³ki
+        // Pobierz kontener pÃ³Å‚ki
         const shelf = document.getElementById('shelf');
-        shelf.innerHTML = ''; // Wyczyœæ pó³kê
+        shelf.innerHTML = ''; // WyczyÅ›Ä‡ pÃ³Å‚kÄ™
 
-        // Wyœwietl ksi¹¿ki na pó³ce
+        // WyÅ›wietl ksiÄ…Å¼ki na pÃ³Å‚ce
         allBooks.forEach(({ bookId, userId }) => {
-            const user = users.find(u => u._id === userId); // ZnajdŸ w³aœciciela ksi¹¿ki
+            const user = users.find(u => u._id === userId); // ZnajdÅº wÅ‚aÅ›ciciela ksiÄ…Å¼ki
             const username = user ? user.username : 'Nieznany';
 
             const bookContainer = document.createElement('div');
@@ -46,14 +46,14 @@ async function displayBooks() {
 
             const bookFront = document.createElement('div');
             bookFront.classList.add('book-face', 'book-front');
-            bookFront.innerHTML = `<strong title="${bookId.title}">${bookId.title}</strong><br><small>W³aœciciel: ${username}</small>`;
+            bookFront.innerHTML = `<strong title="${bookId.title}">${bookId.title}</strong><br><small>WÅ‚aÅ›ciciel: ${username}</small>`;
 
             const bookBack = document.createElement('div');
             bookBack.classList.add('book-face', 'book-back');
             bookBack.innerHTML = `
                 <p><strong>Autor:</strong> <br><span title="${bookId.author}">${bookId.author}</span></p>
                 <p><strong>Stan:</strong> ${bookId.condition || 'Nieznany'}</p>
-                <p><strong>Ok³adka:</strong> ${bookId.coverType || 'Nieznana'}</p>
+                <p><strong>OkÅ‚adka:</strong> ${bookId.coverType || 'Nieznana'}</p>
             `;
 
             bookDiv.appendChild(bookFront);
@@ -62,12 +62,12 @@ async function displayBooks() {
             shelf.appendChild(bookContainer);
         });
     } catch (error) {
-        console.error('B³¹d podczas ³adowania pó³ki:', error);
-        alert('Wyst¹pi³ b³¹d podczas ³adowania pó³ki.');
+        console.error('BÅ‚Ä…d podczas Å‚adowania pÃ³Å‚ki:', error);
+        alert('WystÄ…piÅ‚ bÅ‚Ä…d podczas Å‚adowania pÃ³Å‚ki.');
     }
 }
 
-// Aktualizacja co sekundê
+// Aktualizacja co sekundÄ™
 setInterval(updateDateTime, 1000);
 
 
