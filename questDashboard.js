@@ -70,11 +70,26 @@ async function displayBooks() {
 // Aktualizacja co sekundę
 setInterval(updateDateTime, 1000);
 
+function searchBooks() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const shelf = document.getElementById('shelf');
+    const books = shelf.getElementsByClassName('book-container');
+
+    Array.from(books).forEach(bookContainer => {
+        const bookTitle = bookContainer.querySelector('.book-front strong').textContent.toLowerCase();
+        if (bookTitle.includes(searchTerm)) {
+            bookContainer.style.display = ''; // Pokaż, jeśli pasuje
+        } else {
+            bookContainer.style.display = 'none'; // Ukryj, jeśli nie pasuje
+        }
+    });
+}
 
 
 window.onload = () => {
     displayBooks();
     updateDateTime();
+    searchBooks();
 };
 
 

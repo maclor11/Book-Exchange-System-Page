@@ -339,6 +339,22 @@ async function displayNotification() {
     }
 }
 
+function searchBooks() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const shelf = document.getElementById('shelf');
+    const books = shelf.getElementsByClassName('book-container');
+
+    Array.from(books).forEach(bookContainer => {
+        const bookTitle = bookContainer.querySelector('.book-front strong').textContent.toLowerCase();
+        if (bookTitle.includes(searchTerm)) {
+            bookContainer.style.display = ''; // Pokaż, jeśli pasuje
+        } else {
+            bookContainer.style.display = 'none'; // Ukryj, jeśli nie pasuje
+        }
+    });
+}
+
+
 function leaveReview(tradeId) {
     localStorage.setItem('tradeId', tradeId);
     window.location.href = "secondOpinion.html";
@@ -353,6 +369,7 @@ window.onload = () => {
     displaySuggestions();
     displayNotification();
     updateDateTime();
+    searchBooks();
 };
 
 // Funkcja wylogowania (jeśli potrzebna w przyszłości)
